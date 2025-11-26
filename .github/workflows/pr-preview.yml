@@ -1,0 +1,127 @@
+name: PR Preview + Lighthouse & Cypress
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+  issues: write
+  pages: write
+
+jobs:
+  preview-and-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start static server (http-server) in background
+        run: |
+          npx http-server -p 5173 -c-1 . &> ./server.log &
+          for i in {1..15}; do
+            if curl -sS http://127.0.0.1:5173 >/dev/null; then
+              echo "Server ready"
+              break
+            fi
+            echo "Waiting for server..."
+            sleep 1
+          done
+        shell: bash
+
+      - name: Run pa11y (a11y smoke test)
+        continue-on-error: true
+        run: |
+          npx pa11y http://127.0.0.1:5173 --reporter html > pa11y-report.html || true
+        shell: bash
+
+      - name: Run Lighthouse and check thresholds
+        run: |
+          npx -y lighthouse http://127.0.0.1:5173 --quiet --chrome-flags="--no-sandbox --headless" --output json --output-path=./lighthouse.json --output html --output-path=./lighthouse-report.html
+          node ./scripts/run-lighthouse-check.js http://127.0.0.1:5173
+        shell: bash
+
+      - name: Run Cypress tests
+        run: npx cypress run --config baseUrl=http://127.0.0.1:5173
+        shell: bash
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-reports-${{ github.event.number }}
+          path: |
+            ./lighthouse-report.html
+            ./lighthouse.json
+            ./pa11y-report.html
+            ./cypress/videos || true
+            ./cypress/screenshots || true
+            ./server.log
+
+  create-gh-pages-preview:
+    needs: preview-and-tests
+    runs-on: ubuntu-latest
+    if: github.event.pull_request && github.event.pull_request.number != ''
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare preview directory and push to gh-pages/pr-<PR>
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUM=${{ github.event.pull_request.number }}
+          PREVIEW_DIR="pr-${PR_NUM}"
+          GH_PAGES_DIR="$(mktemp -d)"
+          if git ls-remote --exit-code origin gh-pages; then
+            git clone --depth=1 --branch=gh-pages https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} "$GH_PAGES_DIR"
+          else
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} "$GH_PAGES_DIR"
+            cd "$GH_PAGES_DIR"
+            git checkout --orphan gh-pages || true
+            git rm -rf . || true
+            git commit --allow-empty -m "Initialize gh-pages branch" || true
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:gh-pages || true
+            cd -
+          fi
+
+          mkdir -p "$GH_PAGES_DIR/$PREVIEW_DIR"
+          rm -rf "$GH_PAGES_DIR/$PREVIEW_DIR"/*
+          rsync -av --exclude='.git' --exclude='node_modules' --exclude='.github' --exclude='cypress' --exclude='server.log' ./ "$GH_PAGES_DIR/$PREVIEW_DIR/"
+
+          cd "$GH_PAGES_DIR"
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Preview for PR #${PR_NUM} [skip ci]" || echo "No changes to commit"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:gh-pages
+        shell: bash
+
+      - name: Post preview comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr) return;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const number = pr.number;
+            const previewUrl = `https://${owner}.github.io/${repo}/pr-${number}/`;
+            const body = `Preview for this PR: ${previewUrl}\n\nLighthouse and accessibility reports are attached as workflow artifacts.`;
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: number,
+              body
+            });
