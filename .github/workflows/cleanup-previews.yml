@@ -1,0 +1,36 @@
+name: Cleanup PR previews on close
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request && github.event.pull_request.number != ''
+    steps:
+      - name: Checkout repo (gh-pages)
+        run: |
+          set -e
+          PR_NUM=${{ github.event.pull_request.number }}
+          PREVIEW_DIR="pr-${PR_NUM}"
+          GH_PAGES_DIR="$(mktemp -d)"
+          if git ls-remote --exit-code origin gh-pages; then
+            git clone --depth=1 --branch=gh-pages https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} "$GH_PAGES_DIR"
+            cd "$GH_PAGES_DIR"
+            if [ -d "${PREVIEW_DIR}" ]; then
+              git rm -r "${PREVIEW_DIR}" || true
+              git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Remove preview for PR #${PR_NUM} [skip ci]" || echo "No changes to commit"
+              git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:gh-pages
+              echo "Removed preview folder ${PREVIEW_DIR}"
+            else
+              echo "Preview folder ${PREVIEW_DIR} not present, nothing to do."
+            fi
+          else
+            echo "gh-pages branch does not exist, nothing to clean."
+          fi
+        shell: bash
