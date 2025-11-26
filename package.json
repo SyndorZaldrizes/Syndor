@@ -1,0 +1,45 @@
+{
+  "name": "Syndor",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prepare": "husky install",
+    "serve": "npx live-server --port=5173 --open=./index.html",
+    "serve:ci": "npx http-server -p 5173 -c-1 .",
+    "start": "npm run serve",
+    "lint:js": "eslint . --ext .js",
+    "lint:css": "stylelint \"**/*.css\"",
+    "format": "prettier --write .",
+    "check:format": "prettier --check .",
+    "test:lh": "node ./scripts/run-lighthouse-check.js http://127.0.0.1:5173",
+    "test:cypress": "cypress run --config baseUrl=http://127.0.0.1:5173",
+    "ci": "npm run lint:js && npm run lint:css && npm run check:format"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.css": [
+      "stylelint --fix",
+      "git add"
+    ],
+    "*.{md,json}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "cypress": "^12.0.0",
+    "eslint": "^8.40.0",
+    "husky": "^8.0.0",
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2",
+    "lint-staged": "^14.0.0",
+    "lighthouse": "^11.0.0",
+    "pa11y": "^6.0.0",
+    "prettier": "^2.8.8",
+    "stylelint": "^15.0.0",
+    "stylelint-config-standard": "^33.0.0"
+  }
+}
