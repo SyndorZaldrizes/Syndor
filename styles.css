@@ -47,3 +47,49 @@ body{
 .reveal.visible{opacity:1;transform:none;}
 
 .site-footer{border-top:1px solid #e6eef5;padding:1rem 0;margin-top:2rem;color:var(--muted);font-size:0.95rem}
+/* === Image sizing overrides === */
+
+/* Hero image = allowed to be full background */
+.hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Maryland strip side image (the one next to the text) */
+.md-strip-image img {
+  width: 100%;
+  max-height: 320px;      /* cap height so it doesn't take the whole page */
+  object-fit: cover;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Document image in the Constitution & Bylaws section */
+.doc-image {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Gallery thumbnails */
+.gallery-item img {
+  width: 100%;
+  height: 170px;          /* small strip thumbnails */
+  object-fit: cover;
+  display: block;
+}
+
+/* Slightly smaller on narrow screens */
+@media (max-width: 720px) {
+  .md-strip-image img,
+  .doc-image {
+    max-height: 220px;
+  }
+
+  .gallery-item img {
+    height: 150px;
+  }
+}
