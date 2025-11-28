@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Give $10 to Power MSL – SMCM Chapter</title>
+  <title>Giving Tuesday – Power SMCM MSL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -34,23 +34,29 @@
   </header>
 
   <main>
-    <!-- HERO: YOUR ASK + COUNTDOWN -->
-    <section class="hero">
+    <!-- HERO: BIG TITLE + COUNTDOWN + HERO IMAGE BACKGROUND -->
+    <section class="hero hero-giving">
       <div class="hero-media">
-        <!-- Optional: use a photo as background by uncommenting and pointing to your file -->
-        <!-- <img src="msl-champion-hero.jpg" alt="MSL Champion portrait" /> -->
-        <div class="hero-overlay"></div>
+        <!-- Reuse the same hero image from index.html -->
+        <img src="Fall0.jfif" alt="SMCM students participating in a mock legislative session" />
+        <div class="hero-overlay hero-overlay-giving"></div>
       </div>
       <div class="hero-content inner">
         <div class="hero-left">
           <p class="eyebrow">Giving Tuesday • MSL Champion Campaign</p>
-          <h1>Help Us Climb the Ladder with Just $10</h1>
+          <h1>Give $10. Lift a Delegation. Power Maryland’s Student Legislature.</h1>
           <p class="hero-body">
             During this 36-hour Giving Tuesday ladder competition, every donor who gives at least $10
             through the official SMCM Giving Tuesday form using our MSL link pushes our chapter higher.
             Your gift supports student access to Maryland Student Legislature – travel, registration,
             training, and statewide collaboration.
           </p>
+
+          <!-- Maryland flag strip -->
+          <div class="md-flag-tag">
+            <img src="maryland-flag.png" alt="Maryland state flag" />
+            <span>Maryland students, for Maryland’s future.</span>
+          </div>
 
           <!-- Countdown block -->
           <div class="countdown" id="countdown">
@@ -180,7 +186,7 @@
           </p>
         </div>
         <div class="card plain-card" style="text-align:center;">
-          <!-- Swap these filenames to match your actual uploads -->
+          <!-- Upload this portrait to the repo root as: msl-champion-hero.jpg -->
           <img
             src="msl-champion-hero.jpg"
             alt="MSL Champion portrait"
@@ -188,9 +194,10 @@
           />
           <p><strong>Your Name</strong></p>
           <p class="small">Giving Tuesday Champion • SMCM MSL Chapter</p>
+          <!-- Optional fun/goofy image uploaded as: msl-champion-fun.jpg -->
           <img
             src="msl-champion-fun.jpg"
-            alt="MSL Champion having fun at MSL event"
+            alt="MSL Champion at an MSL event"
             style="width:100%; max-width:260px; border-radius:24px; object-fit:cover; margin-top:1rem;"
           />
           <p class="small" style="margin-top:0.5rem;">
@@ -260,7 +267,7 @@
     (function () {
       // TODO: set this to the actual end time of your 36-hour ladder window.
       // Example: Dec 3, 2025 8:00 PM Eastern
-      const endTime = new Date("2025-12-02T20:00:00-05:00");
+      const endTime = new Date("2025-12-03T20:00:00-05:00");
 
       const daysEl = document.getElementById("cd-days");
       const hoursEl = document.getElementById("cd-hours");
