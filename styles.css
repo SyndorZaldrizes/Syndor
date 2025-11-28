@@ -755,3 +755,67 @@ textarea:focus {
 .footer-inner .small {
   opacity: 0.8;
 }
+/* === Maryland strip image sizing (Maryland section) === */
+
+.md-strip {
+  margin-top: 2rem;
+  padding: 1.5rem 1.5rem 1.6rem;
+  border-radius: 1.25rem;
+  background: rgba(8, 11, 25, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.md-strip-image img {
+  width: 100%;
+  max-height: 260px; /* This is what stops it from being huge */
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+@media (max-width: 800px) {
+  .md-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .md-strip-image img {
+    max-height: 220px;
+  }
+}
+
+/* Chips under 'From St. Mary's River...' */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.chips span {
+  font-size: 0.78rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(5, 8, 22, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* === Giving Tuesday: legibility fix on light background === */
+
+.giving-page .bg-alt {
+  background: #f7f7fb; /* light section background instead of dark */
+}
+
+.giving-page .section {
+  color: #111111;
+}
+
+.giving-page .card,
+.giving-page .plain-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #111111;
+}
