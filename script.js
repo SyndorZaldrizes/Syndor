@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
   });
 
-  // Close nav when clicking a link (mainly for mobile)
+  // Close nav when clicking a link (for mobile)
   mainNav.addEventListener("click", (event) => {
     const target = event.target;
     if (target.tagName.toLowerCase() === "a") {
