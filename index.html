@@ -1,57 +1,377 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MSL — Syndor</title>
+  <meta charset="UTF-8" />
+  <title>Maryland Student Legislature – SMCM Chapter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-label="Open navigation">
-        ☰
-      </button>
-      <h1 class="site-title">MSL</h1>
-      <nav id="mainNav" class="main-nav" aria-label="Main navigation">
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
+    <div class="inner">
+      <a href="#hero" class="brand">
+        <span class="brand-mark">MSL</span>
+        <span class="brand-text">
+          <span class="brand-title">Maryland Student Legislature</span>
+          <span class="brand-sub">St. Mary’s College of Maryland Chapter</span>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      <nav class="nav" id="mainNav">
+        <a href="#hero">Home</a>
+        <a href="#maryland">Maryland MSL</a>
+        <a href="#chapter">Our Chapter</a>
+        <a href="#journey">Your Journey</a>
+        <a href="#documents">Documents</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Join Us</a>
       </nav>
     </div>
   </header>
 
-  <main id="home" class="container">
-    <section class="hero reveal">
-      <h2>Welcome to MSL</h2>
-      <p>This is the MSL website scaffold. Use the PR previews, Lighthouse and Cypress tests to iterate safely.</p>
+  <main>
+    <!-- HERO -->
+    <section id="hero" class="hero">
+      <div class="hero-media">
+        <img src="https://picsum.photos/1600/900?random=101" alt="Maryland-inspired civic landscape" />
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content inner">
+        <div class="hero-left reveal">
+          <p class="eyebrow">Student-Led • Maryland-Focused • Democracy in Practice</p>
+          <h1>Draft. Debate. Lead.<br />Be the voice of St. Mary’s in Maryland’s student legislature.</h1>
+          <p class="hero-body">
+            The Maryland Student Legislature – SMCM Chapter turns the statehouse into your classroom.
+            Learn how law is made, write your own bills, and represent our campus in a statewide mock
+            General Assembly rooted in real Maryland issues.
+          </p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-primary">Get Involved</a>
+            <a href="#documents" class="btn btn-ghost">View Constitution &amp; Bylaws</a>
+          </div>
+          <div class="hero-tags">
+            <span>🗳️ Hands-on democracy</span>
+            <span>🌊 Chesapeake community</span>
+            <span>🏛️ Annapolis sessions</span>
+          </div>
+        </div>
+        <div class="hero-right reveal delay-1">
+          <div class="pulse-card">
+            <h2>Next Interest Meeting</h2>
+            <p class="pulse-time">[Day], [Time] • [Location]</p>
+            <p class="pulse-desc">
+              Meet the delegation, learn how sessions work, and see how your ideas can become bills on the floor.
+            </p>
+            <ul class="pulse-list">
+              <li>Intro to Maryland Student Legislature</li>
+              <li>How to draft your first bill</li>
+              <li>Sign-up for Fall &amp; Spring sessions</li>
+            </ul>
+            <a href="#contact" class="btn btn-inline">RSVP or ask a question →</a>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="about" class="reveal">
-      <h3>About</h3>
-      <p>Short about section — replace with your content.</p>
+    <!-- MARYLAND MSL -->
+    <section id="maryland" class="section bg-alt">
+      <div class="inner section-layout">
+        <div class="section-header reveal">
+          <p class="eyebrow">Statewide Organization</p>
+          <h2>The Maryland Student Legislature</h2>
+          <p class="section-body">
+            MSL is a statewide, student-run model legislature that mirrors the Maryland General Assembly.
+            Delegations from colleges across Maryland gather to introduce bills, hold committee hearings,
+            and debate on the floor under parliamentary rules.
+          </p>
+        </div>
+        <div class="cards-3">
+          <article class="card feature-card reveal delay-1">
+            <div class="card-icon">🏛️</div>
+            <h3>Model General Assembly</h3>
+            <p>
+              Students serve as Delegates and Senators, follow a three-reading process, and learn how
+              Maryland law is shaped in practice.
+            </p>
+          </article>
+          <article class="card feature-card reveal delay-2">
+            <div class="card-icon">📜</div>
+            <h3>Real Policy, Real Stakes</h3>
+            <p>
+              From the Bay to broadband access, you’ll research Maryland-specific issues and write legislation
+              grounded in real public policy.
+            </p>
+          </article>
+          <article class="card feature-card reveal delay-3">
+            <div class="card-icon">🤝</div>
+            <h3>Statewide Community</h3>
+            <p>
+              Work alongside delegations from campuses across the state and build a network of students
+              committed to public service.
+            </p>
+          </article>
+        </div>
+
+        <div class="md-strip reveal delay-4">
+          <div class="md-strip-text">
+            <h3>From St. Mary’s River to State Circle</h3>
+            <p>
+              SMCM’s chapter brings our waterfront campus into the broader Maryland conversation. You represent
+              your peers, your college, and your community when you rise to speak.
+            </p>
+            <div class="chips">
+              <span>St. Mary’s College of Maryland (SMCM)</span>
+              <span>UMD College Park</span>
+              <span>Towson University</span>
+              <span>Salisbury University</span>
+              <span>UMBC</span>
+              <span>[Add more delegations]</span>
+            </div>
+          </div>
+          <div class="md-strip-image">
+            <img src="https://picsum.photos/900/700?random=202" alt="Students debating in a lecture hall" />
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="projects" class="reveal">
-      <h3>Projects</h3>
-      <p>Project list goes here.</p>
+    <!-- CHAPTER -->
+    <section id="chapter" class="section">
+      <div class="inner">
+        <div class="section-header center reveal">
+          <p class="eyebrow">St. Mary’s College of Maryland</p>
+          <h2>Our Chapter &amp; Executive Board</h2>
+          <p class="section-body">
+            The SMCM Chapter is the official delegation to the Maryland Student Legislature. We prepare
+            students to research issues, write bills, and confidently participate in statewide sessions—whether
+            it’s their first speech or their fiftieth.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card plain-card reveal">
+            <h3>What We Do on Campus</h3>
+            <ul class="checklist">
+              <li>Host bill-writing and public speaking workshops.</li>
+              <li>Run mock committee hearings and floor debates.</li>
+              <li>Coordinate attendance at Fall &amp; Spring statewide sessions.</li>
+              <li>Connect members with POSC-395 for academic credit.</li>
+            </ul>
+            <h3>Membership</h3>
+            <p>
+              All degree-seeking SMCM students are welcome. Active members are those who attend at least one out
+              of every three meetings and help shape our legislative agenda.
+            </p>
+          </div>
+
+          <div class="card plain-card reveal delay-1">
+            <h3>Executive Board</h3>
+            <p class="small">
+              Titles and duties are fully defined in our Constitution &amp; Bylaws. Here’s the core structure:
+            </p>
+            <div class="board-grid">
+              <div>
+                <h4>Statewide-Facing</h4>
+                <ul class="simple-list">
+                  <li>Delegation Chairperson</li>
+                  <li>Vice Delegation Chair (Attorney General)</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Campus-Facing</h4>
+                <ul class="simple-list">
+                  <li>President</li>
+                  <li>Treasurer</li>
+                  <li>Secretary</li>
+                  <li>Communications Director</li>
+                  <li>Ambassador</li>
+                </ul>
+              </div>
+            </div>
+            <p class="small">
+              Elections, impeachment procedures, and vacancies follow the rules in our founding documents to
+              keep leadership accountable and transitions smooth.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="contact" class="reveal">
-      <h3>Contact</h3>
-      <p>Contact details and forms.</p>
+    <!-- YOUR JOURNEY -->
+    <section id="journey" class="section bg-alt">
+      <div class="inner">
+        <div class="section-header center reveal">
+          <p class="eyebrow">Your Path Into Public Service</p>
+          <h2>How a Semester in MSL Works</h2>
+          <p class="section-body">
+            Whether you’re curious about law school, local government, or just want to get more comfortable
+            speaking in front of a crowd, MSL gives you a real pathway to practice those skills in Maryland’s context.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item reveal">
+            <div class="timeline-dot">1</div>
+            <div class="timeline-card">
+              <h3>Join the Chapter</h3>
+              <p>Drop into a general meeting, get added to our roster, and meet the Executive Board and members.</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal delay-1">
+            <div class="timeline-dot">2</div>
+            <div class="timeline-card">
+              <h3>Draft a Bill</h3>
+              <p>Identify a Maryland issue that matters to you and use our templates to draft a bill or resolution.</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal delay-2">
+            <div class="timeline-dot">3</div>
+            <div class="timeline-card">
+              <h3>Committee &amp; Caucus Work</h3>
+              <p>Present your bill before a mock committee, refine it with feedback, and find co-sponsors.</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal delay-3">
+            <div class="timeline-dot">4</div>
+            <div class="timeline-card">
+              <h3>Take the Floor</h3>
+              <p>Travel with the delegation to session, debate on the floor, and see your work move through the chamber.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOCUMENTS -->
+    <section id="documents" class="section">
+      <div class="inner section-layout">
+        <div class="section-header reveal">
+          <p class="eyebrow">Founding Documents</p>
+          <h2>Constitution &amp; Bylaws</h2>
+          <p class="section-body">
+            Our Constitution sets the foundation. Our Bylaws handle the details: meetings, elections,
+            committees, social media, and more. Together, they keep the Chapter democratic, transparent,
+            and sustainable from year to year.
+          </p>
+          <div class="doc-actions">
+            <a href="constitution.html" class="btn btn-primary">Read Constitution</a>
+            <a href="bylaws.html" class="btn btn-ghost">Read Bylaws</a>
+          </div>
+          <p class="small">
+            You can also host PDF copies in a <code>/docs</code> folder in this GitHub repo and link them here
+            once they’re uploaded.
+          </p>
+        </div>
+        <div class="card doc-card reveal delay-1">
+          <img src="https://picsum.photos/900/600?random=303" alt="Open book and notes on a table" class="doc-image" />
+          <div class="doc-content">
+            <h3>Why it matters</h3>
+            <p>
+              Knowing the rules means knowing your rights as a member. From impeachment protections to
+              election procedures, our governing documents make sure every delegate understands how power
+              is shared and checked within the Chapter.
+            </p>
+            <ul class="checklist small">
+              <li>Clear officer roles and responsibilities.</li>
+              <li>Transparent impeachment and appeals process.</li>
+              <li>Codified election &amp; transition procedures.</li>
+              <li>Social media and password transfer safeguards.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section bg-alt">
+      <div class="inner">
+        <div class="section-header center reveal">
+          <p class="eyebrow">Life in Session</p>
+          <h2>Scenes from Debate &amp; Delegation</h2>
+          <p class="section-body">
+            MSL is serious about ideas—but the experience is also collaborative, welcoming, and very human.
+            You’ll find yourself surrounded by students from across Maryland who care enough to show up.
+          </p>
+        </div>
+        <div class="gallery-grid">
+          <figure class="gallery-item reveal">
+            <img src="https://picsum.photos/600/400?random=401" alt="Students listening in a lecture hall" />
+            <figcaption>Committee briefings and draft reviews before session.</figcaption>
+          </figure>
+          <figure class="gallery-item reveal delay-1">
+            <img src="https://picsum.photos/600/400?random=402" alt="Speaker at the front of a room" />
+            <figcaption>Floor speeches and points of information in mock chambers.</figcaption>
+          </figure>
+          <figure class="gallery-item reveal delay-2">
+            <img src="https://picsum.photos/600/400?random=403" alt="City and civic buildings" />
+            <figcaption>Maryland’s civic spaces become the setting for your work.</figcaption>
+          </figure>
+          <figure class="gallery-item reveal delay-3">
+            <img src="https://picsum.photos/600/400?random=404" alt="Students collaborating at a table" />
+            <figcaption>Late-night coalition building over amendments and strategy.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / JOIN -->
+    <section id="contact" class="section">
+      <div class="inner grid-2 contact-layout">
+        <div class="reveal">
+          <p class="eyebrow">Join the Delegation</p>
+          <h2>Ready to take the mic?</h2>
+          <p class="section-body">
+            You don’t need prior experience with debate or student government. If you’re curious about how
+            democracy works—or how it could work better—you belong in the room.
+          </p>
+          <ul class="checklist">
+            <li>Open to all degree-seeking SMCM students.</li>
+            <li>No debate or poli-sci background required.</li>
+            <li>Opportunities to earn academic credit (POSC-395).</li>
+          </ul>
+          <div class="contact-details">
+            <p><strong>Chapter Email</strong><br /><a href="mailto:[chapter-email]">[chapter-email]</a></p>
+            <p><strong>Instagram</strong><br /><a href="https://instagram.com/[handle]" target="_blank">@ [handle]</a></p>
+            <p><strong>Advisor</strong><br /><a href="mailto:[advisor-email]">[advisor-email]</a></p>
+          </div>
+        </div>
+        <div class="card contact-card reveal delay-1">
+          <h3>Interest Form</h3>
+          <p class="small">
+            This form is visual only—hook it up to Google Forms, an email handler, or a static form service
+            once the site is live on GitHub Pages.
+          </p>
+          <form onsubmit="event.preventDefault(); alert('On the live site, connect this form to your preferred service.');">
+            <label>
+              Name
+              <input type="text" placeholder="Your name" required />
+            </label>
+            <label>
+              Email
+              <input type="email" placeholder="you@example.com" required />
+            </label>
+            <label>
+              What interests you about MSL?
+              <textarea rows="3" placeholder="Policy areas, skills you want to build, or anything else."></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary full">I’m Interested</button>
+          </form>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p>© <span id="year"></span> MSL</p>
+    <div class="inner footer-inner">
+      <p>© <span id="year"></span> Maryland Student Legislature – St. Mary’s College of Maryland Chapter.</p>
+      <p class="small">
+        Student-led, nonpartisan, and rooted in Maryland’s civic life. This site is not an official publication
+        of St. Mary’s College of Maryland or the State of Maryland.
+      </p>
     </div>
   </footer>
 
-  <script src="script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
