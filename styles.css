@@ -91,3 +91,13 @@ body {
     height: 150px;
   }
 }
+.section {
+  background: transparent;   /* let the dark body show through */
+}
+
+/* If something is too bright, e.g. hero text, you can always reinforce: */
+.hero,
+.site-header,
+.site-footer {
+  color: #f7f7ff;
+}
