@@ -1,154 +1,624 @@
-:root{
-  --bg:#ffffff;
-  --surface:#f8fafc;
-  --accent:#0ea5e9;
-  --text:#0f172a;
-  --muted:#64748b;
+/* === Base reset / typography === */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-*{box-sizing:border-box}
+html,
 body {
   margin: 0;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #050816;       /* deep navy / charcoal */
-  color: #f7f7ff;            /* off-white text */
-  line-height: 1.6;
+  padding: 0;
 }
 
-.container{max-width:1000px;margin:0 auto;padding:1rem;}
-
-.site-header{background:var(--surface);border-bottom:1px solid #e6eef5;}
-.site-header .container{display:flex;align-items:center;gap:1rem;padding:0.75rem 1rem;}
-.site-title{margin:0;font-size:1.125rem;flex:1;}
-
-.nav-toggle{
-  background:transparent;border:0;font-size:1.25rem;padding:0.25rem 0.5rem;border-radius:6px;cursor:pointer;
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  background: #050816;
+  color: #f5f6ff;
+  line-height: 1.5;
 }
-.main-nav{
-  position:relative;
-}
-.main-nav ul{list-style:none;margin:0;padding:0;display:flex;gap:1rem;}
-.main-nav a{color:var(--text);text-decoration:none;padding:0.5rem;border-radius:6px;}
-.main-nav a:focus, .main-nav a:hover{background:rgba(14,165,233,0.08);outline:none}
 
-@media (max-width:720px){
-  .main-nav{
-    position:absolute;top:100%;right:1rem;background:var(--surface);box-shadow:0 8px 24px rgba(15,23,42,0.08);
-    border-radius:8px;padding:0.75rem;transform-origin:top right;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease;
+/* Override for Giving Tuesday page (white background) */
+body.giving-page {
+  background: #ffffff;
+  color: #111111;
+}
+
+a {
+  color: #9fc5ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Layout helpers */
+
+.inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* === Header & Navigation === */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 8, 22, 0.96),
+    rgba(5, 8, 22, 0.88)
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.site-header .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+/* Brand */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #ffffff;
+}
+
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, #fcd116, #c8102e 60%, #000000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.brand-sub {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* Nav + burger */
+
+/* Base hidden nav for mobile */
+.nav {
+  display: none;
+}
+
+.nav a {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  padding: 0.25rem 0;
+}
+
+/* Burger button */
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  font-size: 1.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* When JS toggles .nav-open on nav */
+.nav.nav-open {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 1rem;
+  top: 64px;
+  background: #050816;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+  gap: 0.5rem;
+}
+
+/* Desktop layout: nav always visible, burger hidden */
+@media (min-width: 900px) {
+  .nav {
+    display: flex;
+    position: static;
+    flex-direction: row;
+    gap: 1.2rem;
   }
-  .main-nav.open{opacity:1;pointer-events:auto;transform:translateY(0);}
-  .main-nav ul{flex-direction:column;min-width:200px;}
+
+  .nav.nav-open {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav a {
+    padding: 0;
+  }
 }
 
-.hero{padding:3rem 0;text-align:center}
-.reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease;}
-.reveal.visible{opacity:1;transform:none;}
+/* === Sections === */
 
-.site-footer{border-top:1px solid #e6eef5;padding:1rem 0;margin-top:2rem;color:var(--muted);font-size:0.95rem}
-/* === Image sizing overrides === */
+.section {
+  padding: 3.5rem 0;
+}
 
-/* Hero image = allowed to be full background */
+.bg-alt {
+  background: radial-gradient(circle at top left, #11152c, #050816);
+}
+
+/* Headings, eyebrow labels */
+
+.eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  opacity: 0.8;
+}
+
+.section-header {
+  margin-bottom: 1.75rem;
+}
+
+.section-header.center {
+  text-align: center;
+}
+
+.section-header h1,
+.section-header h2 {
+  margin: 0.3rem 0 0.5rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(2rem, 3vw + 1rem, 2.8rem);
+}
+
+h2 {
+  font-size: 1.7rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+/* Body text */
+
+.section-body {
+  max-width: 44rem;
+  font-size: 0.98rem;
+  opacity: 0.9;
+}
+
+.small {
+  font-size: 0.85rem;
+  opacity: 0.88;
+}
+
+/* === Hero (home page) === */
+
+.hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.hero .inner {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
 .hero-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Maryland strip side image (the one next to the text) */
-.md-strip-image img {
-  width: 100%;
-  max-height: 320px;      /* cap height so it doesn't take the whole page */
-  object-fit: cover;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 10% 0, rgba(252, 209, 22, 0.4), transparent 55%),
+    linear-gradient(120deg, rgba(5, 8, 22, 0.95), rgba(5, 8, 22, 0.88));
 }
 
-/* Document image in the Constitution & Bylaws section */
+.hero-content {
+  display: grid;
+  grid-template-columns: minmax(0, 3.2fr) minmax(0, 2.2fr);
+  gap: 2.5rem;
+  align-items: center;
+  padding: 4rem 1.25rem 3rem;
+}
+
+.hero-left .eyebrow {
+  color: #fcd116;
+}
+
+.hero-left h1 {
+  font-size: clamp(2.2rem, 3.4vw + 1rem, 3.3rem);
+  line-height: 1.08;
+  margin-bottom: 0.7rem;
+}
+
+.hero-body {
+  font-size: 0.98rem;
+  max-width: 34rem;
+  opacity: 0.92;
+}
+
+.hero-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.hero-tags {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hero-tags span {
+  font-size: 0.8rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(5, 8, 22, 0.8);
+}
+
+/* Hero right card */
+
+.pulse-card {
+  background: radial-gradient(circle at top left, #192452, #070b1e);
+  border-radius: 1.25rem;
+  padding: 1.5rem 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+.pulse-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.pulse-time {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 0.75rem;
+}
+
+.pulse-list {
+  padding-left: 1.1rem;
+  margin: 0.4rem 0 0.8rem;
+  font-size: 0.9rem;
+}
+
+.pulse-list li {
+  margin-bottom: 0.25rem;
+}
+
+/* === Buttons === */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.5rem 1.15rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4f8cff, #61d3ff);
+  color: #050816;
+  border: none;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #f5f6ff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-inline {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #9fc5ff;
+}
+
+.btn.full {
+  width: 100%;
+}
+
+/* Giving page: gold primary */
+
+.giving-page .btn-primary {
+  background: linear-gradient(90deg, #fcd116, #ffe470);
+  color: #111111;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+}
+
+/* === Grids & cards === */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.15fr);
+  gap: 2rem;
+}
+
+@media (max-width: 800px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    padding-top: 3.25rem;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cards-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .cards-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .cards-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  border-radius: 1.1rem;
+  padding: 1.25rem 1.25rem 1.3rem;
+  background: rgba(10, 14, 36, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bg-alt .card {
+  background: rgba(9, 12, 29, 0.96);
+}
+
+.plain-card {
+  background: rgba(8, 11, 25, 0.96);
+}
+
+.feature-card .card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Lists */
+
+.checklist {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.5rem 0 0;
+}
+
+.checklist li::before {
+  content: "•";
+  margin-right: 0.4rem;
+  color: #61d3ff;
+}
+
+.simple-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.simple-list li {
+  margin-bottom: 0.2rem;
+}
+
+/* Board grid */
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+/* Timeline (journey section) */
+
+.timeline {
+  position: relative;
+  margin-top: 1.75rem;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 1.1rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #61d3ff, transparent);
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-dot {
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 999px;
+  border: 2px solid #61d3ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  margin-top: 0.15rem;
+  background: #050816;
+}
+
+/* Documents section */
+
+.doc-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 2fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
 .doc-image {
   width: 100%;
-  max-height: 260px;
+  height: 100%;
+  border-radius: 1rem;
   object-fit: cover;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Gallery thumbnails */
-.gallery-item img {
-  width: 100%;
-  height: 170px;          /* small strip thumbnails */
-  object-fit: cover;
-  display: block;
-}
-
-/* Slightly smaller on narrow screens */
-@media (max-width: 720px) {
-  .md-strip-image img,
-  .doc-image {
-    max-height: 220px;
-  }
-
-  .gallery-item img {
-    height: 150px;
-  }
-}
-.section {
-  background: transparent;   /* let the dark body show through */
-}
-
-/* If something is too bright, e.g. hero text, you can always reinforce: */
-.hero,
-.site-header,
-.site-footer {
-  color: #f7f7ff;
-}
-/* Countdown styles for MSL ladder page */
-.countdown {
-  margin: 1.25rem 0 1.75rem;
-}
-
-.countdown-label {
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.9;
-  margin-bottom: 0.5rem;
-}
-
-.countdown-timer {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.countdown-timer > div {
-  background: rgba(5, 8, 22, 0.75);
-  border-radius: 999px;
-  padding: 0.4rem 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.doc-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-width: 70px;
+  gap: 0.75rem;
 }
 
-.countdown-timer span {
-  font-size: 1.2rem;
-  font-weight: 700;
+@media (max-width: 800px) {
+  .doc-card {
+    grid-template-columns: 1fr;
+  }
 }
 
-.countdown-timer small {
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
-/* === Giving Tuesday page (msl-giving.html) === */
+/* Gallery */
 
-.giving-page {
-  background: #ffffff;
-  color: #111111;
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
 }
 
-/* Hero layout */
+.gallery-item {
+  border-radius: 1rem;
+  overflow: hidden;
+  background: rgba(8, 11, 25, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.8rem;
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.gallery-item figcaption {
+  padding: 0.65rem 0.8rem 0.8rem;
+}
+
+@media (max-width: 900px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Contact / Join section */
+
+.contact-layout {
+  align-items: flex-start;
+}
+
+.contact-details p {
+  margin: 0 0 0.6rem;
+}
+
+/* Form */
+
+form label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(5, 8, 22, 0.9);
+  color: #f5f6ff;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+input:focus,
+textarea:focus {
+  outline: 1px solid #61d3ff;
+  outline-offset: 1px;
+}
+
+/* === Giving Tuesday hero / layout (msl-giving.html) === */
+
 .section-giving-hero {
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -168,13 +638,12 @@ body {
   }
 }
 
-/* Eyebrow + title */
 .giving-eyebrow {
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #c8102e; /* Maryland red */
+  color: #c8102e;
   margin-bottom: 0.6rem;
 }
 
@@ -194,7 +663,6 @@ body {
   border-radius: 999px;
 }
 
-/* Flag image */
 .giving-hero-flag {
   margin-top: 1rem;
   width: 100%;
@@ -204,17 +672,17 @@ body {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
 }
 
-/* Hero actions */
 .giving-hero-actions {
   margin-top: 1.25rem;
 }
 
-/* Countdown block */
 .giving-hero-side {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
+
+/* Countdown */
 
 .countdown {
   margin-bottom: 0.5rem;
@@ -259,7 +727,6 @@ body {
   opacity: 0.85;
 }
 
-/* Tax card + note */
 .giving-tax-card h2 {
   margin-bottom: 0.6rem;
 }
@@ -268,77 +735,23 @@ body {
   opacity: 0.8;
 }
 
-/* Slightly gold-forward primary on this page only */
-.giving-page .btn-primary {
-  background: linear-gradient(90deg, #fcd116, #ffe470);
-  color: #111111;
-  border: none;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
-}
+/* === Footer === */
 
-.giving-page .btn-primary:hover {
-  filter: brightness(1.03);
-  transform: translateY(-1px);
-}
-/* === Navigation toggle behavior === */
-
-/* Base nav and toggle */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.nav-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.4rem;
-  height: 2.4rem;
-  font-size: 1.4rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: transparent;
-  cursor: pointer;
-}
-
-.nav {
-  display: none; /* hidden by default on small screens */
-}
-
-/* When JS toggles .nav-open, show it as a dropdown */
-.nav.nav-open {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  right: 1rem;
-  top: 100%;
+.site-footer {
+  padding: 2rem 0 2.5rem;
   background: #050816;
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
-  gap: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 2rem;
 }
 
-/* Desktop: always show nav, hide burger */
-@media (min-width: 900px) {
-  .nav {
-    display: flex;
-    position: static;
-    flex-direction: row;
-    align-items: center;
-    gap: 1.2rem;
-    background: transparent;
-    box-shadow: none;
-    padding: 0;
-  }
-
-  .nav.nav-open {
-    display: flex; /* same as base */
-  }
-
-  .nav-toggle {
-    display: none;
-  }
+.footer-inner {
+  text-align: center;
 }
 
+.footer-inner p {
+  margin: 0.1rem 0;
+}
+
+.footer-inner .small {
+  opacity: 0.8;
+}
