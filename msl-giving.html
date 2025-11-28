@@ -9,29 +9,36 @@
 <body>
   <header class="site-header">
     <div class="inner">
-      <a href="index.html" class="brand">
+      <a href="index.html#hero" class="brand">
         <span class="brand-mark">MSL</span>
         <span class="brand-text">
           <span class="brand-title">Maryland Student Legislature</span>
-          <span class="brand-sub">SMCM Chapter</span>
+          <span class="brand-sub">St. Mary’s College of Maryland Chapter</span>
         </span>
       </a>
-      <nav class="nav">
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      <nav class="nav" id="mainNav">
         <a href="index.html#hero">Home</a>
+        <a href="index.html#maryland">Maryland MSL</a>
         <a href="index.html#chapter">Our Chapter</a>
+        <a href="index.html#journey">Your Journey</a>
         <a href="index.html#documents">Documents</a>
-        <a href="giving-tuesday.html">Giving Tuesday Info</a>
-        <a href="msl-giving.html" class="highlighted-link">MSL Ladder (Live)</a>
+        <!-- Official SMCM Giving Tuesday page -->
+        <a href="https://www.smcm.edu/giving-tuesday/" target="_blank">Giving Tuesday Info</a>
+        <!-- This landing page -->
+        <a href="msl-giving.html">MSL Ladder</a>
+        <a href="index.html#gallery">Gallery</a>
+        <a href="index.html#contact">Join Us</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- HERO: YOUR ASK -->
+    <!-- HERO: YOUR ASK + COUNTDOWN -->
     <section class="hero">
       <div class="hero-media">
-        <!-- Your pro photo as a soft background if you want -->
-        <!-- <img src="msl-champion-hero.jpg" alt="Your Name, MSL Champion" /> -->
+        <!-- Optional: use a photo as background by uncommenting and pointing to your file -->
+        <!-- <img src="msl-champion-hero.jpg" alt="MSL Champion portrait" /> -->
         <div class="hero-overlay"></div>
       </div>
       <div class="hero-content inner">
@@ -39,11 +46,37 @@
           <p class="eyebrow">Giving Tuesday • MSL Champion Campaign</p>
           <h1>Help Us Climb the Ladder with Just $10</h1>
           <p class="hero-body">
-            For this Giving Tuesday ladder competition, every donor who gives at least $10 through
-            the official SMCM Giving Tuesday form using our MSL link pushes our chapter higher.
+            During this 36-hour Giving Tuesday ladder competition, every donor who gives at least $10
+            through the official SMCM Giving Tuesday form using our MSL link pushes our chapter higher.
             Your gift supports student access to Maryland Student Legislature – travel, registration,
-            training, and the work we do connecting campuses across the state.
+            training, and statewide collaboration.
           </p>
+
+          <!-- Countdown block -->
+          <div class="countdown" id="countdown">
+            <p class="countdown-label" id="cd-banner">
+              Ladder competition ends in:
+            </p>
+            <div class="countdown-timer">
+              <div>
+                <span id="cd-days">--</span>
+                <small>Days</small>
+              </div>
+              <div>
+                <span id="cd-hours">--</span>
+                <small>Hours</small>
+              </div>
+              <div>
+                <span id="cd-mins">--</span>
+                <small>Minutes</small>
+              </div>
+              <div>
+                <span id="cd-secs">--</span>
+                <small>Seconds</small>
+              </div>
+            </div>
+          </div>
+
           <div class="hero-actions">
             <a
               href="YOUR_LADDER_LINK_HERE"
@@ -57,8 +90,8 @@
             </a>
           </div>
           <div class="hero-tags">
-            <span>🎯 Ladder competition – 36 hours</span>
-            <span>🚌 Session travel & fees</span>
+            <span>🎯 36-hour ladder competition</span>
+            <span>🚌 Travel & session access</span>
             <span>📜 Student-written legislation</span>
           </div>
         </div>
@@ -114,9 +147,9 @@
             <div class="card-icon">🤝</div>
             <h3>Statewide Collaboration</h3>
             <p>
-              Our recently approved proposal allows us to reinvest part of our
-              success back into delegations that help us climb the ladder,
-              strengthening MSL statewide—not just at SMCM.
+              Our approved proposal allows us to reinvest part of our success
+              back into delegations that help us climb the ladder, strengthening
+              MSL statewide—not just at SMCM.
             </p>
           </article>
         </div>
@@ -136,10 +169,9 @@
             beyond campus.
           </p>
           <p class="section-body">
-            We’ve run the numbers. With our statewide connections across MSL
-            delegations and support from alumni, friends, and fellow students,
-            we can hit our ladder goals. But every single donor matters—especially
-            yours.
+            With our statewide connections across MSL delegations and support
+            from alumni, friends, and fellow students, we can hit our ladder
+            goals. But every single donor matters—especially yours.
           </p>
           <p class="section-body">
             If you’ve ever believed students should understand how democracy
@@ -148,6 +180,7 @@
           </p>
         </div>
         <div class="card plain-card" style="text-align:center;">
+          <!-- Swap these filenames to match your actual uploads -->
           <img
             src="msl-champion-hero.jpg"
             alt="MSL Champion portrait"
@@ -167,7 +200,7 @@
       </div>
     </section>
 
-    <!-- HOW TO GIVE SPECIFICS -->
+    <!-- HOW TO GIVE -->
     <section class="section bg-alt">
       <div class="inner section-layout">
         <div class="section-header">
@@ -219,5 +252,56 @@
       </div>
     </section>
   </main>
+
+  <script src="script.js"></script>
+
+  <!-- Inline countdown script (adjust the end date/time below) -->
+  <script>
+    (function () {
+      // TODO: set this to the actual end time of your 36-hour ladder window.
+      // Example: Dec 3, 2025 8:00 PM Eastern
+      const endTime = new Date("2025-12-02T20:00:00-05:00");
+
+      const daysEl = document.getElementById("cd-days");
+      const hoursEl = document.getElementById("cd-hours");
+      const minsEl = document.getElementById("cd-mins");
+      const secsEl = document.getElementById("cd-secs");
+      const bannerEl = document.getElementById("cd-banner");
+
+      if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = endTime - now;
+
+        if (diff <= 0) {
+          if (bannerEl) {
+            bannerEl.textContent =
+              "The ladder competition has ended — thank you for your support!";
+          }
+          daysEl.textContent = "0";
+          hoursEl.textContent = "00";
+          minsEl.textContent = "00";
+          secsEl.textContent = "00";
+          clearInterval(timer);
+          return;
+        }
+
+        const totalSeconds = Math.floor(diff / 1000);
+        const days = Math.floor(totalSeconds / (3600 * 24));
+        const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+
+        daysEl.textContent = String(days);
+        hoursEl.textContent = String(hours).padStart(2, "0");
+        minsEl.textContent = String(mins).padStart(2, "0");
+        secsEl.textContent = String(secs).padStart(2, "0");
+      }
+
+      updateCountdown();
+      const timer = setInterval(updateCountdown, 1000);
+    })();
+  </script>
 </body>
 </html>
