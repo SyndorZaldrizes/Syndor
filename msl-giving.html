@@ -23,9 +23,7 @@
         <a href="index.html#chapter">Our Chapter</a>
         <a href="index.html#journey">Your Journey</a>
         <a href="index.html#documents">Documents</a>
-        <!-- Official SMCM Giving Tuesday page -->
         <a href="https://www.smcm.edu/giving-tuesday/" target="_blank">Giving Tuesday Info</a>
-        <!-- This landing page -->
         <a href="msl-giving.html">MSL Ladder</a>
         <a href="index.html#gallery">Gallery</a>
         <a href="index.html#contact">Join Us</a>
@@ -34,24 +32,30 @@
   </header>
 
   <main>
-    <!-- HERO: MISSION FIRST + COUNTDOWN + HERO IMAGE BACKGROUND -->
-    <section class="hero hero-giving">
-      <div class="hero-media">
-        <!-- Reuse the same hero image from index.html -->
-        <img src="Fall0.jfif" alt="SMCM students participating in a mock legislative session" />
-        <div class="hero-overlay hero-overlay-giving"></div>
-      </div>
-      <div class="hero-content inner">
-        <div class="hero-left">
-          <p class="eyebrow">Giving Tuesday • MSL Champion Campaign</p>
-          <h1>Fuel Maryland’s Student Voice This Giving Tuesday.</h1>
-          <p class="hero-body">
-            Maryland Student Legislature gives SMCM students a real chamber, real debate, and a real
-            chance to shape policy. Your support makes sure cost never decides who gets a seat at the
-            table. Help us bring more voices, more campuses, and more perspectives into the room.
+    <!-- HERO: SIMPLE, MISSION-FIRST, FLAG + COUNTDOWN -->
+    <section class="section section-giving-hero">
+      <div class="inner giving-hero-layout">
+        <div class="giving-hero-main">
+          <p class="giving-eyebrow">Giving Tuesday · MSL Champion Campaign</p>
+          <h1>Fuel Maryland’s Student Voice This Giving Tuesday</h1>
+          <p class="section-body">
+            Maryland Student Legislature gives SMCM students a real chamber, real debate, and a real shot
+            at shaping policy. Your support makes sure cost never decides who gets a seat at the table.
+            Help us bring more voices, more campuses, and more perspectives into the room.
           </p>
+          <img
+            src="maryland-flag.jpg"
+            alt="Maryland state flag"
+            class="giving-hero-flag"
+          />
+          <div class="giving-hero-actions">
+            <a href="#impact" class="btn btn-ghost">
+              See what your gift supports
+            </a>
+          </div>
+        </div>
 
-          <!-- Countdown block -->
+        <div class="giving-hero-side">
           <div class="countdown" id="countdown">
             <p class="countdown-label" id="cd-banner">
               Ladder competition ends in:
@@ -76,32 +80,7 @@
             </div>
           </div>
 
-          <!-- Maryland flag strip -->
-          <div class="md-flag-tag">
-            <img src="maryland-flag.jpg" alt="Maryland state flag" />
-            <span>Maryland students, for Maryland’s future.</span>
-          </div>
-
-          <div class="hero-actions">
-            <a href="#impact" class="btn btn-primary">
-              See What Your Gift Supports
-            </a>
-            <a
-              href="YOUR_LADDER_LINK_HERE"
-              class="btn btn-ghost"
-              target="_blank"
-            >
-              Ready to Give? Open the Form
-            </a>
-          </div>
-          <div class="hero-tags">
-            <span>⭐ Hands-on civic learning</span>
-            <span>🚌 Access for every delegate</span>
-            <span>📜 Student-written legislation</span>
-          </div>
-        </div>
-        <div class="hero-right">
-          <div class="card plain-card">
+          <div class="card plain-card giving-tax-card">
             <h2>Your Gift, Their Mic Drop Moment</h2>
             <p class="small">
               When you give through the official SMCM Giving Tuesday form using our MSL link, your gift
@@ -113,6 +92,17 @@
               discover that their voice actually carries.
             </p>
           </div>
+
+          <a
+            href="YOUR_LADDER_LINK_HERE"
+            class="btn btn-primary full"
+            target="_blank"
+          >
+            Open the MSL Giving Form
+          </a>
+          <p class="small giving-note">
+            The secure form is hosted by St. Mary’s College of Maryland.
+          </p>
         </div>
       </div>
     </section>
@@ -210,7 +200,7 @@
         <div class="grid-2">
           <ol class="checklist small">
             <li>
-              Click the button below to open the official SMCM Giving Tuesday form.
+              Click the button on this page to open the official SMCM Giving Tuesday form.
             </li>
             <li>
               Make a gift of at least <strong>$10</strong> using your card or other accepted method.
@@ -220,7 +210,7 @@
             </li>
           </ol>
           <div class="card plain-card">
-            <h3>Make Your Gift</h3>
+            <h3>Need the Link Again?</h3>
             <p>
               The form is hosted and processed by St. Mary’s College of Maryland. You’ll receive your
               receipt directly from the College.
@@ -252,12 +242,11 @@
 
   <script src="script.js"></script>
 
-  <!-- Inline countdown script (adjust the end date/time below) -->
+  <!-- Inline countdown script (Dec 2, 2025 at 11:59 PM Eastern) -->
   <script>
     (function () {
-      // TODO: set this to the actual end time of your 36-hour ladder window.
-      // Example: Dec 3, 2025 8:00 PM Eastern
-      const endTime = new Date("2025-12-02T24:00:00-05:00");
+      // Giving event ends Dec 2, 2025 at 11:59 PM Eastern
+      const endTime = new Date("2025-12-02T23:59:00-05:00");
 
       const daysEl = document.getElementById("cd-days");
       const hoursEl = document.getElementById("cd-hours");
