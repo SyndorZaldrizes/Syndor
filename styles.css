@@ -819,3 +819,16 @@ textarea:focus {
   border: 1px solid rgba(0, 0, 0, 0.08);
   color: #111111;
 }
+.card,
+.plain-card,
+.feature-card {
+  transition: transform 0.18s ease-out, box-shadow 0.18s ease-out, border-color 0.18s ease-out;
+}
+
+.card:hover,
+.plain-card:hover,
+.feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  border-color: rgba(255, 215, 0, 0.6); /* subtle gold nod */
+}
