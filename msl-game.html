@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Parliamentary Pro Lightning Round – SMCM MSL</title>
+  <title>MSL Games – SMCM MSL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="logo-1.png" />
@@ -10,7 +10,7 @@
   <!-- Mini-game specific styles -->
   <style>
     .game-wrapper {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
@@ -145,6 +145,74 @@
       opacity: 0.9;
     }
 
+    .game-easter-egg {
+      margin-top: 0.9rem;
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      border: 1px dashed rgba(234, 179, 8, 0.7);
+      background: rgba(250, 204, 21, 0.04);
+      font-size: 0.9rem;
+    }
+
+    .game-easter-egg a {
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* Bill Concept Lab styles */
+    .bill-lab-form {
+      display: grid;
+      gap: 0.9rem;
+      margin-top: 0.75rem;
+    }
+
+    .bill-lab-form label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: block;
+    }
+
+    .bill-lab-form select,
+    .bill-lab-form input,
+    .bill-lab-form textarea {
+      width: 100%;
+      margin-top: 0.25rem;
+      padding: 0.5rem 0.6rem;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+
+    .bill-lab-output {
+      margin-top: 1.1rem;
+      padding: 1rem 1.1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: #f9fafb;
+      font-size: 0.92rem;
+      white-space: pre-line;
+    }
+
+    body:not(.dark) .bill-lab-output {
+      background: #f9fafb;
+      color: #0f172a;
+    }
+
+    .bill-lab-output h3 {
+      margin-top: 0;
+      margin-bottom: 0.3rem;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .bill-lab-meta {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      margin-bottom: 0.5rem;
+    }
+
     @media (max-width: 640px) {
       .game-card, .game-result-card {
         padding: 1.1rem 1.15rem;
@@ -174,6 +242,7 @@
         <a href="index.html#documents">Documents</a>
         <a href="resources.html">Resources</a>
         <a href="bulletin.html">Bulletin</a>
+        <a href="msl-game.html">Game</a>
         <a href="msl-giving.html">GIVING TUESDAY CHAMPIONSHIP</a>
         <a href="index.html#gallery">Gallery</a>
         <a href="index.html#contact">Join Us</a>
@@ -182,6 +251,7 @@
   </header>
 
   <main>
+    <!-- GAME 1: PARLIAMENTARY PRO QUIZ -->
     <section class="section">
       <div class="inner game-wrapper">
         <div class="section-header center">
@@ -189,7 +259,7 @@
           <h1>Parliamentary Pro Lightning Round</h1>
           <p class="section-body">
             Test your knowledge of motions, floor procedure, and session vibes in a quick-fire quiz.
-            Great for new delegates, fun trash-talk ammo for veterans.
+            Great for new delegates, petty bragging rights for veterans.
           </p>
         </div>
 
@@ -220,11 +290,106 @@
           <div class="game-result-score" id="resultScore"></div>
           <div class="game-result-sub" id="resultMessage"></div>
           <p class="game-tagline">
-            Want to put this to use? Grab a bill idea, hit a workshop, and try this again after a session.
+            Want to put this to use? Grab a bill idea, hit a workshop, and try this again after session.
           </p>
+
+          <!-- Secret reward: all correct -->
+          <div id="easterAllCorrect" class="game-easter-egg" style="display:none;">
+            <strong>Perfect run.</strong> You unlocked the secret link — clearly you read the rules.
+            <br />
+            👉 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Click for your “totally serious” reward</a>
+            <br />
+            <span style="font-size:0.8rem; opacity:0.8;">
+              (Feel free to swap this URL for any video or page you want.)
+            </span>
+          </div>
+
+          <!-- Secret reward: zero correct -->
+          <div id="easterAllWrong" class="game-easter-egg" style="display:none;">
+            <strong>0/?? is a talent in itself.</strong> You also unlocked a secret link. Time to study… or double down.
+            <br />
+            👉 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Consolation “training montage”</a>
+          </div>
+
           <button id="resultRestartBtn" class="btn btn-primary btn-ghost-small" style="margin-top:0.75rem;">
             Run the lightning round again
           </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME 2: BILL CONCEPT LAB -->
+    <section class="section bg-alt">
+      <div class="inner game-wrapper">
+        <div class="section-header center">
+          <p class="eyebrow">Turn Vibes Into Draft Ideas</p>
+          <h2>Bill Concept Lab</h2>
+          <p class="section-body">
+            Not sure what to write your first bill on? Answer a few quick questions and we’ll spit out
+            a rough bill concept you can refine with the Drafting Manual and your Exec Board.
+          </p>
+        </div>
+
+        <div class="card game-card" id="billLabCard">
+          <form id="billLabForm" class="bill-lab-form">
+            <div>
+              <label for="policyArea">What policy area are you drawn to?</label>
+              <select id="policyArea" required>
+                <option value="">Select a policy area…</option>
+                <option value="environmental protection">Environment & Chesapeake Bay</option>
+                <option value="education policy">Education & Higher Ed</option>
+                <option value="public transportation and infrastructure">Transportation & Infrastructure</option>
+                <option value="civil rights and liberties">Civil Rights & Civil Liberties</option>
+                <option value="public health and safety">Public Health & Safety</option>
+                <option value="housing and economic opportunity">Housing & Economic Opportunity</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="changeLevel">What scale of change are you thinking?</label>
+              <select id="changeLevel" required>
+                <option value="">Choose one…</option>
+                <option value="a targeted fix to an existing statute">Small, precise fix</option>
+                <option value="a major reform to current practice">Major reform</option>
+                <option value="a pilot program to test a new idea">Pilot program</option>
+                <option value="a resolution to send a strong message">Symbolic resolution</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="impactType">What kind of impact do you want?</label>
+              <select id="impactType" required>
+                <option value="">Pick your impact…</option>
+                <option value="direct services or aid to Maryland residents">Direct aid / services</option>
+                <option value="new standards or regulations for agencies or businesses">Regulation / standards</option>
+                <option value="financial incentives or grants for local actors">Incentives / grants</option>
+                <option value="statewide awareness, education, or data collection">Awareness / data</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="issueText">What specific Maryland issue or community are you thinking about? (optional but powerful)</label>
+              <textarea
+                id="issueText"
+                rows="3"
+                placeholder="Example: runoff into the St. Mary’s River, broadband access in rural counties, transportation for community college students…"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-ghost-small">
+              Generate Bill Concept
+            </button>
+          </form>
+
+          <div id="billLabOutput" class="bill-lab-output" style="display:none;">
+            <div class="bill-lab-meta" id="billLabMeta"></div>
+            <h3 id="billLabTitle"></h3>
+            <p id="billLabSummary"></p>
+            <p class="small" style="margin-top:0.7rem;">
+              Next steps: check the <a href="Legislative-Drafting-Manual.pdf" target="_blank">Drafting Manual (PDF)</a>,
+              talk to the Exec Board, and refine this into real bill sections.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -245,7 +410,7 @@
 
   <!-- Mini-game logic -->
   <script>
-    // Simple quiz bank – tweak/add questions as you like
+    // ---------- GAME 1: PARLIAMENTARY PRO QUIZ ----------
     const questions = [
       {
         question: "In a mock legislative session, what is the purpose of a motion for the Previous Question?",
@@ -272,10 +437,10 @@
       {
         question: "Which of the following is the BEST opening line for a sponsor speech in MSL?",
         choices: [
-          \"'So yeah, this bill is kind of self-explanatory.'\",
-          \"'Members of the chamber, this bill addresses a gap in Maryland's current policy on…'\",
-          \"'I'm not really sure why I'm sponsoring this, but here we go.'\",
-          \"'I promise this will be quick, so please don't vote it down.'\"
+          "'So yeah, this bill is kind of self-explanatory.'",
+          "'Members of the chamber, this bill addresses a gap in Maryland's current policy on…'",
+          "'I'm not really sure why I'm sponsoring this, but here we go.'",
+          "'I promise this will be quick, so please don't vote it down.'"
         ],
         correctIndex: 1,
         explanation: "Framing the issue clearly and in a Maryland context is the strongest way to start a sponsor speech."
@@ -353,6 +518,8 @@
     const resultCard = document.getElementById("gameResult");
     const resultScore = document.getElementById("resultScore");
     const resultMessage = document.getElementById("resultMessage");
+    const easterAllCorrect = document.getElementById("easterAllCorrect");
+    const easterAllWrong = document.getElementById("easterAllWrong");
 
     function renderQuestion() {
       const q = questions[currentIndex];
@@ -374,12 +541,12 @@
         const btn = document.createElement("button");
         btn.className = "game-choice-btn";
         btn.textContent = choiceText;
-        btn.addEventListener("click", () => handleChoice(idx, btn));
+        btn.addEventListener("click", () => handleChoice(idx));
         choicesEl.appendChild(btn);
       });
     }
 
-    function handleChoice(selectedIndex, buttonEl) {
+    function handleChoice(selectedIndex) {
       if (hasAnswered) return;
       hasAnswered = true;
 
@@ -422,6 +589,17 @@
       }
 
       resultMessage.textContent = msg;
+
+      // Handle secret rewards
+      easterAllCorrect.style.display = "none";
+      easterAllWrong.style.display = "none";
+
+      if (score === total) {
+        easterAllCorrect.style.display = "block";
+      } else if (score === 0) {
+        easterAllWrong.style.display = "block";
+      }
+
       resultCard.style.display = "block";
       restartBtn.style.display = "inline-flex";
     }
@@ -446,8 +624,68 @@
     restartBtn.addEventListener("click", restartGame);
     resultRestartBtn.addEventListener("click", restartGame);
 
-    // Initialize
+    // Initialize quiz
     renderQuestion();
+
+    // ---------- GAME 2: BILL CONCEPT LAB ----------
+    const billLabForm = document.getElementById("billLabForm");
+    const policyAreaEl = document.getElementById("policyArea");
+    const changeLevelEl = document.getElementById("changeLevel");
+    const impactTypeEl = document.getElementById("impactType");
+    const issueTextEl = document.getElementById("issueText");
+    const billLabOutput = document.getElementById("billLabOutput");
+    const billLabMeta = document.getElementById("billLabMeta");
+    const billLabTitle = document.getElementById("billLabTitle");
+    const billLabSummary = document.getElementById("billLabSummary");
+
+    billLabForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const area = policyAreaEl.value;
+      const change = changeLevelEl.value;
+      const impact = impactTypeEl.value;
+      const issueRaw = issueTextEl.value.trim();
+
+      if (!area || !change || !impact) {
+        return;
+      }
+
+      const issue = issueRaw || "a priority identified by SMCM delegates and Maryland students";
+
+      // Simple title generator
+      const title = `An Act Concerning ${capitalizeFirst(area)} and ${shortenIssue(issue)}`;
+
+      const meta = `Draft concept • ${capitalizeFirst(area)} • ${change}`;
+      const summary = (
+        "This bill would address " + issue +
+        " by pursuing " + change +
+        " in the area of " + area +
+        ", using a framework centered on " + impact +
+        ".\n\n" +
+        "Key pieces to develop:\n" +
+        "• A clear findings section explaining why this issue matters in Maryland.\n" +
+        "• Definitions for any technical terms or agencies mentioned.\n" +
+        "• Specific sections describing what the state, local governments, or partners must do.\n" +
+        "• An effective date and, if needed, a sunset or reporting requirement."
+      );
+
+      billLabMeta.textContent = meta;
+      billLabTitle.textContent = title;
+      billLabSummary.textContent = summary;
+      billLabOutput.style.display = "block";
+    });
+
+    function capitalizeFirst(text) {
+      if (!text) return "";
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    function shortenIssue(issue) {
+      // Just make sure the phrase after "and" isn't absurdly long
+      const max = 60;
+      if (issue.length <= max) return issue;
+      return issue.slice(0, max).trim() + "…";
+    }
   </script>
 </body>
 </html>
