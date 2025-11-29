@@ -213,8 +213,26 @@
       margin-bottom: 0.5rem;
     }
 
+    /* Arcade games */
+    #snakeCanvas,
+    #runnerCanvas {
+      width: 100%;
+      max-width: 400px;
+      display: block;
+      margin: 0.5rem auto 0.75rem;
+      background: #020617;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+    }
+
+    body:not(.dark) #snakeCanvas,
+    body:not(.dark) #runnerCanvas {
+      background: #f9fafb;
+    }
+
     @media (max-width: 640px) {
-      .game-card, .game-result-card {
+      .game-card,
+      .game-result-card {
         padding: 1.1rem 1.15rem;
       }
     }
@@ -300,7 +318,7 @@
             👉 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Click for your “totally serious” reward</a>
             <br />
             <span style="font-size:0.8rem; opacity:0.8;">
-              (Feel free to swap this URL for any video or page you want.)
+              (Swap this URL for whatever chaos you want.)
             </span>
           </div>
 
@@ -393,6 +411,60 @@
         </div>
       </div>
     </section>
+
+    <!-- GAME 3 & 4: ARCADE CORNER -->
+    <section class="section">
+      <div class="inner game-wrapper">
+        <div class="section-header center">
+          <p class="eyebrow">Brain Off, Reflexes On</p>
+          <h2>Arcade Corner</h2>
+          <p class="section-body">
+            Take a break with some low-stakes mini games. Scores here still count toward unlocking the secret page.
+          </p>
+        </div>
+
+        <!-- Snake -->
+        <div class="card game-card" id="snakeGameCard">
+          <h3>MSL Snake: Snack & Grow</h3>
+          <p class="small">
+            Use the arrow keys or WASD to move. Eat the squares, avoid your own tail and the walls.
+          </p>
+          <canvas id="snakeCanvas" width="320" height="320"></canvas>
+          <div class="game-meta">
+            <span id="snakeScoreLabel">Score: 0</span>
+            <span id="snakeBestLabel">Best: 0</span>
+          </div>
+          <p class="small" id="snakeStatus">Press any arrow key or WASD to start.</p>
+        </div>
+
+        <!-- Runner -->
+        <div class="card game-card" id="runnerGameCard" style="margin-top:1.5rem;">
+          <h3>Runner on the Floor</h3>
+          <p class="small">
+            Press space or ↑ to jump over obstacles. Survive as long as you can.
+          </p>
+          <canvas id="runnerCanvas" width="400" height="200"></canvas>
+          <div class="game-meta">
+            <span id="runnerScoreLabel">Score: 0</span>
+            <span id="runnerBestLabel">Best: 0</span>
+          </div>
+          <p class="small" id="runnerStatus">Press space or ↑ to start running.</p>
+        </div>
+
+        <!-- Secret unlock card -->
+        <div class="game-result-card" id="secretUnlockCard" style="display:none; margin-top:1.5rem;">
+          <div class="game-result-score">Secret unlocked.</div>
+          <div class="game-result-sub">
+            You’ve hit the quiz threshold, used the Bill Concept Lab, and scored in both arcade games.
+          </div>
+          <p class="game-tagline">
+            Hidden page access:
+            <a href="secret.html" id="secretLink">Open secret page</a><br />
+            (Change this URL or page name to whatever you want for your “real” reward.)
+          </p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -410,6 +482,70 @@
 
   <!-- Mini-game logic -->
   <script>
+    // ---------- ACHIEVEMENT TRACKING / SECRET PAGE ----------
+    const QUIZ_TARGET = 6;        // out of 8
+    const SNAKE_TARGET = 5;       // score
+    const RUNNER_TARGET = 150;    // score
+    const STORAGE_KEY = "mslArcadeProgress";
+
+    const secretUnlockCard = document.getElementById("secretUnlockCard");
+
+    const progress = loadProgress();
+
+    function loadProgress() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          return {
+            quizThreshold: false,
+            billLabUsed: false,
+            snakeBest: 0,
+            runnerBest: 0
+          };
+        }
+        const parsed = JSON.parse(raw);
+        return Object.assign(
+          {
+            quizThreshold: false,
+            billLabUsed: false,
+            snakeBest: 0,
+            runnerBest: 0
+          },
+          parsed
+        );
+      } catch (e) {
+        return {
+          quizThreshold: false,
+          billLabUsed: false,
+          snakeBest: 0,
+          runnerBest: 0
+        };
+      }
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    function checkSecretUnlock() {
+      if (
+        progress.quizThreshold &&
+        progress.billLabUsed &&
+        progress.snakeBest >= SNAKE_TARGET &&
+        progress.runnerBest >= RUNNER_TARGET
+      ) {
+        if (secretUnlockCard) {
+          secretUnlockCard.style.display = "block";
+        }
+      }
+    }
+
+    checkSecretUnlock();
+
     // ---------- GAME 1: PARLIAMENTARY PRO QUIZ ----------
     const questions = [
       {
@@ -525,23 +661,24 @@
       const q = questions[currentIndex];
       hasAnswered = false;
 
-      statusEl.textContent = `Question ${currentIndex + 1}`;
-      scoreEl.textContent = `Score: ${score}`;
-      progressEl.textContent = `${currentIndex + 1} of ${questions.length}`;
+      statusEl.textContent = "Question " + (currentIndex + 1);
+      scoreEl.textContent = "Score: " + score;
+      progressEl.textContent = (currentIndex + 1) + " of " + questions.length;
       questionEl.textContent = q.question;
       feedbackEl.textContent = "";
       nextBtn.textContent = currentIndex === questions.length - 1 ? "See results →" : "Next question →";
       nextBtn.disabled = true;
       restartBtn.style.display = "none";
 
-      // Clear old choices
       choicesEl.innerHTML = "";
 
-      q.choices.forEach((choiceText, idx) => {
+      q.choices.forEach(function (choiceText, idx) {
         const btn = document.createElement("button");
         btn.className = "game-choice-btn";
         btn.textContent = choiceText;
-        btn.addEventListener("click", () => handleChoice(idx));
+        btn.addEventListener("click", function () {
+          handleChoice(idx);
+        });
         choicesEl.appendChild(btn);
       });
     }
@@ -551,9 +688,9 @@
       hasAnswered = true;
 
       const q = questions[currentIndex];
-      const buttons = Array.from(document.querySelectorAll(".game-choice-btn"));
+      const buttons = Array.prototype.slice.call(document.querySelectorAll(".game-choice-btn"));
 
-      buttons.forEach((btn, idx) => {
+      buttons.forEach(function (btn, idx) {
         btn.disabled = true;
         if (idx === q.correctIndex) {
           btn.classList.add("correct");
@@ -570,14 +707,14 @@
         feedbackEl.innerHTML = "<strong>Not quite.</strong> " + q.explanation;
       }
 
-      scoreEl.textContent = `Score: ${score}`;
+      scoreEl.textContent = "Score: " + score;
       nextBtn.disabled = false;
     }
 
     function showResults() {
       const total = questions.length;
       const percent = Math.round((score / total) * 100);
-      resultScore.textContent = `You scored ${score} out of ${total} (${percent}%).`;
+      resultScore.textContent = "You scored " + score + " out of " + total + " (" + percent + "%).";
 
       let msg;
       if (percent >= 85) {
@@ -590,7 +727,6 @@
 
       resultMessage.textContent = msg;
 
-      // Handle secret rewards
       easterAllCorrect.style.display = "none";
       easterAllWrong.style.display = "none";
 
@@ -598,6 +734,12 @@
         easterAllCorrect.style.display = "block";
       } else if (score === 0) {
         easterAllWrong.style.display = "block";
+      }
+
+      if (score >= QUIZ_TARGET) {
+        progress.quizThreshold = true;
+        saveProgress();
+        checkSecretUnlock();
       }
 
       resultCard.style.display = "block";
@@ -620,11 +762,10 @@
       renderQuestion();
     }
 
-    nextBtn.addEventListener("click", nextQuestion);
-    restartBtn.addEventListener("click", restartGame);
-    resultRestartBtn.addEventListener("click", restartGame);
+    if (nextBtn) nextBtn.addEventListener("click", nextQuestion);
+    if (restartBtn) restartBtn.addEventListener("click", restartGame);
+    if (resultRestartBtn) resultRestartBtn.addEventListener("click", restartGame);
 
-    // Initialize quiz
     renderQuestion();
 
     // ---------- GAME 2: BILL CONCEPT LAB ----------
@@ -638,42 +779,44 @@
     const billLabTitle = document.getElementById("billLabTitle");
     const billLabSummary = document.getElementById("billLabSummary");
 
-    billLabForm.addEventListener("submit", function (e) {
-      e.preventDefault();
+    if (billLabForm) {
+      billLabForm.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-      const area = policyAreaEl.value;
-      const change = changeLevelEl.value;
-      const impact = impactTypeEl.value;
-      const issueRaw = issueTextEl.value.trim();
+        const area = policyAreaEl.value;
+        const change = changeLevelEl.value;
+        const impact = impactTypeEl.value;
+        const issueRaw = issueTextEl.value.trim();
 
-      if (!area || !change || !impact) {
-        return;
-      }
+        if (!area || !change || !impact) {
+          return;
+        }
 
-      const issue = issueRaw || "a priority identified by SMCM delegates and Maryland students";
+        const issue = issueRaw || "a priority identified by SMCM delegates and Maryland students";
+        const title = "An Act Concerning " + capitalizeFirst(area) + " and " + shortenIssue(issue);
+        const meta = "Draft concept • " + capitalizeFirst(area) + " • " + change;
+        const summary =
+          "This bill would address " + issue +
+          " by pursuing " + change +
+          " in the area of " + area +
+          ", using a framework centered on " + impact +
+          ".\n\n" +
+          "Key pieces to develop:\n" +
+          "• A clear findings section explaining why this issue matters in Maryland.\n" +
+          "• Definitions for any technical terms or agencies mentioned.\n" +
+          "• Specific sections describing what the state, local governments, or partners must do.\n" +
+          "• An effective date and, if needed, a sunset or reporting requirement.";
 
-      // Simple title generator
-      const title = `An Act Concerning ${capitalizeFirst(area)} and ${shortenIssue(issue)}`;
+        billLabMeta.textContent = meta;
+        billLabTitle.textContent = title;
+        billLabSummary.textContent = summary;
+        billLabOutput.style.display = "block";
 
-      const meta = `Draft concept • ${capitalizeFirst(area)} • ${change}`;
-      const summary = (
-        "This bill would address " + issue +
-        " by pursuing " + change +
-        " in the area of " + area +
-        ", using a framework centered on " + impact +
-        ".\n\n" +
-        "Key pieces to develop:\n" +
-        "• A clear findings section explaining why this issue matters in Maryland.\n" +
-        "• Definitions for any technical terms or agencies mentioned.\n" +
-        "• Specific sections describing what the state, local governments, or partners must do.\n" +
-        "• An effective date and, if needed, a sunset or reporting requirement."
-      );
-
-      billLabMeta.textContent = meta;
-      billLabTitle.textContent = title;
-      billLabSummary.textContent = summary;
-      billLabOutput.style.display = "block";
-    });
+        progress.billLabUsed = true;
+        saveProgress();
+        checkSecretUnlock();
+      });
+    }
 
     function capitalizeFirst(text) {
       if (!text) return "";
@@ -681,10 +824,332 @@
     }
 
     function shortenIssue(issue) {
-      // Just make sure the phrase after "and" isn't absurdly long
       const max = 60;
       if (issue.length <= max) return issue;
       return issue.slice(0, max).trim() + "…";
+    }
+
+    // ---------- GAME 3: SNAKE ----------
+    const snakeCanvas = document.getElementById("snakeCanvas");
+    const snakeScoreLabel = document.getElementById("snakeScoreLabel");
+    const snakeBestLabel = document.getElementById("snakeBestLabel");
+    const snakeStatus = document.getElementById("snakeStatus");
+
+    let snakeCtx = null;
+    let snake = [];
+    let snakeDir = { x: 1, y: 0 };
+    let snakeNextDir = { x: 1, y: 0 };
+    let snakeFood = { x: 10, y: 10 };
+    let snakeScore = 0;
+    let snakeBest = progress.snakeBest || 0;
+    let snakeInterval = null;
+    const snakeGridSize = 16;
+
+    if (snakeBestLabel) {
+      snakeBestLabel.textContent = "Best: " + snakeBest;
+    }
+
+    function snakeInit() {
+      if (!snakeCanvas) return;
+      snakeCtx = snakeCanvas.getContext("2d");
+      resetSnake();
+      document.addEventListener("keydown", snakeKeyHandler);
+    }
+
+    function resetSnake() {
+      const cols = Math.floor(snakeCanvas.width / snakeGridSize);
+      const rows = Math.floor(snakeCanvas.height / snakeGridSize);
+      snake = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2) }];
+      snakeDir = { x: 1, y: 0 };
+      snakeNextDir = { x: 1, y: 0 };
+      snakeScore = 0;
+      updateSnakeScore();
+      placeSnakeFood();
+      drawSnake();
+      if (snakeStatus) snakeStatus.textContent = "Press any arrow key or WASD to start.";
+      if (snakeInterval) {
+        clearInterval(snakeInterval);
+        snakeInterval = null;
+      }
+    }
+
+    function placeSnakeFood() {
+      const cols = Math.floor(snakeCanvas.width / snakeGridSize);
+      const rows = Math.floor(snakeCanvas.height / snakeGridSize);
+      snakeFood.x = Math.floor(Math.random() * cols);
+      snakeFood.y = Math.floor(Math.random() * rows);
+    }
+
+    function snakeKeyHandler(e) {
+      const key = e.key;
+      if (key === "ArrowUp" || key === "w" || key === "W") {
+        if (snakeDir.y === 1) return;
+        snakeNextDir = { x: 0, y: -1 };
+      } else if (key === "ArrowDown" || key === "s" || key === "S") {
+        if (snakeDir.y === -1) return;
+        snakeNextDir = { x: 0, y: 1 };
+      } else if (key === "ArrowLeft" || key === "a" || key === "A") {
+        if (snakeDir.x === 1) return;
+        snakeNextDir = { x: -1, y: 0 };
+      } else if (key === "ArrowRight" || key === "d" || key === "D") {
+        if (snakeDir.x === -1) return;
+        snakeNextDir = { x: 1, y: 0 };
+      } else {
+        return;
+      }
+
+      if (!snakeInterval) {
+        if (snakeStatus) snakeStatus.textContent = "Game on.";
+        snakeInterval = setInterval(snakeTick, 110);
+      }
+    }
+
+    function snakeTick() {
+      if (!snakeCtx) return;
+
+      snakeDir = snakeNextDir;
+      const cols = Math.floor(snakeCanvas.width / snakeGridSize);
+      const rows = Math.floor(snakeCanvas.height / snakeGridSize);
+
+      const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
+
+      // wall collision
+      if (head.x < 0 || head.y < 0 || head.x >= cols || head.y >= rows) {
+        snakeGameOver();
+        return;
+      }
+
+      // self collision
+      for (let i = 0; i < snake.length; i++) {
+        if (snake[i].x === head.x && snake[i].y === head.y) {
+          snakeGameOver();
+          return;
+        }
+      }
+
+      snake.unshift(head);
+
+      if (head.x === snakeFood.x && head.y === snakeFood.y) {
+        snakeScore++;
+        updateSnakeScore();
+        placeSnakeFood();
+      } else {
+        snake.pop();
+      }
+
+      drawSnake();
+    }
+
+    function drawSnake() {
+      snakeCtx.clearRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+
+      // food
+      snakeCtx.fillStyle = "#facc15";
+      snakeCtx.fillRect(
+        snakeFood.x * snakeGridSize,
+        snakeFood.y * snakeGridSize,
+        snakeGridSize,
+        snakeGridSize
+      );
+
+      // snake
+      snakeCtx.fillStyle = "#22c55e";
+      snake.forEach(function (seg, idx) {
+        snakeCtx.fillRect(
+          seg.x * snakeGridSize,
+          seg.y * snakeGridSize,
+          snakeGridSize - 1,
+          snakeGridSize - 1
+        );
+      });
+    }
+
+    function updateSnakeScore() {
+      if (snakeScoreLabel) snakeScoreLabel.textContent = "Score: " + snakeScore;
+      if (snakeScore > snakeBest) {
+        snakeBest = snakeScore;
+        if (snakeBestLabel) snakeBestLabel.textContent = "Best: " + snakeBest;
+        progress.snakeBest = snakeBest;
+        saveProgress();
+        checkSecretUnlock();
+      }
+    }
+
+    function snakeGameOver() {
+      if (snakeStatus) snakeStatus.textContent = "Game over. Press any arrow key or WASD to restart.";
+      clearInterval(snakeInterval);
+      snakeInterval = null;
+      setTimeout(resetSnake, 400);
+    }
+
+    if (snakeCanvas) {
+      snakeInit();
+    }
+
+    // ---------- GAME 4: RUNNER ----------
+    const runnerCanvas = document.getElementById("runnerCanvas");
+    const runnerScoreLabel = document.getElementById("runnerScoreLabel");
+    const runnerBestLabel = document.getElementById("runnerBestLabel");
+    const runnerStatus = document.getElementById("runnerStatus");
+
+    let runnerCtx = null;
+    let runnerAnimId = null;
+    let runnerRunning = false;
+    let runnerScore = 0;
+    let runnerBest = progress.runnerBest || 0;
+
+    let player = {
+      x: 40,
+      y: 0,
+      width: 26,
+      height: 38,
+      vy: 0,
+      onGround: false
+    };
+
+    const gravity = 0.8;
+    const jumpVelocity = -12;
+    const groundY = 160;
+    let obstacles = [];
+    let obstacleTimer = 0;
+
+    if (runnerBestLabel) {
+      runnerBestLabel.textContent = "Best: " + runnerBest;
+    }
+
+    function runnerInit() {
+      if (!runnerCanvas) return;
+      runnerCtx = runnerCanvas.getContext("2d");
+      resetRunner();
+      document.addEventListener("keydown", runnerKeyHandler);
+    }
+
+    function resetRunner() {
+      player.y = groundY - player.height;
+      player.vy = 0;
+      player.onGround = true;
+      runnerScore = 0;
+      obstacles = [];
+      obstacleTimer = 0;
+      updateRunnerScore();
+      if (runnerStatus) runnerStatus.textContent = "Press space or ↑ to start running.";
+      if (runnerAnimId) {
+        cancelAnimationFrame(runnerAnimId);
+        runnerAnimId = null;
+      }
+      drawRunnerFrame();
+    }
+
+    function runnerKeyHandler(e) {
+      if (e.key === " " || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!runnerRunning) {
+          runnerRunning = true;
+          if (runnerStatus) runnerStatus.textContent = "Stay alive. Jump the obstacles.";
+          runnerAnimId = requestAnimationFrame(runnerLoop);
+        }
+        if (player.onGround) {
+          player.vy = jumpVelocity;
+          player.onGround = false;
+        }
+      }
+    }
+
+    function runnerLoop() {
+      updateRunner();
+      drawRunnerFrame();
+      if (runnerRunning) {
+        runnerAnimId = requestAnimationFrame(runnerLoop);
+      }
+    }
+
+    function updateRunner() {
+      // physics
+      player.vy += gravity;
+      player.y += player.vy;
+      if (player.y >= groundY - player.height) {
+        player.y = groundY - player.height;
+        player.vy = 0;
+        player.onGround = true;
+      }
+
+      // obstacles
+      obstacleTimer++;
+      if (obstacleTimer > 70) {
+        obstacleTimer = 0;
+        obstacles.push({
+          x: runnerCanvas.width + 10,
+          y: groundY - 24,
+          width: 20,
+          height: 24,
+          speed: 4 + Math.random() * 1.5
+        });
+      }
+
+      obstacles.forEach(function (ob) {
+        ob.x -= ob.speed;
+      });
+      obstacles = obstacles.filter(function (ob) {
+        return ob.x + ob.width > 0;
+      });
+
+      // collision
+      for (let i = 0; i < obstacles.length; i++) {
+        const ob = obstacles[i];
+        if (
+          player.x < ob.x + ob.width &&
+          player.x + player.width > ob.x &&
+          player.y < ob.y + ob.height &&
+          player.y + player.height > ob.y
+        ) {
+          runnerGameOver();
+          return;
+        }
+      }
+
+      // score
+      runnerScore += 1;
+      updateRunnerScore();
+    }
+
+    function drawRunnerFrame() {
+      if (!runnerCtx) return;
+      runnerCtx.clearRect(0, 0, runnerCanvas.width, runnerCanvas.height);
+
+      // ground
+      runnerCtx.fillStyle = "#1e293b";
+      runnerCtx.fillRect(0, groundY, runnerCanvas.width, 4);
+
+      // player
+      runnerCtx.fillStyle = "#22c55e";
+      runnerCtx.fillRect(player.x, player.y, player.width, player.height);
+
+      // obstacles
+      runnerCtx.fillStyle = "#f97316";
+      obstacles.forEach(function (ob) {
+        runnerCtx.fillRect(ob.x, ob.y, ob.width, ob.height);
+      });
+    }
+
+    function updateRunnerScore() {
+      if (runnerScoreLabel) runnerScoreLabel.textContent = "Score: " + runnerScore;
+      if (runnerScore > runnerBest) {
+        runnerBest = runnerScore;
+        if (runnerBestLabel) runnerBestLabel.textContent = "Best: " + runnerBest;
+        progress.runnerBest = runnerBest;
+        saveProgress();
+        checkSecretUnlock();
+      }
+    }
+
+    function runnerGameOver() {
+      runnerRunning = false;
+      if (runnerStatus) runnerStatus.textContent = "You hit an obstacle. Press space or ↑ to try again.";
+      setTimeout(resetRunner, 500);
+    }
+
+    if (runnerCanvas) {
+      runnerInit();
     }
   </script>
 </body>
