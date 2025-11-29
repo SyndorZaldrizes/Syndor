@@ -835,3 +835,15 @@ textarea:focus {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
   border-color: rgba(255, 215, 0, 0.6); /* subtle gold nod */
 }
+.brand-mark-logo {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.brand-mark-logo img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
