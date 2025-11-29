@@ -9,39 +9,17 @@
 
   <!-- Mini-game specific styles -->
   <style>
-    /* Page background: field + sky + little house */
+    /* Page background: soft starfield / space vibes */
     .games-page {
       min-height: 100vh;
-      background:
-        linear-gradient(to top, #166534 0 40%, #60a5fa 40% 100%);
+      background-color: #020617;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(248, 250, 252, 0.25), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(248, 250, 252, 0.18), transparent 50%),
+        radial-gradient(circle at 60% 70%, rgba(59, 130, 246, 0.25), transparent 55%),
+        linear-gradient(to bottom, #0f172a 0, #020617 45%, #000 100%);
       background-attachment: fixed;
-      position: relative;
-      color: #0f172a;
-    }
-
-    .games-page::before {
-      content: "";
-      position: fixed;
-      right: 8%;
-      bottom: 40px;
-      width: 140px;
-      height: 80px;
-      background: #f97316;
-      border-radius: 12px;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
-      z-index: -1;
-    }
-
-    .games-page::after {
-      content: "";
-      position: fixed;
-      right: 8%;
-      bottom: 110px;
-      width: 150px;
-      height: 60px;
-      background: linear-gradient(135deg, #7c2d12, #b45309);
-      clip-path: polygon(50% 0, 0 100%, 100% 100%);
-      z-index: -1;
+      color: #e5e7eb;
     }
 
     .games-page main {
@@ -57,16 +35,20 @@
       margin-top: 1.5rem;
       padding: 1.5rem 1.75rem;
       border-radius: 16px;
-      background: rgba(12, 22, 38, 0.9);
-      color: #fff;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.6);
       backdrop-filter: blur(4px);
     }
 
-    body:not(.dark) .game-card {
-      background: rgba(255, 255, 255, 0.94);
-      color: #111827;
-      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
+    .game-card a {
+      color: #facc15;
+      text-decoration: underline;
+    }
+
+    .game-card a:hover {
+      text-decoration: none;
     }
 
     .game-meta {
@@ -74,7 +56,7 @@
       justify-content: space-between;
       align-items: baseline;
       font-size: 0.85rem;
-      opacity: 0.85;
+      opacity: 0.9;
       margin-bottom: 0.4rem;
       gap: 0.75rem;
       flex-wrap: wrap;
@@ -97,28 +79,24 @@
       text-align: left;
       padding: 0.65rem 0.75rem;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      background: rgba(15, 23, 42, 0.9);
       color: #e5e7eb;
       font-size: 0.95rem;
       cursor: pointer;
       transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
     }
 
-    body:not(.dark) .game-choice-btn {
-      background: #f9fafb;
-      color: #111827;
-    }
-
     .game-choice-btn:hover {
       transform: translateY(-1px);
       border-color: #facc15;
+      background: rgba(30, 64, 175, 0.9);
     }
 
     .game-choice-btn.correct {
       background: #16a34a;
       border-color: #bbf7d0;
-      color: #052e16;
+      color: #022c22;
     }
 
     .game-choice-btn.incorrect {
@@ -146,7 +124,7 @@
 
     .game-progress {
       font-size: 0.85rem;
-      opacity: 0.85;
+      opacity: 0.9;
     }
 
     .btn-ghost-small {
@@ -159,14 +137,10 @@
       margin-top: 1.5rem;
       padding: 1.5rem 1.75rem;
       border-radius: 16px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: rgba(15, 23, 42, 0.98);
       color: #f9fafb;
-    }
-
-    body:not(.dark) .game-result-card {
-      background: #ffffff;
-      color: #0f172a;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
     }
 
     .game-result-score {
@@ -182,15 +156,15 @@
 
     .game-tagline {
       font-size: 0.85rem;
-      opacity: 0.9;
+      opacity: 0.95;
     }
 
     .game-easter-egg {
       margin-top: 0.9rem;
       padding: 0.9rem 1rem;
       border-radius: 12px;
-      border: 1px dashed rgba(234, 179, 8, 0.7);
-      background: rgba(250, 204, 21, 0.06);
+      border: 1px dashed rgba(234, 179, 8, 0.9);
+      background: rgba(250, 204, 21, 0.08);
       font-size: 0.9rem;
     }
 
@@ -222,6 +196,12 @@
       border: 1px solid rgba(148, 163, 184, 0.9);
       font-size: 0.9rem;
       font-family: inherit;
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+    }
+
+    .bill-lab-form textarea::placeholder {
+      color: rgba(148, 163, 184, 0.8);
     }
 
     .bill-lab-output {
@@ -229,15 +209,10 @@
       padding: 1rem 1.1rem;
       border-radius: 14px;
       border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.96);
       color: #f9fafb;
       font-size: 0.92rem;
       white-space: pre-line;
-    }
-
-    body:not(.dark) .bill-lab-output {
-      background: #f9fafb;
-      color: #0f172a;
     }
 
     .bill-lab-output h3 {
@@ -262,21 +237,55 @@
       margin: 0.5rem auto 0.75rem;
       background: #020617;
       border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.8);
-    }
-
-    body:not(.dark) #snakeCanvas,
-    body:not(.dark) #runnerCanvas {
-      background: #f9fafb;
+      border: 1px solid rgba(148, 163, 184, 0.9);
     }
 
     .arcade-note {
       font-size: 0.85rem;
-      opacity: 0.9;
+      opacity: 0.95;
       margin-bottom: 0.5rem;
     }
 
     /* Pet card */
+    .pet-top {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+
+    .pet-visual img {
+      width: 96px;
+      height: 96px;
+      border-radius: 24px;
+      object-fit: cover;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+      border: 2px solid rgba(248, 250, 252, 0.85);
+      background: #020617;
+    }
+
+    .pet-select-block label {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .pet-select-block select {
+      margin-top: 0.25rem;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      font-size: 0.9rem;
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+    }
+
+    .pet-meta {
+      font-size: 0.8rem;
+      opacity: 0.95;
+      margin-bottom: 0.6rem;
+    }
+
     .pet-stats {
       display: grid;
       gap: 0.6rem;
@@ -304,22 +313,12 @@
       overflow: hidden;
     }
 
-    body:not(.dark) .pet-bar {
-      background: rgba(148, 163, 184, 0.3);
-    }
-
     .pet-bar-fill {
       height: 100%;
       width: 50%;
       border-radius: inherit;
       background: linear-gradient(90deg, #22c55e, #facc15);
       transition: width 0.2s ease-out;
-    }
-
-    .pet-meta {
-      font-size: 0.8rem;
-      opacity: 0.9;
-      margin-bottom: 0.6rem;
     }
 
     .pet-controls {
@@ -329,9 +328,9 @@
       margin-top: 0.4rem;
     }
 
-    .pet-emoji {
-      font-size: 2.2rem;
-      margin-right: 0.4rem;
+    .pet-status {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
     }
 
     /* Hangman */
@@ -547,8 +546,76 @@
       </div>
     </section>
 
-    <!-- GAME 3 & 4: ARCADE CORNER -->
+    <!-- PET: FIELD COMPANION (moved up and made obvious) -->
     <section class="section">
+      <div class="inner game-wrapper">
+        <div class="section-header center">
+          <p class="eyebrow">Take a Breather Between Motions</p>
+          <h2>Field Companion</h2>
+          <p class="section-body">
+            Pick a small friend to hang out on the games page while you study, play, and procrastinate responsibly.
+          </p>
+        </div>
+
+        <div class="card game-card" id="petCard">
+          <div class="pet-top">
+            <div class="pet-visual">
+              <!-- Upload your own open-source GIFs/images with these file names -->
+              <img id="petImage" src="pet-dog.gif" alt="Field companion" />
+            </div>
+            <div class="pet-select-block">
+              <label for="petType">Choose your companion</label>
+              <select id="petType">
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="koala">Koala</option>
+              </select>
+              <p class="pet-meta" id="petNameLabel" style="margin-top:0.4rem;"></p>
+              <p class="pet-meta">
+                Upload three files to your repository (same folder as <code>index.html</code>):
+                <code>pet-dog.gif</code>, <code>pet-cat.gif</code>, <code>pet-koala.gif</code>.  
+                They’ll auto-swap when you change the companion.
+              </p>
+            </div>
+          </div>
+
+          <p class="pet-meta" id="petMeta">
+            Your companion's stats slowly change over time. Check in, feed them, play with them, and let them rest.
+          </p>
+
+          <div class="pet-stats">
+            <div class="pet-stat-row">
+              <span class="pet-stat-label">Hunger</span>
+              <div class="pet-bar">
+                <div class="pet-bar-fill" id="petHungerBar"></div>
+              </div>
+            </div>
+            <div class="pet-stat-row">
+              <span class="pet-stat-label">Happiness</span>
+              <div class="pet-bar">
+                <div class="pet-bar-fill" id="petHappyBar"></div>
+              </div>
+            </div>
+            <div class="pet-stat-row">
+              <span class="pet-stat-label">Energy</span>
+              <div class="pet-bar">
+                <div class="pet-bar-fill" id="petEnergyBar"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pet-controls">
+            <button type="button" class="btn btn-primary btn-ghost-small" id="petFeedBtn">Feed</button>
+            <button type="button" class="btn btn-ghost btn-ghost-small" id="petPlayBtn">Play</button>
+            <button type="button" class="btn btn-ghost btn-ghost-small" id="petRestBtn">Rest</button>
+          </div>
+          <p class="small pet-status" id="petStatus"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCADE CORNER -->
+    <section class="section bg-alt">
       <div class="inner game-wrapper">
         <div class="section-header center">
           <p class="eyebrow">Brain Off, Reflexes On</p>
@@ -603,66 +670,6 @@
       </div>
     </section>
 
-    <!-- PET: FIELD COMPANION -->
-    <section class="section bg-alt">
-      <div class="inner game-wrapper">
-        <div class="section-header center">
-          <p class="eyebrow">Take a Breather Between Motions</p>
-          <h2>Field Companion</h2>
-          <p class="section-body">
-            Pick a small friend to hang out on the games page while you study, play, and procrastinate responsibly.
-          </p>
-        </div>
-
-        <div class="card game-card" id="petCard">
-          <div class="game-meta">
-            <span>Little buddy status</span>
-            <span id="petNameLabel"></span>
-          </div>
-          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
-            <span class="pet-emoji" id="petEmoji">🐶</span>
-            <div style="flex:1;">
-              <label for="petType" style="font-size:0.9rem; font-weight:500;">Choose your companion</label>
-              <select id="petType" style="margin-top:0.25rem; padding:0.4rem 0.6rem; border-radius:999px; border:1px solid rgba(148,163,184,0.9); font-size:0.9rem;">
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-                <option value="koala">Koala</option>
-              </select>
-            </div>
-          </div>
-          <p class="pet-meta" id="petMeta">
-            Your companion's stats slowly change over time. Check in, feed them, play with them, and let them rest.
-          </p>
-          <div class="pet-stats">
-            <div class="pet-stat-row">
-              <span class="pet-stat-label">Hunger</span>
-              <div class="pet-bar">
-                <div class="pet-bar-fill" id="petHungerBar"></div>
-              </div>
-            </div>
-            <div class="pet-stat-row">
-              <span class="pet-stat-label">Happiness</span>
-              <div class="pet-bar">
-                <div class="pet-bar-fill" id="petHappyBar"></div>
-              </div>
-            </div>
-            <div class="pet-stat-row">
-              <span class="pet-stat-label">Energy</span>
-              <div class="pet-bar">
-                <div class="pet-bar-fill" id="petEnergyBar"></div>
-              </div>
-            </div>
-          </div>
-          <div class="pet-controls">
-            <button type="button" class="btn btn-primary btn-ghost-small" id="petFeedBtn">Feed</button>
-            <button type="button" class="btn btn-ghost btn-ghost-small" id="petPlayBtn">Play</button>
-            <button type="button" class="btn btn-ghost btn-ghost-small" id="petRestBtn">Rest</button>
-          </div>
-          <p class="small" id="petStatus" style="margin-top:0.6rem;"></p>
-        </div>
-      </div>
-    </section>
-
     <!-- HANGMAN -->
     <section class="section">
       <div class="inner game-wrapper">
@@ -708,9 +715,9 @@
   <!-- Mini-game logic -->
   <script>
     // ---------- ACHIEVEMENT TRACKING / SECRET PAGE ----------
-    const QUIZ_TARGET = 6;        // out of 8
-    const SNAKE_TARGET = 5;       // score
-    const RUNNER_TARGET = 150;    // score
+    const QUIZ_TARGET = 6;
+    const SNAKE_TARGET = 5;
+    const RUNNER_TARGET = 150;
     const STORAGE_KEY = "mslArcadeProgress";
 
     const secretUnlockCard = document.getElementById("secretUnlockCard");
@@ -1217,7 +1224,6 @@
       // Rival eats food?
       const rivalHead = rival[0];
       if (rivalHead.x === snakeFood.x && rivalHead.y === snakeFood.y) {
-        // Rival stole the snack – you don't lose, but you miss that point.
         if (snakeStatus) snakeStatus.textContent = "Rival stole the snack! New target…";
         placeSnakeFood();
       }
@@ -1248,12 +1254,10 @@
 
       const newHead = { x: head.x + dx, y: head.y + dy };
 
-      // If would go out of bounds, just stay in place or flip direction
       if (newHead.x < 0 || newHead.y < 0 || newHead.x >= cols || newHead.y >= rows) {
         return;
       }
 
-      // Rival avoids overlapping its own head where possible (we keep it simple)
       rival.unshift(newHead);
       while (rival.length > rivalLength) {
         rival.pop();
@@ -1285,7 +1289,7 @@
 
       // rival snake
       snakeCtx.fillStyle = "#ef4444";
-      rival.forEach(function (seg, idx) {
+      rival.forEach(function (seg) {
         snakeCtx.fillRect(
           seg.x * snakeGridSize,
           seg.y * snakeGridSize,
@@ -1317,7 +1321,7 @@
       snakeInit();
     }
 
-    // ---------- GAME 4: RUNNER WITH TRIANGLES, GAPS & FLOWER BOOST ----------
+    // ---------- GAME 4: RUNNER ----------
     const runnerCanvas = document.getElementById("runnerCanvas");
     const runnerScoreLabel = document.getElementById("runnerScoreLabel");
     const runnerBestLabel = document.getElementById("runnerBestLabel");
@@ -1358,7 +1362,7 @@
     let flowers = [];
     let boostActive = false;
     let boostTimer = 0;
-    const BOOST_DURATION_FRAMES = 60 * 5; // approx 5 seconds at 60fps
+    const BOOST_DURATION_FRAMES = 60 * 5;
 
     if (runnerBestLabel) {
       runnerBestLabel.textContent = "Best: " + runnerBest;
@@ -1421,7 +1425,6 @@
     }
 
     function updateRunner() {
-      // physics
       player.vy += gravity;
       player.y += player.vy;
 
@@ -1437,7 +1440,6 @@
         return;
       }
 
-      // spawn obstacles
       obstacleTimer++;
       if (obstacleTimer > 60) {
         obstacleTimer = 0;
@@ -1450,7 +1452,6 @@
         });
       }
 
-      // spawn gaps
       gapTimer++;
       if (gapTimer > 160) {
         gapTimer = 0;
@@ -1462,7 +1463,6 @@
         });
       }
 
-      // spawn boost blocks
       blockTimer++;
       if (blockTimer > 220) {
         blockTimer = 0;
@@ -1475,7 +1475,6 @@
         });
       }
 
-      // move everything
       obstacles.forEach(function (ob) {
         ob.x -= boostActive ? 6 : 4;
       });
@@ -1486,7 +1485,6 @@
         b.x -= 4;
       });
       flowers.forEach(function (f) {
-        // flower chases player slowly
         const targetX = playerCenterX + 20;
         if (f.x > targetX) f.x -= 3;
         else if (f.x < targetX) f.x += 2;
@@ -1496,13 +1494,11 @@
         else if (f.y < targetY - 20) f.y += 1.2;
       });
 
-      // cleanup off-screen
       obstacles = obstacles.filter(ob => ob.x + ob.width > -20);
       gaps = gaps.filter(g => g.x + g.width > -20);
       blocks = blocks.filter(b => b.x + b.width > -20);
       flowers = flowers.filter(f => f.x > -40 && f.x < runnerCanvas.width + 40);
 
-      // collision with obstacles (rectangular hitbox even if drawn as triangle)
       for (let i = 0; i < obstacles.length; i++) {
         const ob = obstacles[i];
         if (
@@ -1516,7 +1512,6 @@
         }
       }
 
-      // collision with blocks -> spawn flower boost
       for (let i = blocks.length - 1; i >= 0; i--) {
         const b = blocks[i];
         if (
@@ -1525,7 +1520,6 @@
           player.y < b.y + b.height &&
           player.y + player.height > b.y
         ) {
-          // spawn flower
           flowers.push({
             x: b.x,
             y: b.y - 10
@@ -1535,7 +1529,6 @@
         }
       }
 
-      // collision with flower -> activate boost
       for (let i = flowers.length - 1; i >= 0; i--) {
         const f = flowers[i];
         if (
@@ -1549,7 +1542,6 @@
         }
       }
 
-      // manage boost timer
       if (boostActive) {
         boostTimer++;
         if (boostTimer > BOOST_DURATION_FRAMES) {
@@ -1561,7 +1553,6 @@
         }
       }
 
-      // score
       runnerScore += 1;
       updateRunnerScore();
     }
@@ -1588,22 +1579,18 @@
       if (!runnerCtx) return;
       runnerCtx.clearRect(0, 0, runnerCanvas.width, runnerCanvas.height);
 
-      // ground segments (no ground in gaps)
       runnerCtx.fillStyle = "#1e293b";
       const groundHeight = 4;
-      // draw full base line
       runnerCtx.fillRect(0, groundY, runnerCanvas.width, groundHeight);
-      // cut gaps by overdrawing with background
-      runnerCtx.fillStyle = "#0f172a";
+
+      runnerCtx.fillStyle = "#020617";
       gaps.forEach(function (g) {
         runnerCtx.fillRect(g.x, groundY, g.width, groundHeight + 20);
       });
 
-      // player
       runnerCtx.fillStyle = boostActive ? "#22c55e" : "#16a34a";
       runnerCtx.fillRect(player.x, player.y, player.width, player.height);
 
-      // obstacles as triangles
       runnerCtx.fillStyle = "#f97316";
       obstacles.forEach(function (ob) {
         runnerCtx.beginPath();
@@ -1614,13 +1601,11 @@
         runnerCtx.fill();
       });
 
-      // blocks (power blocks)
       runnerCtx.fillStyle = "#facc15";
       blocks.forEach(function (b) {
         runnerCtx.fillRect(b.x, b.y, b.width, b.height);
       });
 
-      // flowers
       runnerCtx.fillStyle = "#ea580c";
       flowers.forEach(function (f) {
         runnerCtx.beginPath();
@@ -1652,8 +1637,8 @@
 
     // ---------- PET: FIELD COMPANION ----------
     const petTypeEl = document.getElementById("petType");
-    const petEmojiEl = document.getElementById("petEmoji");
-    const petNameLabel = document.getElementById("petNameLabel");
+    const petImageEl = document.getElementById("petImage");
+    const petNameLabelEl = document.getElementById("petNameLabel");
     const petHungerBar = document.getElementById("petHungerBar");
     const petHappyBar = document.getElementById("petHappyBar");
     const petEnergyBar = document.getElementById("petEnergyBar");
@@ -1706,11 +1691,11 @@
       }
     }
 
-    function getPetEmoji(type) {
-      if (type === "dog") return "🐶";
-      if (type === "cat") return "🐱";
-      if (type === "koala") return "🐨";
-      return "🐾";
+    function getPetAsset(type) {
+      if (type === "dog") return "pet-dog.gif";
+      if (type === "cat") return "pet-cat.gif";
+      if (type === "koala") return "pet-koala.gif";
+      return "pet-dog.gif";
     }
 
     function getPetName(type) {
@@ -1725,8 +1710,12 @@
     }
 
     function updatePetUI(message) {
-      petEmojiEl.textContent = getPetEmoji(petState.type);
-      petNameLabel.textContent = getPetName(petState.type);
+      if (petImageEl) {
+        petImageEl.src = getPetAsset(petState.type);
+      }
+      if (petNameLabelEl) {
+        petNameLabelEl.textContent = getPetName(petState.type);
+      }
 
       petHungerBar.style.width = petState.hunger + "%";
       petHappyBar.style.width = petState.happiness + "%";
@@ -1776,7 +1765,6 @@
       });
     }
 
-    // passive decay every 30 seconds
     setInterval(function () {
       petState.hunger = clampStat(petState.hunger - 2);
       petState.happiness = clampStat(petState.happiness - 1);
@@ -1849,7 +1837,6 @@
       if (!/^[a-zA-Z]$/.test(key)) return;
 
       const letter = key.toLowerCase();
-
       const allRevealed = hangmanRevealed.every(v => v);
       if (allRevealed || hangmanWrongCount >= HANGMAN_MAX) {
         return;
@@ -1886,7 +1873,6 @@
     }
 
     document.addEventListener("keydown", function (e) {
-      // Hangman letters; ignore if modifier keys
       if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key)) {
         handleHangmanKey(e.key);
       }
