@@ -9,6 +9,45 @@
 
   <!-- Mini-game specific styles -->
   <style>
+    /* Page background: field + sky + little house */
+    .games-page {
+      min-height: 100vh;
+      background:
+        linear-gradient(to top, #166534 0 40%, #60a5fa 40% 100%);
+      background-attachment: fixed;
+      position: relative;
+      color: #0f172a;
+    }
+
+    .games-page::before {
+      content: "";
+      position: fixed;
+      right: 8%;
+      bottom: 40px;
+      width: 140px;
+      height: 80px;
+      background: #f97316;
+      border-radius: 12px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+      z-index: -1;
+    }
+
+    .games-page::after {
+      content: "";
+      position: fixed;
+      right: 8%;
+      bottom: 110px;
+      width: 150px;
+      height: 60px;
+      background: linear-gradient(135deg, #7c2d12, #b45309);
+      clip-path: polygon(50% 0, 0 100%, 100% 100%);
+      z-index: -1;
+    }
+
+    .games-page main {
+      padding-bottom: 4rem;
+    }
+
     .game-wrapper {
       max-width: 900px;
       margin: 0 auto;
@@ -20,13 +59,14 @@
       border-radius: 16px;
       background: rgba(12, 22, 38, 0.9);
       color: #fff;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
     }
 
     body:not(.dark) .game-card {
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.94);
       color: #111827;
-      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.14);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
     }
 
     .game-meta {
@@ -150,7 +190,7 @@
       padding: 0.9rem 1rem;
       border-radius: 12px;
       border: 1px dashed rgba(234, 179, 8, 0.7);
-      background: rgba(250, 204, 21, 0.04);
+      background: rgba(250, 204, 21, 0.06);
       font-size: 0.9rem;
     }
 
@@ -230,6 +270,101 @@
       background: #f9fafb;
     }
 
+    .arcade-note {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Pet card */
+    .pet-stats {
+      display: grid;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .pet-stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .pet-stat-label {
+      font-size: 0.85rem;
+      min-width: 70px;
+    }
+
+    .pet-bar {
+      flex: 1;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.4);
+      overflow: hidden;
+    }
+
+    body:not(.dark) .pet-bar {
+      background: rgba(148, 163, 184, 0.3);
+    }
+
+    .pet-bar-fill {
+      height: 100%;
+      width: 50%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #facc15);
+      transition: width 0.2s ease-out;
+    }
+
+    .pet-meta {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      margin-bottom: 0.6rem;
+    }
+
+    .pet-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+    }
+
+    .pet-emoji {
+      font-size: 2.2rem;
+      margin-right: 0.4rem;
+    }
+
+    /* Hangman */
+    .hangman-word {
+      font-size: 1.5rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    .hangman-info {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hangman-wrong {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hangman-controls {
+      margin-top: 0.8rem;
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hangman-status {
+      font-size: 0.9rem;
+      margin-top: 0.4rem;
+    }
+
     @media (max-width: 640px) {
       .game-card,
       .game-result-card {
@@ -238,7 +373,7 @@
     }
   </style>
 </head>
-<body>
+<body class="games-page">
   <header class="site-header">
     <div class="inner">
       <a href="index.html#hero" class="brand">
@@ -425,23 +560,25 @@
 
         <!-- Snake -->
         <div class="card game-card" id="snakeGameCard">
-          <h3>MSL Snake: Snack & Grow</h3>
-          <p class="small">
-            Use the arrow keys or WASD to move. Eat the squares, avoid your own tail and the walls.
+          <h3>MSL Snake: Rival on the Floor</h3>
+          <p class="arcade-note">
+            Use <strong>W A S D</strong> to move. Eat the snacks, avoid the walls, your own tail, and the
+            <strong>rival snake</strong> that chases the same food.
           </p>
           <canvas id="snakeCanvas" width="320" height="320"></canvas>
           <div class="game-meta">
             <span id="snakeScoreLabel">Score: 0</span>
             <span id="snakeBestLabel">Best: 0</span>
           </div>
-          <p class="small" id="snakeStatus">Press any arrow key or WASD to start.</p>
+          <p class="small" id="snakeStatus">Press W, A, S, or D to start.</p>
         </div>
 
         <!-- Runner -->
         <div class="card game-card" id="runnerGameCard" style="margin-top:1.5rem;">
           <h3>Runner on the Floor</h3>
-          <p class="small">
-            Press space or ↑ to jump over obstacles. Survive as long as you can.
+          <p class="arcade-note">
+            Press space or ↑ to jump over triangular obstacles and gaps. Hit special blocks to spawn a
+            flower that chases you — touch it for a temporary speed & jump boost.
           </p>
           <canvas id="runnerCanvas" width="400" height="200"></canvas>
           <div class="game-meta">
@@ -462,6 +599,94 @@
             <a href="secret.html" id="secretLink">Open secret page</a><br />
             (Change this URL or page name to whatever you want for your “real” reward.)
           </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PET: FIELD COMPANION -->
+    <section class="section bg-alt">
+      <div class="inner game-wrapper">
+        <div class="section-header center">
+          <p class="eyebrow">Take a Breather Between Motions</p>
+          <h2>Field Companion</h2>
+          <p class="section-body">
+            Pick a small friend to hang out on the games page while you study, play, and procrastinate responsibly.
+          </p>
+        </div>
+
+        <div class="card game-card" id="petCard">
+          <div class="game-meta">
+            <span>Little buddy status</span>
+            <span id="petNameLabel"></span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="pet-emoji" id="petEmoji">🐶</span>
+            <div style="flex:1;">
+              <label for="petType" style="font-size:0.9rem; font-weight:500;">Choose your companion</label>
+              <select id="petType" style="margin-top:0.25rem; padding:0.4rem 0.6rem; border-radius:999px; border:1px solid rgba(148,163,184,0.9); font-size:0.9rem;">
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="koala">Koala</option>
+              </select>
+            </div>
+          </div>
+          <p class="pet-meta" id="petMeta">
+            Your companion's stats slowly change over time. Check in, feed them, play with them, and let them rest.
+          </p>
+          <div class="pet-stats">
+            <div class="pet-stat-row">
+              <span class="pet-stat-label">Hunger</span>
+              <div class="pet-bar">
+                <div class="pet-bar-fill" id="petHungerBar"></div>
+              </div>
+            </div>
+            <div class="pet-stat-row">
+              <span class="pet-stat-label">Happiness</span>
+              <div class="pet-bar">
+                <div class="pet-bar-fill" id="petHappyBar"></div>
+              </div>
+            </div>
+            <div class="pet-stat-row">
+              <span class="pet-stat-label">Energy</span>
+              <div class="pet-bar">
+                <div class="pet-bar-fill" id="petEnergyBar"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pet-controls">
+            <button type="button" class="btn btn-primary btn-ghost-small" id="petFeedBtn">Feed</button>
+            <button type="button" class="btn btn-ghost btn-ghost-small" id="petPlayBtn">Play</button>
+            <button type="button" class="btn btn-ghost btn-ghost-small" id="petRestBtn">Rest</button>
+          </div>
+          <p class="small" id="petStatus" style="margin-top:0.6rem;"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HANGMAN -->
+    <section class="section">
+      <div class="inner game-wrapper">
+        <div class="section-header center">
+          <p class="eyebrow">Words from the Chamber</p>
+          <h2>MSL Hangman</h2>
+          <p class="section-body">
+            Guess terms pulled from this site and our legislative world. Use your keyboard to guess letters.
+          </p>
+        </div>
+
+        <div class="card game-card" id="hangmanCard">
+          <div class="hangman-word" id="hangmanWord">_ _ _ _ _</div>
+          <div class="hangman-info">
+            Wrong guesses: <span id="hangmanWrongCount">0</span> / <span id="hangmanMax">7</span>
+          </div>
+          <div class="hangman-wrong">
+            Letters used: <span id="hangmanWrongLetters">—</span>
+          </div>
+          <div class="hangman-controls">
+            <button type="button" class="btn btn-primary btn-ghost-small" id="hangmanNewBtn">New word</button>
+            <span class="small">Type A–Z on your keyboard to guess.</span>
+          </div>
+          <div class="hangman-status small" id="hangmanStatus"></div>
         </div>
       </div>
     </section>
@@ -829,7 +1054,7 @@
       return issue.slice(0, max).trim() + "…";
     }
 
-    // ---------- GAME 3: SNAKE ----------
+    // ---------- GAME 3: SNAKE WITH RIVAL (WASD ONLY) ----------
     const snakeCanvas = document.getElementById("snakeCanvas");
     const snakeScoreLabel = document.getElementById("snakeScoreLabel");
     const snakeBestLabel = document.getElementById("snakeBestLabel");
@@ -845,6 +1070,10 @@
     let snakeInterval = null;
     const snakeGridSize = 16;
 
+    // Rival snake
+    let rival = [];
+    let rivalLength = 4;
+
     if (snakeBestLabel) {
       snakeBestLabel.textContent = "Best: " + snakeBest;
     }
@@ -859,14 +1088,25 @@
     function resetSnake() {
       const cols = Math.floor(snakeCanvas.width / snakeGridSize);
       const rows = Math.floor(snakeCanvas.height / snakeGridSize);
+
       snake = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2) }];
       snakeDir = { x: 1, y: 0 };
       snakeNextDir = { x: 1, y: 0 };
       snakeScore = 0;
       updateSnakeScore();
+
+      // Rival starting position
+      rival = [];
+      const rx = Math.floor(cols / 4);
+      const ry = Math.floor(rows / 4);
+      for (let i = 0; i < rivalLength; i++) {
+        rival.push({ x: rx - i, y: ry });
+      }
+
       placeSnakeFood();
       drawSnake();
-      if (snakeStatus) snakeStatus.textContent = "Press any arrow key or WASD to start.";
+
+      if (snakeStatus) snakeStatus.textContent = "Press W, A, S, or D to start.";
       if (snakeInterval) {
         clearInterval(snakeInterval);
         snakeInterval = null;
@@ -876,22 +1116,45 @@
     function placeSnakeFood() {
       const cols = Math.floor(snakeCanvas.width / snakeGridSize);
       const rows = Math.floor(snakeCanvas.height / snakeGridSize);
-      snakeFood.x = Math.floor(Math.random() * cols);
-      snakeFood.y = Math.floor(Math.random() * rows);
+      let fx, fy, safe = false;
+
+      while (!safe) {
+        fx = Math.floor(Math.random() * cols);
+        fy = Math.floor(Math.random() * rows);
+        safe = true;
+
+        // Avoid placing directly on snake or rival segments
+        for (let i = 0; i < snake.length; i++) {
+          if (snake[i].x === fx && snake[i].y === fy) {
+            safe = false;
+            break;
+          }
+        }
+        for (let j = 0; j < rival.length && safe; j++) {
+          if (rival[j].x === fx && rival[j].y === fy) {
+            safe = false;
+            break;
+          }
+        }
+      }
+
+      snakeFood.x = fx;
+      snakeFood.y = fy;
     }
 
     function snakeKeyHandler(e) {
       const key = e.key;
-      if (key === "ArrowUp" || key === "w" || key === "W") {
+      // WASD ONLY
+      if (key === "w" || key === "W") {
         if (snakeDir.y === 1) return;
         snakeNextDir = { x: 0, y: -1 };
-      } else if (key === "ArrowDown" || key === "s" || key === "S") {
+      } else if (key === "s" || key === "S") {
         if (snakeDir.y === -1) return;
         snakeNextDir = { x: 0, y: 1 };
-      } else if (key === "ArrowLeft" || key === "a" || key === "A") {
+      } else if (key === "a" || key === "A") {
         if (snakeDir.x === 1) return;
         snakeNextDir = { x: -1, y: 0 };
-      } else if (key === "ArrowRight" || key === "d" || key === "D") {
+      } else if (key === "d" || key === "D") {
         if (snakeDir.x === -1) return;
         snakeNextDir = { x: 1, y: 0 };
       } else {
@@ -899,7 +1162,7 @@
       }
 
       if (!snakeInterval) {
-        if (snakeStatus) snakeStatus.textContent = "Game on.";
+        if (snakeStatus) snakeStatus.textContent = "Game on. Rival is hungry too.";
         snakeInterval = setInterval(snakeTick, 110);
       }
     }
@@ -911,33 +1174,90 @@
       const cols = Math.floor(snakeCanvas.width / snakeGridSize);
       const rows = Math.floor(snakeCanvas.height / snakeGridSize);
 
+      // Player head
       const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
 
       // wall collision
       if (head.x < 0 || head.y < 0 || head.x >= cols || head.y >= rows) {
-        snakeGameOver();
+        snakeGameOver("You hit the wall.");
         return;
       }
 
       // self collision
       for (let i = 0; i < snake.length; i++) {
         if (snake[i].x === head.x && snake[i].y === head.y) {
-          snakeGameOver();
+          snakeGameOver("You ran into yourself.");
+          return;
+        }
+      }
+
+      // collision with rival body
+      for (let i = 0; i < rival.length; i++) {
+        if (rival[i].x === head.x && rival[i].y === head.y) {
+          snakeGameOver("You collided with the rival snake.");
           return;
         }
       }
 
       snake.unshift(head);
 
+      let ateFood = false;
       if (head.x === snakeFood.x && head.y === snakeFood.y) {
         snakeScore++;
         updateSnakeScore();
+        ateFood = true;
         placeSnakeFood();
       } else {
         snake.pop();
       }
 
+      // Rival movement towards food
+      moveRival(cols, rows);
+
+      // Rival eats food?
+      const rivalHead = rival[0];
+      if (rivalHead.x === snakeFood.x && rivalHead.y === snakeFood.y) {
+        // Rival stole the snack – you don't lose, but you miss that point.
+        if (snakeStatus) snakeStatus.textContent = "Rival stole the snack! New target…";
+        placeSnakeFood();
+      }
+
+      // Rival collides with player head/body after moving
+      for (let i = 0; i < rival.length; i++) {
+        if (rival[i].x === head.x && rival[i].y === head.y) {
+          snakeGameOver("You collided with the rival snake.");
+          return;
+        }
+      }
+
       drawSnake();
+    }
+
+    function moveRival(cols, rows) {
+      if (!rival.length) return;
+
+      const head = { x: rival[0].x, y: rival[0].y };
+
+      // Simple chase AI: prioritize horizontal, then vertical
+      let dx = 0;
+      let dy = 0;
+      if (head.x < snakeFood.x) dx = 1;
+      else if (head.x > snakeFood.x) dx = -1;
+      else if (head.y < snakeFood.y) dy = 1;
+      else if (head.y > snakeFood.y) dy = -1;
+
+      const newHead = { x: head.x + dx, y: head.y + dy };
+
+      // If would go out of bounds, just stay in place or flip direction
+      if (newHead.x < 0 || newHead.y < 0 || newHead.x >= cols || newHead.y >= rows) {
+        return;
+      }
+
+      // Rival avoids overlapping its own head where possible (we keep it simple)
+      rival.unshift(newHead);
+      while (rival.length > rivalLength) {
+        rival.pop();
+      }
     }
 
     function drawSnake() {
@@ -952,9 +1272,20 @@
         snakeGridSize
       );
 
-      // snake
+      // player snake
       snakeCtx.fillStyle = "#22c55e";
-      snake.forEach(function (seg, idx) {
+      snake.forEach(function (seg) {
+        snakeCtx.fillRect(
+          seg.x * snakeGridSize,
+          seg.y * snakeGridSize,
+          snakeGridSize - 1,
+          snakeGridSize - 1
+        );
+      });
+
+      // rival snake
+      snakeCtx.fillStyle = "#ef4444";
+      rival.forEach(function (seg, idx) {
         snakeCtx.fillRect(
           seg.x * snakeGridSize,
           seg.y * snakeGridSize,
@@ -975,18 +1306,18 @@
       }
     }
 
-    function snakeGameOver() {
-      if (snakeStatus) snakeStatus.textContent = "Game over. Press any arrow key or WASD to restart.";
+    function snakeGameOver(msg) {
+      if (snakeStatus) snakeStatus.textContent = "Game over. " + msg + " Press W, A, S, or D to restart.";
       clearInterval(snakeInterval);
       snakeInterval = null;
-      setTimeout(resetSnake, 400);
+      setTimeout(resetSnake, 500);
     }
 
     if (snakeCanvas) {
       snakeInit();
     }
 
-    // ---------- GAME 4: RUNNER ----------
+    // ---------- GAME 4: RUNNER WITH TRIANGLES, GAPS & FLOWER BOOST ----------
     const runnerCanvas = document.getElementById("runnerCanvas");
     const runnerScoreLabel = document.getElementById("runnerScoreLabel");
     const runnerBestLabel = document.getElementById("runnerBestLabel");
@@ -1007,11 +1338,27 @@
       onGround: false
     };
 
-    const gravity = 0.8;
-    const jumpVelocity = -12;
-    const groundY = 160;
+    const baseGravity = 0.8;
+    const baseJumpVelocity = -12;
+    const baseGroundY = 160;
+
+    let gravity = baseGravity;
+    let jumpVelocity = baseJumpVelocity;
+    let groundY = baseGroundY;
+
     let obstacles = [];
     let obstacleTimer = 0;
+
+    let gaps = [];
+    let gapTimer = 0;
+
+    let blocks = [];
+    let blockTimer = 0;
+
+    let flowers = [];
+    let boostActive = false;
+    let boostTimer = 0;
+    const BOOST_DURATION_FRAMES = 60 * 5; // approx 5 seconds at 60fps
 
     if (runnerBestLabel) {
       runnerBestLabel.textContent = "Best: " + runnerBest;
@@ -1031,6 +1378,16 @@
       runnerScore = 0;
       obstacles = [];
       obstacleTimer = 0;
+      gaps = [];
+      gapTimer = 0;
+      blocks = [];
+      blockTimer = 0;
+      flowers = [];
+      boostActive = false;
+      boostTimer = 0;
+      gravity = baseGravity;
+      jumpVelocity = baseJumpVelocity;
+
       updateRunnerScore();
       if (runnerStatus) runnerStatus.textContent = "Press space or ↑ to start running.";
       if (runnerAnimId) {
@@ -1045,7 +1402,7 @@
         e.preventDefault();
         if (!runnerRunning) {
           runnerRunning = true;
-          if (runnerStatus) runnerStatus.textContent = "Stay alive. Jump the obstacles.";
+          if (runnerStatus) runnerStatus.textContent = "Stay alive. Jump gaps and obstacles, grab boosts.";
           runnerAnimId = requestAnimationFrame(runnerLoop);
         }
         if (player.onGround) {
@@ -1067,33 +1424,85 @@
       // physics
       player.vy += gravity;
       player.y += player.vy;
-      if (player.y >= groundY - player.height) {
+
+      const playerCenterX = player.x + player.width / 2;
+      const overSolidGround = !isOverGap(playerCenterX);
+
+      if (overSolidGround && player.y >= groundY - player.height) {
         player.y = groundY - player.height;
         player.vy = 0;
         player.onGround = true;
+      } else if (!overSolidGround && player.y > runnerCanvas.height) {
+        runnerGameOver("You fell into a gap.");
+        return;
       }
 
-      // obstacles
+      // spawn obstacles
       obstacleTimer++;
-      if (obstacleTimer > 70) {
+      if (obstacleTimer > 60) {
         obstacleTimer = 0;
         obstacles.push({
           x: runnerCanvas.width + 10,
           y: groundY - 24,
           width: 20,
           height: 24,
-          speed: 4 + Math.random() * 1.5
+          speed: boostActive ? 6 : 4
         });
       }
 
+      // spawn gaps
+      gapTimer++;
+      if (gapTimer > 160) {
+        gapTimer = 0;
+        const gapWidth = 60 + Math.random() * 40;
+        gaps.push({
+          x: runnerCanvas.width + 50,
+          width: gapWidth,
+          speed: 4
+        });
+      }
+
+      // spawn boost blocks
+      blockTimer++;
+      if (blockTimer > 220) {
+        blockTimer = 0;
+        blocks.push({
+          x: runnerCanvas.width + 30,
+          y: groundY - 40,
+          width: 26,
+          height: 26,
+          speed: 4
+        });
+      }
+
+      // move everything
       obstacles.forEach(function (ob) {
-        ob.x -= ob.speed;
+        ob.x -= boostActive ? 6 : 4;
       });
-      obstacles = obstacles.filter(function (ob) {
-        return ob.x + ob.width > 0;
+      gaps.forEach(function (g) {
+        g.x -= 4;
+      });
+      blocks.forEach(function (b) {
+        b.x -= 4;
+      });
+      flowers.forEach(function (f) {
+        // flower chases player slowly
+        const targetX = playerCenterX + 20;
+        if (f.x > targetX) f.x -= 3;
+        else if (f.x < targetX) f.x += 2;
+
+        const targetY = player.y;
+        if (f.y > targetY - 20) f.y -= 1.5;
+        else if (f.y < targetY - 20) f.y += 1.2;
       });
 
-      // collision
+      // cleanup off-screen
+      obstacles = obstacles.filter(ob => ob.x + ob.width > -20);
+      gaps = gaps.filter(g => g.x + g.width > -20);
+      blocks = blocks.filter(b => b.x + b.width > -20);
+      flowers = flowers.filter(f => f.x > -40 && f.x < runnerCanvas.width + 40);
+
+      // collision with obstacles (rectangular hitbox even if drawn as triangle)
       for (let i = 0; i < obstacles.length; i++) {
         const ob = obstacles[i];
         if (
@@ -1102,8 +1511,53 @@
           player.y < ob.y + ob.height &&
           player.y + player.height > ob.y
         ) {
-          runnerGameOver();
+          runnerGameOver("You hit an obstacle.");
           return;
+        }
+      }
+
+      // collision with blocks -> spawn flower boost
+      for (let i = blocks.length - 1; i >= 0; i--) {
+        const b = blocks[i];
+        if (
+          player.x < b.x + b.width &&
+          player.x + player.width > b.x &&
+          player.y < b.y + b.height &&
+          player.y + player.height > b.y
+        ) {
+          // spawn flower
+          flowers.push({
+            x: b.x,
+            y: b.y - 10
+          });
+          blocks.splice(i, 1);
+          if (runnerStatus) runnerStatus.textContent = "Flower spawned – let it catch you for a boost.";
+        }
+      }
+
+      // collision with flower -> activate boost
+      for (let i = flowers.length - 1; i >= 0; i--) {
+        const f = flowers[i];
+        if (
+          player.x < f.x + 16 &&
+          player.x + player.width > f.x - 16 &&
+          player.y < f.y + 16 &&
+          player.y + player.height > f.y - 16
+        ) {
+          flowers.splice(i, 1);
+          activateBoost();
+        }
+      }
+
+      // manage boost timer
+      if (boostActive) {
+        boostTimer++;
+        if (boostTimer > BOOST_DURATION_FRAMES) {
+          boostActive = false;
+          boostTimer = 0;
+          gravity = baseGravity;
+          jumpVelocity = baseJumpVelocity;
+          if (runnerStatus) runnerStatus.textContent = "Boost ended. Back to normal speed.";
         }
       }
 
@@ -1112,22 +1566,66 @@
       updateRunnerScore();
     }
 
+    function isOverGap(x) {
+      for (let i = 0; i < gaps.length; i++) {
+        const g = gaps[i];
+        if (x >= g.x && x <= g.x + g.width) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function activateBoost() {
+      boostActive = true;
+      boostTimer = 0;
+      gravity = baseGravity * 0.8;
+      jumpVelocity = baseJumpVelocity * 1.15;
+      if (runnerStatus) runnerStatus.textContent = "Boost active! Higher jumps & faster pace.";
+    }
+
     function drawRunnerFrame() {
       if (!runnerCtx) return;
       runnerCtx.clearRect(0, 0, runnerCanvas.width, runnerCanvas.height);
 
-      // ground
+      // ground segments (no ground in gaps)
       runnerCtx.fillStyle = "#1e293b";
-      runnerCtx.fillRect(0, groundY, runnerCanvas.width, 4);
+      const groundHeight = 4;
+      // draw full base line
+      runnerCtx.fillRect(0, groundY, runnerCanvas.width, groundHeight);
+      // cut gaps by overdrawing with background
+      runnerCtx.fillStyle = "#0f172a";
+      gaps.forEach(function (g) {
+        runnerCtx.fillRect(g.x, groundY, g.width, groundHeight + 20);
+      });
 
       // player
-      runnerCtx.fillStyle = "#22c55e";
+      runnerCtx.fillStyle = boostActive ? "#22c55e" : "#16a34a";
       runnerCtx.fillRect(player.x, player.y, player.width, player.height);
 
-      // obstacles
+      // obstacles as triangles
       runnerCtx.fillStyle = "#f97316";
       obstacles.forEach(function (ob) {
-        runnerCtx.fillRect(ob.x, ob.y, ob.width, ob.height);
+        runnerCtx.beginPath();
+        runnerCtx.moveTo(ob.x, ob.y + ob.height);
+        runnerCtx.lineTo(ob.x + ob.width / 2, ob.y);
+        runnerCtx.lineTo(ob.x + ob.width, ob.y + ob.height);
+        runnerCtx.closePath();
+        runnerCtx.fill();
+      });
+
+      // blocks (power blocks)
+      runnerCtx.fillStyle = "#facc15";
+      blocks.forEach(function (b) {
+        runnerCtx.fillRect(b.x, b.y, b.width, b.height);
+      });
+
+      // flowers
+      runnerCtx.fillStyle = "#ea580c";
+      flowers.forEach(function (f) {
+        runnerCtx.beginPath();
+        runnerCtx.arc(f.x, f.y, 10, 0, Math.PI * 2);
+        runnerCtx.fill();
       });
     }
 
@@ -1142,15 +1640,259 @@
       }
     }
 
-    function runnerGameOver() {
+    function runnerGameOver(reason) {
       runnerRunning = false;
-      if (runnerStatus) runnerStatus.textContent = "You hit an obstacle. Press space or ↑ to try again.";
-      setTimeout(resetRunner, 500);
+      if (runnerStatus) runnerStatus.textContent = "You lost: " + reason + " Press space or ↑ to try again.";
+      setTimeout(resetRunner, 600);
     }
 
     if (runnerCanvas) {
       runnerInit();
     }
+
+    // ---------- PET: FIELD COMPANION ----------
+    const petTypeEl = document.getElementById("petType");
+    const petEmojiEl = document.getElementById("petEmoji");
+    const petNameLabel = document.getElementById("petNameLabel");
+    const petHungerBar = document.getElementById("petHungerBar");
+    const petHappyBar = document.getElementById("petHappyBar");
+    const petEnergyBar = document.getElementById("petEnergyBar");
+    const petStatusEl = document.getElementById("petStatus");
+
+    const petFeedBtn = document.getElementById("petFeedBtn");
+    const petPlayBtn = document.getElementById("petPlayBtn");
+    const petRestBtn = document.getElementById("petRestBtn");
+
+    const PET_KEY = "mslPetState";
+
+    let petState = loadPetState();
+
+    function loadPetState() {
+      try {
+        const raw = localStorage.getItem(PET_KEY);
+        if (!raw) {
+          return {
+            type: "dog",
+            hunger: 70,
+            happiness: 70,
+            energy: 70
+          };
+        }
+        const parsed = JSON.parse(raw);
+        return Object.assign(
+          {
+            type: "dog",
+            hunger: 70,
+            happiness: 70,
+            energy: 70
+          },
+          parsed
+        );
+      } catch (e) {
+        return {
+          type: "dog",
+          hunger: 70,
+          happiness: 70,
+          energy: 70
+        };
+      }
+    }
+
+    function savePetState() {
+      try {
+        localStorage.setItem(PET_KEY, JSON.stringify(petState));
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    function getPetEmoji(type) {
+      if (type === "dog") return "🐶";
+      if (type === "cat") return "🐱";
+      if (type === "koala") return "🐨";
+      return "🐾";
+    }
+
+    function getPetName(type) {
+      if (type === "dog") return "Delegate Dog";
+      if (type === "cat") return "Committee Cat";
+      if (type === "koala") return "Caucus Koala";
+      return "Field Friend";
+    }
+
+    function clampStat(v) {
+      return Math.max(0, Math.min(100, v));
+    }
+
+    function updatePetUI(message) {
+      petEmojiEl.textContent = getPetEmoji(petState.type);
+      petNameLabel.textContent = getPetName(petState.type);
+
+      petHungerBar.style.width = petState.hunger + "%";
+      petHappyBar.style.width = petState.happiness + "%";
+      petEnergyBar.style.width = petState.energy + "%";
+
+      if (message) {
+        petStatusEl.textContent = message;
+      } else {
+        petStatusEl.textContent = "";
+      }
+    }
+
+    if (petTypeEl) {
+      petTypeEl.value = petState.type;
+      petTypeEl.addEventListener("change", function () {
+        petState.type = petTypeEl.value;
+        savePetState();
+        updatePetUI("You switched companions. Be kind to whoever’s on duty.");
+      });
+    }
+
+    if (petFeedBtn) {
+      petFeedBtn.addEventListener("click", function () {
+        petState.hunger = clampStat(petState.hunger + 18);
+        petState.energy = clampStat(petState.energy + 6);
+        savePetState();
+        updatePetUI("Snack delivered. Hunger improved.");
+      });
+    }
+
+    if (petPlayBtn) {
+      petPlayBtn.addEventListener("click", function () {
+        petState.happiness = clampStat(petState.happiness + 15);
+        petState.energy = clampStat(petState.energy - 8);
+        petState.hunger = clampStat(petState.hunger - 5);
+        savePetState();
+        updatePetUI("Play session logged. Happiness up.");
+      });
+    }
+
+    if (petRestBtn) {
+      petRestBtn.addEventListener("click", function () {
+        petState.energy = clampStat(petState.energy + 20);
+        petState.hunger = clampStat(petState.hunger - 5);
+        savePetState();
+        updatePetUI("Short break taken. Energy restored.");
+      });
+    }
+
+    // passive decay every 30 seconds
+    setInterval(function () {
+      petState.hunger = clampStat(petState.hunger - 2);
+      petState.happiness = clampStat(petState.happiness - 1);
+      petState.energy = clampStat(petState.energy - 1);
+      savePetState();
+      updatePetUI();
+    }, 30000);
+
+    updatePetUI();
+
+    // ---------- HANGMAN ----------
+    const hangmanWords = [
+      "maryland",
+      "delegate",
+      "caucus",
+      "bill",
+      "session",
+      "constitution",
+      "bylaws",
+      "democracy",
+      "amendment",
+      "parliamentary"
+    ];
+
+    const hangmanWordEl = document.getElementById("hangmanWord");
+    const hangmanWrongCountEl = document.getElementById("hangmanWrongCount");
+    const hangmanMaxEl = document.getElementById("hangmanMax");
+    const hangmanWrongLettersEl = document.getElementById("hangmanWrongLetters");
+    const hangmanStatusEl = document.getElementById("hangmanStatus");
+    const hangmanNewBtn = document.getElementById("hangmanNewBtn");
+
+    let hangmanCurrentWord = "";
+    let hangmanRevealed = [];
+    let hangmanWrongLetters = [];
+    let hangmanWrongCount = 0;
+    const HANGMAN_MAX = 7;
+    hangmanMaxEl.textContent = HANGMAN_MAX;
+
+    function startHangman() {
+      const idx = Math.floor(Math.random() * hangmanWords.length);
+      hangmanCurrentWord = hangmanWords[idx];
+      hangmanRevealed = Array(hangmanCurrentWord.length).fill(false);
+      hangmanWrongLetters = [];
+      hangmanWrongCount = 0;
+      updateHangmanUI("New word loaded. Type letters to guess.");
+    }
+
+    function updateHangmanUI(message) {
+      let displayWord = "";
+      for (let i = 0; i < hangmanCurrentWord.length; i++) {
+        displayWord += (hangmanRevealed[i] ? hangmanCurrentWord[i].toUpperCase() : "_") + " ";
+      }
+      hangmanWordEl.textContent = displayWord.trim();
+      hangmanWrongCountEl.textContent = hangmanWrongCount;
+      hangmanWrongLettersEl.textContent = hangmanWrongLetters.length
+        ? hangmanWrongLetters.map(l => l.toUpperCase()).join(", ")
+        : "—";
+      hangmanStatusEl.textContent = message || "";
+
+      const allRevealed = hangmanRevealed.every(v => v);
+      if (allRevealed) {
+        hangmanStatusEl.textContent = "You got it. Very legislative of you.";
+      } else if (hangmanWrongCount >= HANGMAN_MAX) {
+        hangmanStatusEl.textContent = "Out of guesses. The word was: " + hangmanCurrentWord.toUpperCase();
+      }
+    }
+
+    function handleHangmanKey(key) {
+      if (!hangmanCurrentWord) return;
+      if (!/^[a-zA-Z]$/.test(key)) return;
+
+      const letter = key.toLowerCase();
+
+      const allRevealed = hangmanRevealed.every(v => v);
+      if (allRevealed || hangmanWrongCount >= HANGMAN_MAX) {
+        return;
+      }
+
+      if (hangmanRevealed.some((rev, idx) => rev && hangmanCurrentWord[idx] === letter)) {
+        return;
+      }
+      if (hangmanWrongLetters.includes(letter)) {
+        return;
+      }
+
+      let found = false;
+      for (let i = 0; i < hangmanCurrentWord.length; i++) {
+        if (hangmanCurrentWord[i] === letter) {
+          hangmanRevealed[i] = true;
+          found = true;
+        }
+      }
+
+      if (!found) {
+        hangmanWrongLetters.push(letter);
+        hangmanWrongCount++;
+        updateHangmanUI("Not in the word.");
+      } else {
+        updateHangmanUI("Nice pull.");
+      }
+    }
+
+    if (hangmanNewBtn) {
+      hangmanNewBtn.addEventListener("click", function () {
+        startHangman();
+      });
+    }
+
+    document.addEventListener("keydown", function (e) {
+      // Hangman letters; ignore if modifier keys
+      if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key)) {
+        handleHangmanKey(e.key);
+      }
+    });
+
+    startHangman();
   </script>
 </body>
 </html>
