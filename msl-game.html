@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parliamentary Pro Lightning Round – SMCM MSL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="logo-1.png" />
+
+  <!-- Mini-game specific styles -->
+  <style>
+    .game-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .game-card {
+      margin-top: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      border-radius: 16px;
+      background: rgba(12, 22, 38, 0.9);
+      color: #fff;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    body:not(.dark) .game-card {
+      background: #ffffff;
+      color: #111827;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.14);
+    }
+
+    .game-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.85rem;
+      opacity: 0.85;
+      margin-bottom: 0.4rem;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .game-question {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 0.4rem 0 1rem;
+    }
+
+    .game-choices {
+      display: grid;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .game-choice-btn {
+      width: 100%;
+      text-align: left;
+      padding: 0.65rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.82);
+      color: #e5e7eb;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
+    }
+
+    body:not(.dark) .game-choice-btn {
+      background: #f9fafb;
+      color: #111827;
+    }
+
+    .game-choice-btn:hover {
+      transform: translateY(-1px);
+      border-color: #facc15;
+    }
+
+    .game-choice-btn.correct {
+      background: #16a34a;
+      border-color: #bbf7d0;
+      color: #052e16;
+    }
+
+    .game-choice-btn.incorrect {
+      background: #b91c1c;
+      border-color: #fecaca;
+      color: #fef2f2;
+    }
+
+    .game-feedback {
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .game-feedback strong {
+      font-weight: 700;
+    }
+
+    .game-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .game-progress {
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+
+    .btn-ghost-small {
+      border-radius: 999px;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.85rem;
+    }
+
+    .game-result-card {
+      margin-top: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+      color: #f9fafb;
+    }
+
+    body:not(.dark) .game-result-card {
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .game-result-score {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .game-result-sub {
+      font-size: 0.9rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .game-tagline {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 640px) {
+      .game-card, .game-result-card {
+        padding: 1.1rem 1.15rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a href="index.html#hero" class="brand">
+        <span class="brand-mark brand-mark-logo">
+          <img src="logo-1.png" alt="SMCM MSL logo" />
+        </span>
+        <span class="brand-text">
+          <span class="brand-title">Maryland Student Legislature</span>
+          <span class="brand-sub">St. Mary’s College of Maryland Chapter</span>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      <nav class="nav" id="mainNav">
+        <a href="index.html#hero">Home</a>
+        <a href="index.html#maryland">About MSL</a>
+        <a href="index.html#chapter">Our Chapter</a>
+        <a href="executive-board.html">Exec Board</a>
+        <a href="index.html#journey">Your Journey</a>
+        <a href="index.html#documents">Documents</a>
+        <a href="resources.html">Resources</a>
+        <a href="bulletin.html">Bulletin</a>
+        <a href="msl-giving.html">GIVING TUESDAY CHAMPIONSHIP</a>
+        <a href="index.html#gallery">Gallery</a>
+        <a href="index.html#contact">Join Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="inner game-wrapper">
+        <div class="section-header center">
+          <p class="eyebrow">Practice the Rules Before You Hit the Floor</p>
+          <h1>Parliamentary Pro Lightning Round</h1>
+          <p class="section-body">
+            Test your knowledge of motions, floor procedure, and session vibes in a quick-fire quiz.
+            Great for new delegates, fun trash-talk ammo for veterans.
+          </p>
+        </div>
+
+        <div class="card game-card" id="gameCard">
+          <div class="game-meta">
+            <span id="gameStatus">Question 1</span>
+            <span id="gameScore">Score: 0</span>
+          </div>
+          <div class="game-question" id="gameQuestion">
+            Loading question…
+          </div>
+          <div class="game-choices" id="gameChoices">
+            <!-- buttons injected by JS -->
+          </div>
+          <div class="game-feedback" id="gameFeedback"></div>
+          <div class="game-controls">
+            <button id="nextBtn" class="btn btn-primary btn-ghost-small" disabled>
+              Next question →
+            </button>
+            <button id="restartBtn" class="btn btn-ghost btn-ghost-small" style="display:none;">
+              Play again
+            </button>
+            <span class="game-progress" id="gameProgress"></span>
+          </div>
+        </div>
+
+        <div id="gameResult" class="game-result-card" style="display:none;">
+          <div class="game-result-score" id="resultScore"></div>
+          <div class="game-result-sub" id="resultMessage"></div>
+          <p class="game-tagline">
+            Want to put this to use? Grab a bill idea, hit a workshop, and try this again after a session.
+          </p>
+          <button id="resultRestartBtn" class="btn btn-primary btn-ghost-small" style="margin-top:0.75rem;">
+            Run the lightning round again
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner footer-inner">
+      <p>© <span id="year"></span> Maryland Student Legislature – St. Mary’s College of Maryland Chapter.</p>
+      <p class="small">
+        Student-led, nonpartisan, and rooted in Maryland’s civic life. This site is maintained by the SMCM
+        Maryland Student Legislature Chapter and is not an official publication of St. Mary’s College of
+        Maryland or the State of Maryland.
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <!-- Mini-game logic -->
+  <script>
+    // Simple quiz bank – tweak/add questions as you like
+    const questions = [
+      {
+        question: "In a mock legislative session, what is the purpose of a motion for the Previous Question?",
+        choices: [
+          "To postpone a bill indefinitely",
+          "To end debate and move immediately to a vote",
+          "To send the bill back to committee",
+          "To challenge the ruling of the chair"
+        ],
+        correctIndex: 1,
+        explanation: "A motion for the Previous Question is used to close debate and move straight to a vote on the pending question."
+      },
+      {
+        question: "You think the chair has misapplied a rule. What should you rise to?",
+        choices: [
+          "A point of personal privilege",
+          "A point of order",
+          "A motion to amend",
+          "A motion to reconsider"
+        ],
+        correctIndex: 1,
+        explanation: "A Point of Order is used to question whether proper procedure is being followed."
+      },
+      {
+        question: "Which of the following is the BEST opening line for a sponsor speech in MSL?",
+        choices: [
+          \"'So yeah, this bill is kind of self-explanatory.'\",
+          \"'Members of the chamber, this bill addresses a gap in Maryland's current policy on…'\",
+          \"'I'm not really sure why I'm sponsoring this, but here we go.'\",
+          \"'I promise this will be quick, so please don't vote it down.'\"
+        ],
+        correctIndex: 1,
+        explanation: "Framing the issue clearly and in a Maryland context is the strongest way to start a sponsor speech."
+      },
+      {
+        question: "A delegate wants to change a single line in your bill without rewriting the whole thing. What should they use?",
+        choices: [
+          "Motion to table",
+          "Friendly amendment or amendment from the floor",
+          "Motion to adjourn",
+          "Appeal from the decision of the chair"
+        ],
+        correctIndex: 1,
+        explanation: "Amendments—friendly or from the floor—are how members change specific language in a bill."
+      },
+      {
+        question: "In committee, which of these behaviors is the MOST helpful to moving business forward?",
+        choices: [
+          "Repeating the same point in every speech to 'drive it home'",
+          "Listening for new information and building on or responding to it",
+          "Talking over the chair to speed up debate",
+          "Only speaking when you completely agree with the sponsor"
+        ],
+        correctIndex: 1,
+        explanation: "Good committee work builds on what others say, responds to concerns, and helps refine the bill."
+      },
+      {
+        question: "You need a short break to caucus or grab water without ending the meeting. What motion is most appropriate?",
+        choices: [
+          "Motion to recess",
+          "Motion to adjourn",
+          "Motion to lay on the table",
+          "Motion to postpone indefinitely"
+        ],
+        correctIndex: 0,
+        explanation: "A motion to recess allows a temporary break while keeping the meeting technically in session."
+      },
+      {
+        question: "Why does MSL care so much about using Maryland-specific issues and law?",
+        choices: [
+          "Because national politics are banned in the chamber",
+          "Because it’s fun to memorize obscure state code sections for no reason",
+          "Because MSL simulates the Maryland General Assembly, where state-level issues and statutes matter most",
+          "Because it makes writing bills easier than doing campus policy"
+        ],
+        correctIndex: 2,
+        explanation: "MSL is modeled on the Maryland General Assembly, so centering state issues keeps the simulation realistic and useful."
+      },
+      {
+        question: "You’re not recognized but you shout from the gallery anyway. What’s the likely outcome?",
+        choices: [
+          "You automatically win Debater of the Year",
+          "The chair ignores you or gavels you out of order",
+          "Your comment is added to the bill text",
+          "The chamber pauses to debate your interruption"
+        ],
+        correctIndex: 1,
+        explanation: "Speaking without recognition is out of order; good floor work relies on being recognized by the chair."
+      }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let hasAnswered = false;
+
+    const questionEl = document.getElementById("gameQuestion");
+    const choicesEl = document.getElementById("gameChoices");
+    const feedbackEl = document.getElementById("gameFeedback");
+    const statusEl = document.getElementById("gameStatus");
+    const scoreEl = document.getElementById("gameScore");
+    const progressEl = document.getElementById("gameProgress");
+    const nextBtn = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const resultRestartBtn = document.getElementById("resultRestartBtn");
+    const resultCard = document.getElementById("gameResult");
+    const resultScore = document.getElementById("resultScore");
+    const resultMessage = document.getElementById("resultMessage");
+
+    function renderQuestion() {
+      const q = questions[currentIndex];
+      hasAnswered = false;
+
+      statusEl.textContent = `Question ${currentIndex + 1}`;
+      scoreEl.textContent = `Score: ${score}`;
+      progressEl.textContent = `${currentIndex + 1} of ${questions.length}`;
+      questionEl.textContent = q.question;
+      feedbackEl.textContent = "";
+      nextBtn.textContent = currentIndex === questions.length - 1 ? "See results →" : "Next question →";
+      nextBtn.disabled = true;
+      restartBtn.style.display = "none";
+
+      // Clear old choices
+      choicesEl.innerHTML = "";
+
+      q.choices.forEach((choiceText, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "game-choice-btn";
+        btn.textContent = choiceText;
+        btn.addEventListener("click", () => handleChoice(idx, btn));
+        choicesEl.appendChild(btn);
+      });
+    }
+
+    function handleChoice(selectedIndex, buttonEl) {
+      if (hasAnswered) return;
+      hasAnswered = true;
+
+      const q = questions[currentIndex];
+      const buttons = Array.from(document.querySelectorAll(".game-choice-btn"));
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.correctIndex) {
+          btn.classList.add("correct");
+        }
+        if (idx === selectedIndex && idx !== q.correctIndex) {
+          btn.classList.add("incorrect");
+        }
+      });
+
+      if (selectedIndex === q.correctIndex) {
+        score++;
+        feedbackEl.innerHTML = "<strong>Correct!</strong> " + q.explanation;
+      } else {
+        feedbackEl.innerHTML = "<strong>Not quite.</strong> " + q.explanation;
+      }
+
+      scoreEl.textContent = `Score: ${score}`;
+      nextBtn.disabled = false;
+    }
+
+    function showResults() {
+      const total = questions.length;
+      const percent = Math.round((score / total) * 100);
+      resultScore.textContent = `You scored ${score} out of ${total} (${percent}%).`;
+
+      let msg;
+      if (percent >= 85) {
+        msg = "You’re chamber-ready. Grab a bill and go bully the mic (respectfully).";
+      } else if (percent >= 60) {
+        msg = "Solid foundation. A couple more sessions and you’ll be running committee.";
+      } else {
+        msg = "Good start. Pair this with a workshop and one real session and you’ll level up fast.";
+      }
+
+      resultMessage.textContent = msg;
+      resultCard.style.display = "block";
+      restartBtn.style.display = "inline-flex";
+    }
+
+    function nextQuestion() {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function restartGame() {
+      currentIndex = 0;
+      score = 0;
+      resultCard.style.display = "none";
+      renderQuestion();
+    }
+
+    nextBtn.addEventListener("click", nextQuestion);
+    restartBtn.addEventListener("click", restartGame);
+    resultRestartBtn.addEventListener("click", restartGame);
+
+    // Initialize
+    renderQuestion();
+  </script>
+</body>
+</html>
