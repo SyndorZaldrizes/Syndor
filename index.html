@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Maryland Student Legislature – SMCM Chapter</title>
+  <title>MSL – SMCM Chapter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
@@ -12,29 +12,28 @@
   <header class="site-header">
     <div class="inner">
       <a href="#hero" class="brand">
-<span class="brand-mark brand-mark-logo">
-  <img src="logo-1.png" alt="SMCM MSL logo" />
-</span>
-<span class="brand-text">
-  <span class="brand-title">Maryland Student Legislature</span>
-  <span class="brand-sub">St. Mary’s College of Maryland Chapter</span>
-</span>
-
+        <span class="brand-mark brand-mark-logo">
+          <img src="logo-1.png" alt="SMCM MSL logo" />
+        </span>
+        <span class="brand-text">
+          <span class="brand-title">MSL</span>
+          <span class="brand-sub">SMCM Chapter</span>
+        </span>
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
       <nav class="nav" id="mainNav">
         <a href="#hero">Home</a>
         <a href="#maryland">About MSL</a>
         <a href="#chapter">Our Chapter</a>
-        <a href="executive-board.html">Exec Board</a>
         <a href="#journey">Your Journey</a>
         <a href="#documents">Documents</a>
+        <a href="executive-board.html">Exec Board</a>
         <a href="resources.html">Resources</a>
         <a href="bulletin.html">Bulletin</a>
-        <a href="msl-giving.html">GIVING TUESDAY CHAMPIONSHIP</a>
-        <a href="msl-game.html">Game</a>
+        <a href="msl-game.html">Games</a>
         <a href="#gallery">Gallery</a>
         <a href="#contact">Join Us</a>
+        <a href="msl-giving.html">GIVING TUESDAY CHAMPIONSHIP</a>
       </nav>
     </div>
   </header>
@@ -272,8 +271,6 @@
             <a href="constitution.html" class="btn btn-primary">Read Constitution</a>
             <a href="bylaws.html" class="btn btn-ghost">Read Bylaws</a>
           </div>
-          <p class="small">
-          </p>
         </div>
         <div class="card doc-card">
           <img src="Fall2.JPG" alt="Open book and notes on a table" class="doc-image" />
@@ -358,26 +355,30 @@
           </div>
         </div>
         <div class="card contact-card">
-          <h3>Interest Form</h3>
+          <h3>Interest &amp; Contact Form</h3>
           <p class="small">
-            This form is visual only—hook it up to Google Forms, an email handler, or a static form service
-            once the site is live on GitHub Pages.
+            Ask a question and we’ll also offer to add you to our MSL contact list for meeting reminders and
+            statewide session updates.
           </p>
-          <form onsubmit="event.preventDefault(); alert('On the live site, connect this form to your preferred service.');">
+          <form onsubmit="return handleInterestFormSubmit(event);">
             <label>
               Name
-              <input type="text" placeholder="Your name" required />
+              <input id="interestName" type="text" placeholder="Your name" required />
             </label>
             <label>
               Email
-              <input type="email" placeholder="you@example.com" required />
+              <input id="interestEmail" type="email" placeholder="you@example.com" required />
             </label>
             <label>
               What interests you about MSL?
-              <textarea rows="3" placeholder="Policy areas, skills you want to build, or anything else."></textarea>
+              <textarea id="interestMessage" rows="3" placeholder="Policy areas, skills you want to build, or anything else."></textarea>
             </label>
-            <button type="submit" class="btn btn-primary full">I’m Interested</button>
+            <button type="submit" class="btn btn-primary full">Submit &amp; Open Interest Form</button>
           </form>
+          <p class="small" style="margin-top:0.75rem;">
+            Prefer to email us directly? Reach us at
+            <a href="mailto:msl@smcm.edu">msl@smcm.edu</a>.
+          </p>
         </div>
       </div>
     </section>
