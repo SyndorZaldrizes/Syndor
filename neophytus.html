@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Neophytus – Future Delegates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Page-specific readability tweaks -->
+  <style>
+    body.neophytus-page {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .neophytus-page .section-body {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .neophytus-page .small {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .neophytus-page .cards-3 {
+      gap: 1.5rem;
+    }
+
+    .neophytus-page .neophytus-hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .neophytus-page .neophytus-hero-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.85;
+    }
+
+    .neophytus-page .neophytus-hero-image {
+      width: 100%;
+      max-width: 360px;
+      border-radius: 24px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .neophytus-page .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .neophytus-page .vocab-card {
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+    }
+
+    .neophytus-page .vocab-card h3 {
+      margin-top: 0;
+      margin-bottom: 0.3rem;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 800px) {
+      .neophytus-page .neophytus-hero-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="neophytus-page">
+  <header class="site-header">
+    <div class="inner">
+      <a href="index.html#hero" class="brand">
+        <span class="brand-mark">MSL</span>
+        <span class="brand-text">
+          <span class="brand-title">Maryland Student Legislature</span>
+          <span class="brand-sub">St. Mary’s College of Maryland Chapter</span>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      <nav class="nav" id="mainNav">
+        <a href="index.html#hero">Home</a>
+        <a href="index.html#maryland">About MSL</a>
+        <a href="index.html#chapter">Our Chapter</a>
+        <a href="executive-board.html">Exec Board</a>
+        <a href="index.html#journey">Your Journey</a>
+        <a href="index.html#documents">Documents</a>
+        <a href="resources.html">Resources</a>
+        <a href="msl-giving.html">Giving Tuesday</a>
+        <a href="neophytus.html">Neophytus</a>
+        <a href="index.html#gallery">Gallery</a>
+        <a href="index.html#contact">Join Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. HERO -->
+    <section class="section">
+      <div class="inner neophytus-hero-layout">
+        <div>
+          <span class="neophytus-hero-badge">Neophytus · Future Delegates</span>
+          <h1>Welcome, New Voices in Maryland’s Civic Story</h1>
+          <p class="section-body">
+            <strong>Neophytus</strong> is a word that means someone who is new to something. 
+            This page is for younger students, curious kids, and anyone just starting to learn 
+            how government works in Maryland. No prior knowledge required—only questions.
+          </p>
+          <p class="section-body">
+            Here, we break big ideas into small pieces: what government does, how laws are made, 
+            and why your voice matters. The goal is simple: help the next generation feel at home 
+            in the places where decisions are made.
+          </p>
+        </div>
+        <div class="card plain-card" style="text-align:center;">
+          <img
+            src="neophytus-hero.jpg"
+            alt="Students learning about government together"
+            class="neophytus-hero-image"
+          />
+          <p class="small" style="margin-top:0.75rem;">
+            This page is educational and nonpartisan, created by the SMCM Maryland Student 
+            Legislature Chapter to support youth civic learning.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. WHAT THIS PAGE IS FOR -->
+    <section class="section bg-alt">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">Getting Started</p>
+          <h2>Who Neophytus Is For</h2>
+          <p class="section-body">
+            You might be in elementary or middle school. You might be a parent, sibling, or 
+            teacher looking for a simple way to explain the basics. Neophytus is built to give 
+            you clear, calm explanations without assuming you already speak “political.”
+          </p>
+        </div>
+        <div class="cards-3">
+          <article class="card feature-card">
+            <div class="card-icon">🧠</div>
+            <h3>Curious Kids</h3>
+            <p>
+              If you’ve ever wondered who makes the rules, why we have them, or how laws change, 
+              this space gives you honest, simple answers.
+            </p>
+          </article>
+          <article class="card feature-card">
+            <div class="card-icon">👨‍👩‍👧‍👦</div>
+            <h3>Families & Siblings</h3>
+            <p>
+              Use these short sections as conversation starters at the table, on car rides, or 
+              whenever big questions pop up.
+            </p>
+          </article>
+          <article class="card feature-card">
+            <div class="card-icon">🏫</div>
+            <h3>Teachers & Mentors</h3>
+            <p>
+              Neophytus is nonpartisan and aligned with Maryland’s civic education spirit. It is 
+              meant to supplement—not replace—formal classroom learning.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. WHAT GOVERNMENT DOES -->
+    <section class="section">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">Big Picture</p>
+          <h2>What Does Government Actually Do?</h2>
+          <p class="section-body">
+            At its best, government is a set of rules and people chosen to carry them out so that 
+            communities can live together safely and fairly. In Maryland, that means working on 
+            things like schools, roads, safety, and the environment.
+          </p>
+        </div>
+        <div class="cards-3">
+          <article class="card feature-card">
+            <div class="card-icon">📘</div>
+            <h3>Make Rules</h3>
+            <p>
+              Laws explain what people are allowed to do, what they aren’t allowed to do, and 
+              what happens if someone breaks those rules.
+            </p>
+          </article>
+          <article class="card feature-card">
+            <div class="card-icon">💰</div>
+            <h3>Use Money</h3>
+            <p>
+              Government collects money (taxes) and decides how to spend it on things like 
+              schools, parks, public safety, and health.
+            </p>
+          </article>
+          <article class="card feature-card">
+            <div class="card-icon">🤝</div>
+            <h3>Solve Problems</h3>
+            <p>
+              When big issues come up—flooding, broadband access, transportation—government 
+              helps communities find fair and workable solutions.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. MARYLAND & ITS CONSTITUTION -->
+    <section class="section bg-alt">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">Maryland Basics</p>
+          <h2>Maryland’s Rules for the Rules</h2>
+          <p class="section-body">
+            Maryland has a document called the <strong>Maryland Constitution</strong>. It is like a 
+            handbook for how state government is supposed to work and what rights people have. 
+            It explains who gets to vote, how leaders are chosen, and what powers those leaders have.
+          </p>
+        </div>
+        <div class="grid-2">
+          <div>
+            <h3>People First</h3>
+            <p class="section-body">
+              A key idea is that government exists for the good of the people—not the other way around. 
+              The rules are supposed to protect your rights and make sure power is shared and limited.
+            </p>
+            <p class="section-body">
+              Even if you’re not old enough to vote yet, you are still part of “the people” the 
+              Constitution is talking about. Decisions made today shape the world you grow up in.
+            </p>
+          </div>
+          <div class="card plain-card">
+            <h3>Want to Explore with an Adult?</h3>
+            <p class="small">
+              Older students and adults can read the full Maryland Constitution on official sites 
+              like the Maryland State Archives or law resources. These texts are written for adults, 
+              so it’s normal if they feel dense or complicated at first.
+            </p>
+            <ul class="checklist small">
+              <li>
+                <a href="https://msa.maryland.gov/msa/mdmanual/43const/html/const.html" target="_blank">
+                  Maryland Constitution – Maryland State Archives
+                </a>
+              </li>
+              <li>
+                <a href="https://law.justia.com/constitution/maryland/" target="_blank">
+                  Maryland Constitution – Article-by-Article View
+                </a>
+              </li>
+            </ul>
+            <p class="small">
+              You can always start here on Neophytus and work up to the full text over time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. THREE BRANCHES -->
+    <section class="section">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">Sharing Power</p>
+          <h2>Maryland’s Three Branches of Government</h2>
+          <p class="section-body">
+            No single person is supposed to control everything. Maryland’s state government is divided 
+            into three main branches that share power and check each other.
+          </p>
+        </div>
+        <div class="cards-3">
+          <article class="card feature-card">
+            <div class="card-icon">🏛️</div>
+            <h3>Legislative</h3>
+            <p>
+              The General Assembly (House of Delegates and Senate) writes and votes on state laws. 
+              They debate, amend, and decide which ideas become real rules.
+            </p>
+          </article>
+          <article class="card feature-card">
+            <div class="card-icon">🖋️</div>
+            <h3>Executive</h3>
+            <p>
+              The Governor and executive agencies carry out the laws and run day-to-day state 
+              government, from transportation to public health.
+            </p>
+          </article>
+          <article class="card feature-card">
+            <div class="card-icon">⚖️</div>
+            <h3>Judicial</h3>
+            <p>
+              Maryland’s courts interpret the laws and the Constitution, solving disputes and 
+              making sure rules are applied fairly.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. HOW A BILL BECOMES A LAW (MD-FLAVORED) -->
+    <section class="section bg-alt">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">From Idea to Law</p>
+          <h2>How a Maryland Law Can Be Made</h2>
+          <p class="section-body">
+            The exact process has many steps and details, but this simple path gives you the big idea 
+            of how a bill can move through Maryland’s legislative system.
+          </p>
+        </div>
+        <ol class="checklist small">
+          <li>
+            <strong>1. An Idea Starts.</strong> Someone notices a problem or sees a way to improve 
+            life in Maryland—maybe about schools, roads, or the environment.
+          </li>
+          <li>
+            <strong>2. A Bill Is Written.</strong> A legislator works with others to turn the idea 
+            into a written proposal called a bill.
+          </li>
+          <li>
+            <strong>3. Committees Review.</strong> A group of legislators studies the bill, asks 
+            questions, hears testimony, and may suggest changes.
+          </li>
+          <li>
+            <strong>4. Debate & Voting.</strong> The bill is debated and voted on in each chamber. 
+            It usually needs to pass both the House of Delegates and the Senate.
+          </li>
+          <li>
+            <strong>5. The Governor Acts.</strong> If the bill passes both chambers, it goes to the 
+            Governor, who can sign it, allow it to become law, or veto it.
+          </li>
+        </ol>
+        <p class="small">
+          In Maryland Student Legislature, college students practice a similar process in a model 
+          General Assembly, so they’re ready to engage in the real system later.
+        </p>
+      </div>
+    </section>
+
+    <!-- 7. VOCABULARY CORNER -->
+    <section class="section">
+      <div class="inner">
+        <div class="section-header">
+          <p class="eyebrow">Words You’ll Hear</p>
+          <h2>Vocabulary Corner</h2>
+          <p class="section-body">
+            Politics can sound like a different language. Here are a few words you’ll see often, 
+            explained in kid-friendly terms.
+          </p>
+        </div>
+        <div class="vocab-grid">
+          <div class="card plain-card vocab-card">
+            <h3>Constitution</h3>
+            <p class="small">
+              The “rulebook for the rules.” It explains how government is set up and what powers it has.
+            </p>
+          </div>
+          <div class="card plain-card vocab-card">
+            <h3>Delegate</h3>
+            <p class="small">
+              A person chosen to speak, debate, and vote on behalf of others in a meeting or assembly.
+            </p>
+          </div>
+          <div class="card plain-card vocab-card">
+            <h3>Bill</h3>
+            <p class="small">
+              A written idea for a new law or a change to an existing law that people can debate and vote on.
+            </p>
+          </div>
+          <div class="card plain-card vocab-card">
+            <h3>Session</h3>
+            <p class="small">
+              A period of time when a legislative body meets to discuss, debate, and vote on bills.
+            </p>
+          </div>
+          <div class="card plain-card vocab-card">
+            <h3>Nonpartisan</h3>
+            <p class="small">
+              Not taking sides with a political party. Focusing on process and learning rather than campaigning.
+            </p>
+          </div>
+          <div class="card plain-card vocab-card">
+            <h3>Civic Engagement</h3>
+            <p class="small">
+              Getting involved in your community and government—by learning, speaking up, and participating.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. MINI MISSIONS -->
+    <section class="section bg-alt">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">Try It Yourself</p>
+          <h2>Mini Missions for Future Delegates</h2>
+          <p class="section-body">
+            These are small challenges you can try with a grown-up, teacher, or older sibling. 
+            None of them require taking a side in a party or election—they’re about learning the system.
+          </p>
+        </div>
+        <div class="grid-2">
+          <ul class="checklist small">
+            <li>
+              <strong>Find Your Representatives.</strong> With an adult, look up who represents your 
+              area in the Maryland General Assembly.
+            </li>
+            <li>
+              <strong>Spot a Local Rule.</strong> Pick one rule in your school or town. Ask: 
+              why does this rule exist, and who decided on it?
+            </li>
+            <li>
+              <strong>Write a One-Sentence Bill Idea.</strong> In one sentence, describe a change 
+              that could make your community safer, fairer, or kinder.
+            </li>
+          </ul>
+          <ul class="checklist small">
+            <li>
+              <strong>Listen to a Meeting Clip.</strong> With an adult, listen to a short part of a 
+              public meeting or hearing and notice how people take turns speaking.
+            </li>
+            <li>
+              <strong>Ask a “Why” Question.</strong> Ask a teacher or family member why voting and 
+              participation matter, even when it feels slow.
+            </li>
+            <li>
+              <strong>Visit a Civic Place.</strong> If possible, visit a town hall, court building, 
+              or state building and talk about what happens there.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. CIVIC MATH CORNER -->
+    <section class="section">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">Civic Math Corner</p>
+          <h2>Numbers Behind the Decisions</h2>
+          <p class="section-body">
+            Politics isn’t only about speeches—it’s also about numbers. Here are a few simple word 
+            problems that mix math with civic ideas.
+          </p>
+        </div>
+        <ol class="checklist small">
+          <li>
+            <strong>Votes in the Room.</strong> If a student model assembly has 24 delegates and a 
+            bill needs more than half the votes to pass, how many “yes” votes does it need?
+          </li>
+          <li>
+            <strong>Sharing Time.</strong> A hearing gives each speaker 3 minutes, and there are 10 
+            people who want to speak. How many minutes of testimony is that in total?
+          </li>
+          <li>
+            <strong>Travel Support.</strong> If a delegation has 8 members and it costs $50 per 
+            person to travel to session, how much total funding would cover everyone?
+          </li>
+        </ol>
+        <p class="small">
+          You can make your own civic math questions too—any time you see a number in a news story 
+          or school rule, there’s a problem to explore.
+        </p>
+      </div>
+    </section>
+
+    <!-- 10. FOR GROWN-UPS & NEXT STEPS -->
+    <section class="section bg-alt">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">For Grown-Ups</p>
+          <h2>How This Fits Our Nonpartisan Mission</h2>
+          <p class="section-body">
+            Neophytus is maintained by the SMCM Maryland Student Legislature Chapter as an 
+            educational, nonpartisan resource. It focuses on process, structure, and civic habits, 
+            rather than party positions or campaign messaging.
+          </p>
+        </div>
+        <div class="grid-2">
+          <div>
+            <h3>Using This Page</h3>
+            <p class="small">
+              Feel free to use these explanations and activities to introduce young people to basic 
+              civic concepts. We encourage adults to pair this with age-appropriate discussions about 
+              media literacy, respectful disagreement, and community service.
+            </p>
+            <p class="small">
+              This page is not legal advice or a complete civics curriculum. It is a student-created 
+              doorway into larger conversations about democracy and Maryland’s institutions.
+            </p>
+          </div>
+          <div class="card plain-card">
+            <h3>More Civic Learning in Maryland</h3>
+            <p class="small">
+              For deeper or more formal resources, adults and teachers can explore Maryland-based 
+              civic education organizations and official state sites.
+            </p>
+            <ul class="checklist small">
+              <li>
+                <a href="https://sos.maryland.gov/mdkids/Pages/YouthCivicEngagement.aspx" target="_blank">
+                  Youth Civic Engagement – Maryland Secretary of State
+                </a>
+              </li>
+              <li>
+                <a href="https://www.mdcivics.org/" target="_blank">
+                  Maryland Civic Education Coalition
+                </a>
+              </li>
+            </ul>
+            <p class="small">
+              Together, these efforts help more young people feel prepared to participate when it’s 
+              their turn to take the mic.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
