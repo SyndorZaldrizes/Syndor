@@ -2,150 +2,279 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>MSL Study & Games – SMCM MSL</title>
+  <title>MSL Study Lab & Games – SMCM MSL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="logo-1.png" />
 
-  <!-- Page-specific layout + game styles -->
+  <!-- Page-specific layout tweaks -->
   <style>
+    body.game-page {
+      background: radial-gradient(circle at top, #111827, #020617);
+      color: #f9fafb;
+    }
+
+    .game-page .section {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    .game-page h1, 
+    .game-page h2, 
+    .game-page h3 {
+      color: #f9fafb;
+    }
+
     .game-layout {
       display: flex;
+      flex-direction: column;
       gap: 2rem;
-      align-items: flex-start;
-      margin-top: 1rem;
     }
 
-    .game-column-study {
-      flex: 3; /* ~60% */
-      min-width: 0;
+    @media (min-width: 900px) {
+      .game-layout {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+      .game-layout-main {
+        flex: 3;
+      }
+      .game-layout-side {
+        flex: 2;
+      }
     }
 
-    .game-column-play {
-      flex: 2; /* ~40% */
-      min-width: 0;
+    .game-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
 
-    .game-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
+    .game-card-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
     }
 
-    .game-box {
-      margin-top: 0.5rem;
+    .game-card-title span.label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.8;
     }
 
-    .game-canvas {
-      width: 100%;
-      max-width: 360px;
-      height: 260px;
-      border-radius: 12px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      background: #0b1520;
+    .game-card-title span.label.study {
+      color: #4ade80;
+    }
+    .game-card-title span.label.game {
+      color: #60a5fa;
+    }
+
+    .game-page .card.plain-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8);
+    }
+
+    .game-page .small, 
+    .game-page .section-body,
+    .game-page p {
+      color: #e5e7eb;
+    }
+
+    /* Canvas containers */
+    .canvas-shell {
+      background: #020617;
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      text-align: center;
+    }
+    .canvas-shell canvas {
+      background: #020617;
       display: block;
       margin: 0 auto;
+      max-width: 100%;
+      border-radius: 0.5rem;
     }
 
-    .game-status {
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
+    .controls-text {
+      font-size: 0.8rem;
       opacity: 0.9;
+      margin-top: 0.35rem;
     }
 
-    .hangman-word,
-    .hangman-letters,
-    .hangman-status {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      margin-top: 0.4rem;
-    }
-
-    .hangman-word {
-      font-size: 1.1rem;
-      letter-spacing: 0.2rem;
-      font-weight: 600;
-    }
-
-    .hangman-letters span {
-      display: inline-block;
-      margin-right: 0.25rem;
-      margin-bottom: 0.25rem;
-      padding: 0.1rem 0.35rem;
-      border-radius: 999px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      font-size: 0.75rem;
-    }
-
-    .hangman-input-row {
+    /* Quiz styles */
+    #quiz-container {
       display: flex;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-      align-items: center;
+      flex-direction: column;
+      gap: 0.75rem;
     }
-
-    .hangman-input-row input {
-      max-width: 80px;
+    #quiz-question {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
     }
-
-    /* Field companion */
-    .companion-settings {
-      margin-top: 1.25rem;
-    }
-
-    .companion-settings label {
+    #quiz-options button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.4rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      cursor: pointer;
       font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      margin-right: 0.75rem;
+    }
+    #quiz-options button:hover {
+      background: rgba(37, 99, 235, 0.2);
+    }
+    #quiz-feedback {
+      font-size: 0.85rem;
+      min-height: 1.2em;
     }
 
-    .field-companion-dot {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      width: 56px;
-      height: 56px;
+    /* Hangman */
+    #hangman-word {
+      font-size: 1.25rem;
+      letter-spacing: 0.25em;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    #hangman-letters button {
+      margin: 0.1rem;
+      padding: 0.25rem 0.4rem;
+      border-radius: 0.35rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    #hangman-letters button:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+    #hangman-status {
+      font-size: 0.85rem;
+      margin-top: 0.4rem;
+      text-align: center;
+      min-height: 1.2em;
+    }
+
+    /* Companion (Field Buddy) */
+    .companion-wrapper {
+      position: relative;
+      min-height: 220px;
+      overflow: hidden;
+      background: radial-gradient(circle at bottom, #0f172a, #020617);
+    }
+
+    .companion-buddy {
+      position: absolute;
+      width: 72px;
+      height: 72px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #ffffff, #ffd15c);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      background: radial-gradient(circle at 30% 20%, #facc15, #f97316);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.9rem;
+      font-size: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
       cursor: pointer;
-      z-index: 40;
-      user-select: none;
-      transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+      transition: transform 0.25s ease-out;
     }
 
-    .field-companion-dot.paused {
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-      opacity: 0.9;
+    .companion-hud {
+      position: absolute;
+      left: 0.75rem;
+      bottom: 0.75rem;
+      right: 0.75rem;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
     }
 
-    .field-companion-dot:hover {
-      transform: scale(1.06);
+    .companion-bars {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
-    .field-companion-dot:active {
-      transform: scale(0.97);
+    .bar {
+      min-width: 90px;
     }
-
-    .field-companion-hint {
-      font-size: 0.75rem;
+    .bar-label {
+      font-size: 0.7rem;
       opacity: 0.8;
-      margin-top: 0.4rem;
+    }
+    .bar-track {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+      margin-top: 0.1rem;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      width: 100%;
+      transition: width 0.3s ease-out;
+    }
+    .bar-fill.energy {
+      background: #22c55e;
+    }
+    .bar-fill.mood {
+      background: #facc15;
+    }
+    .bar-fill.focus {
+      background: #38bdf8;
     }
 
-    @media (max-width: 900px) {
-      .game-layout {
-        flex-direction: column;
-      }
+    .companion-actions {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .companion-actions button {
+      border-radius: 999px;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+    .companion-actions button:hover {
+      background: rgba(37, 99, 235, 0.4);
+    }
+
+    /* YouTube embed ratio */
+    .video-shell {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+    .video-shell iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
     }
   </style>
 </head>
-<body>
+
+<body class="game-page">
   <header class="site-header">
     <div class="inner">
       <a href="index.html#hero" class="brand">
@@ -162,9 +291,9 @@
         <a href="index.html#hero">Home</a>
         <a href="index.html#maryland">About MSL</a>
         <a href="index.html#chapter">Our Chapter</a>
-        <a href="executive-board.html">Exec Board</a>
         <a href="index.html#journey">Your Journey</a>
         <a href="index.html#documents">Documents</a>
+        <a href="executive-board.html">Exec Board</a>
         <a href="resources.html">Resources</a>
         <a href="bulletin.html">Bulletin</a>
         <a href="msl-game.html">Games</a>
@@ -176,176 +305,171 @@
   </header>
 
   <main>
+    <!-- HEADER -->
     <section class="section">
       <div class="inner">
         <div class="section-header center">
-          <p class="eyebrow">Practice & Play</p>
-          <h1>MSL Study Zone & Mini-Games</h1>
+          <p class="eyebrow">Practice, Play, Repeat</p>
+          <h1>MSL Study Lab & Mini-Games</h1>
           <p class="section-body">
-            Use the left side to study, quiz yourself, and draft ideas. Use the right side to take a quick
-            break with mini-games that still keep you in the MSL mindset. Your field companion hangs out
-            with you while you work.
+            Use this space to quiz yourself on legislative basics, watch a short explainer on how bills
+            become law, and then unwind with some low-stakes mini-games and a floating “field companion.”
+            Desktop is recommended for the games (keyboard controls), but the video and quiz work on mobile too.
           </p>
         </div>
 
         <div class="game-layout">
-          <!-- 60% COLUMN – STUDY -->
-          <div class="game-column-study">
+          <!-- LEFT: STUDY COLUMN -->
+          <div class="game-layout-main game-column">
+            <!-- Quiz -->
             <article class="card plain-card">
-              <h2>Quick Quiz: MSL & Parliamentary Basics</h2>
+              <div class="game-card-title">
+                <h2>MSL Quick Quiz</h2>
+                <span class="label study">Study</span>
+              </div>
               <p class="small">
-                Test yourself on a few fundamentals you’ll use in session. Controls: click your answers,
-                then hit “Check Answers”.
+                Short questions based on things you’ll see in MSL: committees, bills, chambers, and procedure.
+                Great to run through before a meeting or session.
               </p>
-
-              <div class="game-box" id="quizBox">
-                <form id="mslQuiz">
-                  <div class="small" style="margin-bottom: 0.75rem;">
-                    <strong>1.</strong> In most chambers, what does it mean to “move the previous question”?
-                    <br />
-                    <label><input type="radio" name="q1" value="a" /> Start debate on a new bill</label><br />
-                    <label><input type="radio" name="q1" value="b" /> End debate and vote now</label><br />
-                    <label><input type="radio" name="q1" value="c" /> Send the bill back to committee</label>
-                  </div>
-
-                  <div class="small" style="margin-bottom: 0.75rem;">
-                    <strong>2.</strong> In MSL, a “quorum” most directly refers to:
-                    <br />
-                    <label><input type="radio" name="q2" value="a" /> The number of bills on the docket</label><br />
-                    <label><input type="radio" name="q2" value="b" /> The minimum members needed to do business</label><br />
-                    <label><input type="radio" name="q2" value="c" /> The number of officers on the Exec Board</label>
-                  </div>
-
-                  <div class="small" style="margin-bottom: 0.75rem;">
-                    <strong>3.</strong> Which is the <em>best</em> sponsor speech opener?
-                    <br />
-                    <label><input type="radio" name="q3" value="a" /> “This bill is pretty self-explanatory, so…”</label><br />
-                    <label><input type="radio" name="q3" value="b" /> “Members, this bill addresses a specific Maryland problem…”</label><br />
-                    <label><input type="radio" name="q3" value="c" /> “I wrote this at 2 AM, so bear with me.”</label>
-                  </div>
-
-                  <button type="button" class="btn btn-primary small" id="checkQuiz">
-                    Check Answers
-                  </button>
-                </form>
-                <p class="game-status" id="quizResult"></p>
+              <div id="quiz-container">
+                <div id="quiz-question"></div>
+                <div id="quiz-options"></div>
+                <div id="quiz-feedback" class="small"></div>
+                <button id="quiz-next" class="btn btn-primary small" style="margin-top:0.5rem;">
+                  Next Question
+                </button>
+                <p id="quiz-score" class="small" style="margin-top:0.5rem;"></p>
               </div>
             </article>
 
-            <article class="card plain-card" style="margin-top: 1.25rem;">
-              <h2>Bill Idea Scratchpad</h2>
-              <p class="small">
-                Use this space to sketch a bill idea you might want to bring to committee. Think: problem,
-                who it affects in Maryland, and what your bill would actually do.
-              </p>
-              <div class="game-box">
-                <label class="small" for="billIdea">
-                  Jot down a rough sponsor pitch or bullet points:
-                </label>
-                <textarea
-                  id="billIdea"
-                  rows="7"
-                  placeholder="Example: A bill to expand broadband access in rural Maryland by..."
-                  style="width: 100%; margin-top: 0.35rem;"
-                ></textarea>
-                <p class="small" style="margin-top: 0.4rem; opacity: 0.8;">
-                  Tip: If you like what you write here, copy it into a doc and use the
-                  <strong>Legislative Drafting Manual</strong> from the Resources page to turn it into
-                  a full bill.
-                </p>
+            <!-- CrashCourse video -->
+            <article class="card plain-card">
+              <div class="game-card-title">
+                <h2>How a Bill Becomes Law (Crash Course)</h2>
+                <span class="label study">Watch</span>
               </div>
-
-              <div class="card plain-card companion-settings">
-                <h3>Field Companion</h3>
-                <p class="small">
-                  Choose a companion to float around your screen while you study and play. Click your
-                  companion to pause or resume their little orbit.
-                </p>
-                <div class="small" style="margin-top: 0.4rem;">
-                  <label>
-                    <input type="radio" name="companion" value="dog" checked />
-                    🐶 Dog
-                  </label>
-                  <label>
-                    <input type="radio" name="companion" value="cat" />
-                    🐱 Cat
-                  </label>
-                  <label>
-                    <input type="radio" name="companion" value="koala" />
-                    🐨 Koala
-                  </label>
-                </div>
-                <p class="field-companion-hint">
-                  Your companion dot in the corner matches your choice above. Click it if you need some
-                  stillness while you focus.
-                </p>
+              <p class="small">
+                A quick visual run-through of committee, floor, and conference stages. Different level than MSL,
+                same core logic of how ideas move through a legislature.
+              </p>
+              <div class="video-shell">
+                <!-- Crash Course Government & Politics: How a Bill Becomes a Law -->
+                <iframe
+                  src="https://www.youtube.com/embed/66f4-NKEYz4"
+                  title="How a Bill Becomes a Law – Crash Course Government and Politics"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
               </div>
             </article>
           </div>
 
-          <!-- 40% COLUMN – GAMES -->
-          <div class="game-column-play">
-            <div class="game-grid">
-              <!-- Snake -->
-              <article class="card plain-card">
-                <h2>Snake: Session Snack Run</h2>
-                <p class="small">
-                  Collect “snacks” to grow your snake without crashing into yourself. Controls:
-                  <strong>WASD</strong> keys only.
-                </p>
-                <div class="game-box">
-                  <canvas id="snakeCanvas" class="game-canvas"></canvas>
-                  <p class="game-status" id="snakeStatus">
-                    Use W, A, S, D to move. Don’t hit the walls or yourself.
-                  </p>
-                </div>
-              </article>
+          <!-- RIGHT: GAMES COLUMN -->
+          <div class="game-layout-side game-column">
+            <!-- Snake -->
+            <article class="card plain-card">
+              <div class="game-card-title">
+                <h2>Chamber Snake</h2>
+                <span class="label game">Game</span>
+              </div>
+              <p class="small">
+                Classic snake-style game. Collect “bills” (squares) and avoid running into yourself.
+                <strong>Controls:</strong> W, A, S, D keys (desktop).
+              </p>
+              <div class="canvas-shell">
+                <canvas id="snakeCanvas" width="260" height="260"></canvas>
+              </div>
+              <p class="controls-text">
+                Tip: Try to survive long enough to pass 10 “bills” in one run.
+              </p>
+            </article>
 
-              <!-- Runner -->
-              <article class="card plain-card">
+            <!-- Runner -->
+            <article class="card plain-card">
+              <div class="game-card-title">
                 <h2>Floor Runner</h2>
-                <p class="small">
-                  Dodge triangular “procedural hurdles” on the floor. Grab boost flowers for a speed
-                  burst. Controls: <strong>Space</strong> or <strong>W</strong> to jump.
-                </p>
-                <div class="game-box">
-                  <canvas id="runnerCanvas" class="game-canvas"></canvas>
-                  <p class="game-status" id="runnerStatus">
-                    Stay on the platform and avoid the spikes. One jump at a time.
-                  </p>
-                </div>
-              </article>
+                <span class="label game">Game</span>
+              </div>
+              <p class="small">
+                Dodge procedural triangles and hit “boost blocks” to pick up speed. 
+                <strong>Controls:</strong> Spacebar or click/tap inside the game box to jump (desktop or mobile).
+              </p>
+              <div class="canvas-shell">
+                <canvas id="runnerCanvas" width="260" height="160"></canvas>
+              </div>
+              <p class="controls-text">
+                Score increases over time. Don’t fall into gaps or hit a triangle.
+              </p>
+            </article>
 
-              <!-- Hangman -->
-              <article class="card plain-card">
-                <h2>Hangman: MSL Lingo</h2>
-                <p class="small">
-                  Guess the MSL-related term before you run out of attempts. You’ll see terms used
-                  across our site and docs.
-                </p>
-                <div class="game-box">
-                  <div class="hangman-word" id="hmWord">_ _ _ _ _</div>
-                  <div class="hangman-letters small" id="hmGuesses"></div>
-                  <div class="hangman-status small" id="hmStatus"></div>
-                  <div class="hangman-input-row">
-                    <input
-                      type="text"
-                      id="hmInput"
-                      maxlength="1"
-                      placeholder="Letter"
-                    />
-                    <button type="button" class="btn btn-primary small" id="hmGuessBtn">
-                      Guess
-                    </button>
-                    <button type="button" class="btn btn-ghost small" id="hmNewWord">
-                      New Word
-                    </button>
-                  </div>
-                </div>
-              </article>
-            </div>
+            <!-- Hangman -->
+            <article class="card plain-card">
+              <div class="game-card-title">
+                <h2>Legislative Hangman</h2>
+                <span class="label game">Game</span>
+              </div>
+              <p class="small">
+                Guess MSL-related words before your attempts run out. All terms are drawn from things you’ll hear
+                in meetings, bylaws, or statewide sessions.
+              </p>
+              <div id="hangman-word">_ _ _ _</div>
+              <div id="hangman-letters"></div>
+              <div id="hangman-status" class="small"></div>
+              <button id="hangman-reset" class="btn btn-primary small" style="margin-top:0.5rem;">
+                New Word
+              </button>
+            </article>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- COMPANION SECTION -->
+    <section class="section bg-alt">
+      <div class="inner">
+        <div class="section-header">
+          <p class="eyebrow">Field Companion</p>
+          <h2>Your Little MSL Study Buddy</h2>
+          <p class="section-body">
+            Pick a companion and let it wander the corner of the page while you study or play. Click the
+            buttons to feed, energize, or refocus it. It’s purely for vibes, but you deserve that.
+          </p>
+        </div>
+
+        <article class="card plain-card companion-wrapper">
+          <div id="companionBuddy" class="companion-buddy" aria-label="Field companion">🐶</div>
+
+          <div class="companion-hud">
+            <div class="companion-bars">
+              <div class="bar">
+                <div class="bar-label">Energy</div>
+                <div class="bar-track">
+                  <div id="barEnergy" class="bar-fill energy"></div>
+                </div>
+              </div>
+              <div class="bar">
+                <div class="bar-label">Mood</div>
+                <div class="bar-track">
+                  <div id="barMood" class="bar-fill mood"></div>
+                </div>
+              </div>
+              <div class="bar">
+                <div class="bar-label">Focus</div>
+                <div class="bar-track">
+                  <div id="barFocus" class="bar-fill focus"></div>
+                </div>
+              </div>
+            </div>
+            <div class="companion-actions">
+              <button data-pet="dog">Dog</button>
+              <button data-pet="cat">Cat</button>
+              <button data-pet="koala">Koala</button>
+              <button data-action="feed">Feed</button>
+              <button data-action="play">Play</button>
+              <button data-action="study">Study Break</button>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
   </main>
@@ -363,533 +487,625 @@
 
   <script src="script.js"></script>
 
-  <!-- Page-specific game logic -->
+  <!-- Page-specific JS: all guarded so errors don't break the page -->
   <script>
-    // Prevent game keys from firing while typing in inputs/textareas
-    function isTypingTarget(e) {
-      const tag = (e.target.tagName || "").toLowerCase();
-      return tag === "input" || tag === "textarea";
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+      /* ---------- QUIZ ---------- */
+      (function () {
+        const questionEl = document.getElementById("quiz-question");
+        const optionsEl = document.getElementById("quiz-options");
+        const feedbackEl = document.getElementById("quiz-feedback");
+        const nextBtn = document.getElementById("quiz-next");
+        const scoreEl = document.getElementById("quiz-score");
 
-    // -------------------------
-    // QUIZ LOGIC
-    // -------------------------
-    (function () {
-      const btn = document.getElementById("checkQuiz");
-      const result = document.getElementById("quizResult");
-      if (!btn || !result) return;
+        if (!questionEl || !optionsEl || !feedbackEl || !nextBtn || !scoreEl) return;
 
-      btn.addEventListener("click", function () {
-        const form = document.getElementById("mslQuiz");
-        if (!form) return;
-        const answers = { q1: "b", q2: "b", q3: "b" };
+        const quiz = [
+          {
+            q: "In MSL, where does most detailed work on a bill happen first?",
+            options: [
+              "On the floor during final vote",
+              "In committee hearings and markups",
+              "In the governor’s office",
+              "On social media"
+            ],
+            correct: 1
+          },
+          {
+            q: "Which phrase best matches what a “sponsor” does?",
+            options: [
+              "Writes and introduces the bill",
+              "Keeps time during speeches",
+              "Runs the statewide organization",
+              "Counts votes after the session"
+            ],
+            correct: 0
+          },
+          {
+            q: "A motion to ‘table’ a bill usually means:",
+            options: [
+              "The bill passes immediately",
+              "Debate continues with no speeches",
+              "Consideration is paused or set aside",
+              "The bill must be rewritten from scratch"
+            ],
+            correct: 2
+          },
+          {
+            q: "What’s the main role of a committee chair?",
+            options: [
+              "To write every bill",
+              "To enforce rules and manage discussion",
+              "To record every vote by hand",
+              "To campaign for statewide office"
+            ],
+            correct: 1
+          },
+          {
+            q: "Why does MSL use parliamentary procedure?",
+            options: [
+              "To confuse new members",
+              "To keep debate fair, orderly, and consistent",
+              "Because it’s required by Maryland law",
+              "So only officers can speak"
+            ],
+            correct: 1
+          }
+        ];
+
+        let index = 0;
         let score = 0;
-        let total = 3;
+        let answered = false;
 
-        Object.keys(answers).forEach((q) => {
-          const checked = form.querySelector(`input[name="${q}"]:checked`);
-          if (checked && checked.value === answers[q]) score++;
+        function renderQuestion() {
+          const current = quiz[index];
+          answered = false;
+          questionEl.textContent = current.q;
+          feedbackEl.textContent = "";
+          optionsEl.innerHTML = "";
+          current.options.forEach((opt, i) => {
+            const btn = document.createElement("button");
+            btn.textContent = opt;
+            btn.addEventListener("click", () => handleAnswer(i));
+            optionsEl.appendChild(btn);
+          });
+          scoreEl.textContent = `Question ${index + 1} of ${quiz.length} · Score: ${score}`;
+        }
+
+        function handleAnswer(choice) {
+          if (answered) return;
+          answered = true;
+          const current = quiz[index];
+          if (choice === current.correct) {
+            score++;
+            feedbackEl.textContent = "Correct – you’d survive in committee.";
+            feedbackEl.style.color = "#4ade80";
+          } else {
+            feedbackEl.textContent = "Not quite – check how we do it in MSL.";
+            feedbackEl.style.color = "#f97373";
+          }
+          scoreEl.textContent = `Question ${index + 1} of ${quiz.length} · Score: ${score}`;
+        }
+
+        nextBtn.addEventListener("click", () => {
+          index++;
+          if (index >= quiz.length) {
+            feedbackEl.textContent =
+              score === quiz.length
+                ? "Perfect run. Secret reward: you’re now unofficially ‘floor ready’."
+                : "Nice work. Run it again later and see if you can get them all.";
+            feedbackEl.style.color = "#facc15";
+            index = 0;
+            score = 0;
+          }
+          renderQuestion();
         });
 
-        if (score === total) {
-          result.textContent =
-            "3/3 – nice. You officially unlocked the ‘actually-knows-what’s-going-on-in-session’ badge.";
-        } else if (score === 2) {
-          result.textContent =
-            "2/3 – close. Re-skim the Resources page and you’ll be unstoppable.";
-        } else {
-          result.textContent =
-            score +
-            "/3 – that’s why this page exists. Missed questions are just future strengths.";
-        }
-      });
-    })();
+        renderQuestion();
+      })();
 
-    // -------------------------
-    // SNAKE GAME (WASD ONLY)
-    // -------------------------
-    (function () {
-      const canvas = document.getElementById("snakeCanvas");
-      const statusEl = document.getElementById("snakeStatus");
-      if (!canvas || !canvas.getContext) return;
-      const ctx = canvas.getContext("2d");
+      /* ---------- SNAKE GAME ---------- */
+      (function () {
+        const canvas = document.getElementById("snakeCanvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
 
-      const cols = 20;
-      const rows = 20;
-      const cellSize = Math.floor(canvas.width / cols) || 15;
+        const cols = 13;
+        const rows = 13;
+        const cellSize = Math.floor(canvas.width / cols);
 
-      let snake, dir, food, alive, tickInterval;
+        let snake, dir, food, alive;
 
-      function resetSnake() {
-        snake = [{ x: 10, y: 10 }];
-        dir = { x: 1, y: 0 };
-        food = { x: 5, y: 5 };
-        alive = true;
-        if (statusEl) {
-          statusEl.textContent = "Use W, A, S, D to move. Don’t hit the walls or yourself.";
-        }
-      }
-
-      function spawnFood() {
-        food = {
-          x: Math.floor(Math.random() * cols),
-          y: Math.floor(Math.random() * rows),
-        };
-      }
-
-      function drawSnake() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // background
-        ctx.fillStyle = "#0b1520";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // food
-        ctx.fillStyle = "#facc15";
-        ctx.fillRect(
-          food.x * cellSize + 2,
-          food.y * cellSize + 2,
-          cellSize - 4,
-          cellSize - 4
-        );
-
-        // snake
-        snake.forEach((seg, index) => {
-          ctx.fillStyle = index === 0 ? "#22c55e" : "#16a34a";
-          ctx.fillRect(
-            seg.x * cellSize + 1,
-            seg.y * cellSize + 1,
-            cellSize - 2,
-            cellSize - 2
-          );
-        });
-      }
-
-      function tick() {
-        if (!alive) return;
-        const head = snake[0];
-        const newHead = { x: head.x + dir.x, y: head.y + dir.y };
-
-        // wall collision
-        if (
-          newHead.x < 0 ||
-          newHead.x >= cols ||
-          newHead.y < 0 ||
-          newHead.y >= rows
-        ) {
-          alive = false;
-        }
-
-        // self collision
-        if (
-          alive &&
-          snake.some((seg) => seg.x === newHead.x && seg.y === newHead.y)
-        ) {
-          alive = false;
-        }
-
-        if (!alive) {
-          if (statusEl) statusEl.textContent = "Game over – press R to restart.";
-          return;
-        }
-
-        snake.unshift(newHead);
-
-        // food
-        if (newHead.x === food.x && newHead.y === food.y) {
+        function resetSnake() {
+          snake = [{ x: 6, y: 6 }];
+          dir = { x: 0, y: -1 }; // up
           spawnFood();
-        } else {
-          snake.pop();
+          alive = true;
         }
 
-        drawSnake();
-      }
-
-      resetSnake();
-      drawSnake();
-      tickInterval = setInterval(tick, 150);
-
-      document.addEventListener("keydown", (e) => {
-        if (isTypingTarget(e)) return;
-        const key = e.key.toLowerCase();
-        if (!alive && key === "r") {
-          resetSnake();
-          drawSnake();
-          return;
-        }
-        if (key === "w" && dir.y !== 1) dir = { x: 0, y: -1 };
-        else if (key === "s" && dir.y !== -1) dir = { x: 0, y: 1 };
-        else if (key === "a" && dir.x !== 1) dir = { x: -1, y: 0 };
-        else if (key === "d" && dir.x !== -1) dir = { x: 1, y: 0 };
-      });
-    })();
-
-    // -------------------------
-    // RUNNER GAME
-    // -------------------------
-    (function () {
-      const canvas = document.getElementById("runnerCanvas");
-      const statusEl = document.getElementById("runnerStatus");
-      if (!canvas || !canvas.getContext) return;
-      const ctx = canvas.getContext("2d");
-
-      const width = canvas.width;
-      const height = canvas.height;
-      const groundY = height - 40;
-
-      let player = {
-        x: 40,
-        y: groundY - 24,
-        w: 24,
-        h: 24,
-        vy: 0,
-        jumping: false,
-        speedBoost: 0,
-        boostTime: 0,
-      };
-
-      let obstacles = [];
-      let flowers = [];
-      let speed = 4;
-      let running = true;
-
-      function spawnObstacle() {
-        obstacles.push({
-          x: width + Math.random() * 100,
-          y: groundY - 20,
-          w: 26,
-          h: 20,
-        });
-      }
-
-      function spawnFlower() {
-        flowers.push({
-          x: width + 150 + Math.random() * 200,
-          y: groundY - 40,
-          r: 10,
-        });
-      }
-
-      function resetRunner() {
-        player.y = groundY - 24;
-        player.vy = 0;
-        player.jumping = false;
-        player.speedBoost = 0;
-        player.boostTime = 0;
-        obstacles = [];
-        flowers = [];
-        speed = 4;
-        running = true;
-        if (statusEl) {
-          statusEl.textContent =
-            "Stay on the platform and avoid the spikes. Press Space or W to jump. R to restart.";
-        }
-        spawnObstacle();
-        spawnFlower();
-      }
-
-      resetRunner();
-
-      function updateRunner() {
-        if (!running) return;
-
-        // gravity
-        player.vy += 0.7;
-        player.y += player.vy;
-
-        // ground
-        if (player.y + player.h >= groundY) {
-          player.y = groundY - player.h;
-          player.vy = 0;
-          player.jumping = false;
-        }
-
-        // boosts
-        if (player.boostTime > 0) {
-          player.boostTime -= 1;
-          if (player.boostTime <= 0) {
-            player.speedBoost = 0;
+        function spawnFood() {
+          food = {
+            x: Math.floor(Math.random() * cols),
+            y: Math.floor(Math.random() * rows)
+          };
+          // avoid spawning on snake
+          if (snake.some(seg => seg.x === food.x && seg.y === food.y)) {
+            spawnFood();
           }
         }
 
-        const currentSpeed = speed + player.speedBoost;
+        function step() {
+          if (!alive) return;
+          const head = snake[0];
+          const next = { x: head.x + dir.x, y: head.y + dir.y };
 
-        // move obstacles
-        obstacles.forEach((ob) => {
-          ob.x -= currentSpeed;
-        });
-        obstacles = obstacles.filter((ob) => ob.x + ob.w > -10);
-        if (obstacles.length < 3 && Math.random() < 0.03) {
-          spawnObstacle();
+          // wall collision
+          if (next.x < 0 || next.x >= cols || next.y < 0 || next.y >= rows) {
+            alive = false;
+            return;
+          }
+
+          // self collision
+          if (snake.some(seg => seg.x === next.x && seg.y === next.y)) {
+            alive = false;
+            return;
+          }
+
+          snake.unshift(next);
+
+          if (next.x === food.x && next.y === food.y) {
+            spawnFood();
+          } else {
+            snake.pop();
+          }
         }
 
-        // move flowers
-        flowers.forEach((f) => {
-          f.x -= currentSpeed * 0.9;
-        });
-        flowers = flowers.filter((f) => f.x + f.r > -10);
-        if (flowers.length < 2 && Math.random() < 0.01) {
-          spawnFlower();
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // grid background
+          ctx.fillStyle = "#020617";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // food
+          ctx.fillStyle = "#f97316";
+          ctx.fillRect(
+            food.x * cellSize + 2,
+            food.y * cellSize + 2,
+            cellSize - 4,
+            cellSize - 4
+          );
+
+          // snake
+          ctx.fillStyle = "#22c55e";
+          snake.forEach((seg, idx) => {
+            ctx.fillRect(
+              seg.x * cellSize + 2,
+              seg.y * cellSize + 2,
+              cellSize - 4,
+              cellSize - 4
+            );
+          });
+
+          if (!alive) {
+            ctx.fillStyle = "rgba(15,23,42,0.8)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#facc15";
+            ctx.font = "14px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("Out of order – press R to restart", canvas.width / 2, canvas.height / 2);
+          }
         }
 
-        // collisions - obstacles
-        obstacles.forEach((ob) => {
-          const collide =
-            player.x < ob.x + ob.w &&
-            player.x + player.w > ob.x &&
-            player.y < ob.y + ob.h &&
-            player.y + player.h > ob.y;
-          if (collide) {
-            running = false;
-            if (statusEl) {
-              statusEl.textContent =
-                "Ouch. You hit a hurdle. Press R to try again.";
+        function gameLoop() {
+          step();
+          draw();
+        }
+
+        resetSnake();
+        draw();
+        const snakeInterval = setInterval(gameLoop, 150);
+
+        window.addEventListener("keydown", (e) => {
+          if (!canvas) return;
+
+          const key = e.key.toLowerCase();
+
+          if (key === "r") {
+            resetSnake();
+            return;
+          }
+
+          let nextDir = null;
+          if (key === "w") nextDir = { x: 0, y: -1 };
+          if (key === "s") nextDir = { x: 0, y: 1 };
+          if (key === "a") nextDir = { x: -1, y: 0 };
+          if (key === "d") nextDir = { x: 1, y: 0 };
+
+          if (nextDir) {
+            e.preventDefault();
+            // avoid reversing direction
+            if (snake.length > 1 && snake[0].x + nextDir.x === snake[1].x && snake[0].y + nextDir.y === snake[1].y) {
+              return;
+            }
+            dir = nextDir;
+          }
+        });
+      })();
+
+      /* ---------- RUNNER GAME ---------- */
+      (function () {
+        const canvas = document.getElementById("runnerCanvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+
+        const groundY = canvas.height - 30;
+        let player, obstacles, boosts, speed, gravity, jumpVelocity, score, alive;
+
+        function resetRunner() {
+          player = { x: 30, y: groundY, vy: 0, onGround: true };
+          obstacles = [];
+          boosts = [];
+          speed = 3;
+          gravity = 0.4;
+          jumpVelocity = -7.5;
+          score = 0;
+          alive = true;
+        }
+
+        function addObstacle() {
+          const width = 12 + Math.random() * 10;
+          obstacles.push({
+            x: canvas.width + 20,
+            y: groundY - 15,
+            w: width,
+            h: 15
+          });
+        }
+
+        function addBoost() {
+          boosts.push({
+            x: canvas.width + 60,
+            y: groundY - 35,
+            size: 10,
+            vy: -0.4
+          });
+        }
+
+        let frameCount = 0;
+
+        function updateRunner() {
+          if (!alive) return;
+
+          frameCount++;
+          score += 0.03;
+
+          // spawn obstacles and boosts periodically
+          if (frameCount % 120 === 0) addObstacle();
+          if (frameCount % 260 === 0) addBoost();
+
+          // physics
+          player.vy += gravity;
+          player.y += player.vy;
+
+          if (player.y >= groundY) {
+            player.y = groundY;
+            player.vy = 0;
+            player.onGround = true;
+          }
+
+          // move obstacles
+          obstacles.forEach(o => {
+            o.x -= speed;
+          });
+          obstacles = obstacles.filter(o => o.x + o.w > -10);
+
+          // move boosts
+          boosts.forEach(b => {
+            b.x -= speed * 0.9;
+            b.y += b.vy;
+          });
+          boosts = boosts.filter(b => b.x + b.size > -10);
+
+          // collisions with obstacles
+          for (const o of obstacles) {
+            const withinX = player.x + 12 > o.x && player.x - 8 < o.x + o.w;
+            const withinY = player.y >= o.y && player.y <= o.y + o.h + 8;
+            if (withinX && withinY) {
+              alive = false;
+              break;
             }
           }
-        });
 
-        // collisions - flowers
-        flowers.forEach((f) => {
-          const dx = player.x + player.w / 2 - f.x;
-          const dy = player.y + player.h / 2 - f.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < f.r + 16) {
-            // collect boost
-            player.speedBoost = 2;
-            player.boostTime = 300; // ~5 seconds at 60fps
-            f.collected = true;
-          }
-        });
-        flowers = flowers.filter((f) => !f.collected);
-      }
-
-      function drawRunner() {
-        ctx.clearRect(0, 0, width, height);
-
-        // background
-        ctx.fillStyle = "#020617";
-        ctx.fillRect(0, 0, width, height);
-
-        // ground
-        ctx.fillStyle = "#1e293b";
-        ctx.fillRect(0, groundY, width, height - groundY);
-
-        // player
-        ctx.fillStyle = "#38bdf8";
-        ctx.fillRect(player.x, player.y, player.w, player.h);
-
-        // obstacles – triangles
-        ctx.fillStyle = "#f97316";
-        obstacles.forEach((ob) => {
-          ctx.beginPath();
-          ctx.moveTo(ob.x, ob.y + ob.h);
-          ctx.lineTo(ob.x + ob.w / 2, ob.y);
-          ctx.lineTo(ob.x + ob.w, ob.y + ob.h);
-          ctx.closePath();
-          ctx.fill();
-        });
-
-        // flowers – little circles
-        ctx.fillStyle = "#22c55e";
-        flowers.forEach((f) => {
-          ctx.beginPath();
-          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      }
-
-      function loop() {
-        updateRunner();
-        drawRunner();
-        requestAnimationFrame(loop);
-      }
-      loop();
-
-      document.addEventListener("keydown", (e) => {
-        if (isTypingTarget(e)) return;
-        const key = e.key.toLowerCase();
-        if ((key === " " || key === "w") && !player.jumping && running) {
-          player.vy = -12;
-          player.jumping = true;
-        } else if (key === "r") {
-          resetRunner();
-        }
-      });
-    })();
-
-    // -------------------------
-    // HANGMAN GAME
-    // -------------------------
-    (function () {
-      const words = [
-        "quorum",
-        "amendment",
-        "caucus",
-        "gavel",
-        "resolution",
-        "committee",
-        "docket",
-        "sponsor",
-        "motion",
-        "chamber",
-      ];
-
-      const wordEl = document.getElementById("hmWord");
-      const guessesEl = document.getElementById("hmGuesses");
-      const statusEl = document.getElementById("hmStatus");
-      const inputEl = document.getElementById("hmInput");
-      const guessBtn = document.getElementById("hmGuessBtn");
-      const newBtn = document.getElementById("hmNewWord");
-
-      if (!wordEl || !guessesEl || !statusEl || !inputEl || !guessBtn || !newBtn) return;
-
-      let currentWord = "";
-      let revealed = [];
-      let guesses = [];
-      let wrong = 0;
-      const maxWrong = 6;
-
-      function pickWord() {
-        currentWord = words[Math.floor(Math.random() * words.length)];
-        revealed = currentWord.split("").map((ch) => (ch === "-" ? "-" : "_"));
-        guesses = [];
-        wrong = 0;
-        render();
-        statusEl.textContent = "Guess a letter related to our MSL universe.";
-      }
-
-      function render() {
-        wordEl.textContent = revealed.join(" ");
-        guessesEl.innerHTML = "";
-        guesses.forEach((g) => {
-          const span = document.createElement("span");
-          span.textContent = g;
-          guessesEl.appendChild(span);
-        });
-      }
-
-      function checkWinLose() {
-        if (!revealed.includes("_")) {
-          statusEl.textContent =
-            "You got it! Secret reward: you now officially know at least one piece of MSL jargon on purpose.";
-          return true;
-        }
-        if (wrong >= maxWrong) {
-          statusEl.textContent =
-            "Out of attempts. The word was \"" + currentWord + "\". Hit ‘New Word’ to try again.";
-          return true;
-        }
-        return false;
-      }
-
-      function handleGuess() {
-        const raw = inputEl.value.toLowerCase().trim();
-        inputEl.value = "";
-        if (!raw || raw.length !== 1 || !/[a-z]/.test(raw)) {
-          statusEl.textContent = "Enter a single letter (A–Z).";
-          return;
-        }
-        if (guesses.includes(raw)) {
-          statusEl.textContent = "You already tried that letter.";
-          return;
-        }
-        guesses.push(raw);
-
-        if (currentWord.includes(raw)) {
-          currentWord.split("").forEach((ch, i) => {
-            if (ch === raw) revealed[i] = ch;
+          // boosts
+          boosts.forEach(b => {
+            const dx = player.x - (b.x + b.size / 2);
+            const dy = player.y - (b.y + b.size / 2);
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 20) {
+              // speed boost + jump boost short duration
+              speed = 4.5;
+              jumpVelocity = -9;
+              setTimeout(() => {
+                speed = 3;
+                jumpVelocity = -7.5;
+              }, 5000);
+              b.x = -999;
+            }
           });
-          statusEl.textContent = "Nice. That letter is in the word.";
-        } else {
-          wrong++;
-          statusEl.textContent =
-            "Nope. " + (maxWrong - wrong) + " attempts left.";
         }
-        render();
-        checkWinLose();
-      }
 
-      guessBtn.addEventListener("click", handleGuess);
-      inputEl.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
+        function drawRunner() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // background
+          ctx.fillStyle = "#020617";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // ground
+          ctx.strokeStyle = "#4b5563";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(0, groundY + 8);
+          ctx.lineTo(canvas.width, groundY + 8);
+          ctx.stroke();
+
+          // player
+          ctx.fillStyle = "#38bdf8";
+          ctx.fillRect(player.x - 8, player.y - 16, 16, 16);
+
+          // obstacles (triangles)
+          ctx.fillStyle = "#f97316";
+          obstacles.forEach(o => {
+            ctx.beginPath();
+            ctx.moveTo(o.x, o.y + o.h);
+            ctx.lineTo(o.x + o.w / 2, o.y);
+            ctx.lineTo(o.x + o.w, o.y + o.h);
+            ctx.closePath();
+            ctx.fill();
+          });
+
+          // boosts (floating blocks)
+          ctx.fillStyle = "#facc15";
+          boosts.forEach(b => {
+            ctx.fillRect(b.x, b.y, b.size, b.size);
+          });
+
+          // score
+          ctx.fillStyle = "#e5e7eb";
+          ctx.font = "12px sans-serif";
+          ctx.textAlign = "left";
+          ctx.fillText("Score: " + Math.floor(score), 8, 14);
+
+          if (!alive) {
+            ctx.fillStyle = "rgba(15,23,42,0.85)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#f97373";
+            ctx.font = "13px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("You tripped on procedure.", canvas.width / 2, canvas.height / 2 - 8);
+            ctx.fillStyle = "#facc15";
+            ctx.fillText("Press R or tap to try again.", canvas.width / 2, canvas.height / 2 + 10);
+          }
+        }
+
+        function runnerLoop() {
+          updateRunner();
+          drawRunner();
+          requestAnimationFrame(runnerLoop);
+        }
+
+        function jump() {
+          if (!alive) {
+            resetRunner();
+            return;
+          }
+          if (player.onGround) {
+            player.vy = jumpVelocity;
+            player.onGround = false;
+          }
+        }
+
+        canvas.addEventListener("click", jump);
+        canvas.addEventListener("touchstart", function (e) {
           e.preventDefault();
-          handleGuess();
-        }
-      });
-      newBtn.addEventListener("click", pickWord);
+          jump();
+        });
 
-      pickWord();
-    })();
-
-    // -------------------------
-    // FIELD COMPANION FLOATING DOT
-    // -------------------------
-    (function () {
-      const companionEl = document.createElement("div");
-      companionEl.id = "fieldCompanion";
-      companionEl.className = "field-companion-dot paused";
-      companionEl.textContent = "🐶";
-      document.body.appendChild(companionEl);
-
-      const radios = document.querySelectorAll('input[name="companion"]');
-      const emojiMap = {
-        dog: "🐶",
-        cat: "🐱",
-        koala: "🐨",
-      };
-
-      let x = window.innerWidth * 0.7;
-      let y = window.innerHeight * 0.6;
-      let vx = 1.2;
-      let vy = 0.9;
-      const size = 56;
-      let moving = true;
-
-      function updateEmoji() {
-        const checked = Array.from(radios).find((r) => r.checked);
-        const emoji = emojiMap[checked ? checked.value : "dog"] || "🐶";
-        companionEl.textContent = emoji;
-      }
-
-      radios.forEach((r) => {
-        r.addEventListener("change", updateEmoji);
-      });
-      updateEmoji();
-
-      companionEl.addEventListener("click", () => {
-        moving = !moving;
-        companionEl.classList.toggle("paused", !moving);
-      });
-
-      function moveCompanion() {
-        if (moving) {
-          x += vx;
-          y += vy;
-
-          const maxX = window.innerWidth - size - 10;
-          const maxY = window.innerHeight - size - 10;
-          const minX = 10;
-          const minY = 10;
-
-          if (x < minX || x > maxX) {
-            vx *= -1;
-            x = Math.min(Math.max(x, minX), maxX);
+        window.addEventListener("keydown", (e) => {
+          const key = e.key.toLowerCase();
+          if (key === " " || key === "spacebar") {
+            e.preventDefault();
+            jump();
           }
-          if (y < minY || y > maxY) {
-            vy *= -1;
-            y = Math.min(Math.max(y, minY), maxY);
+          if (key === "r") {
+            resetRunner();
+          }
+        });
+
+        resetRunner();
+        runnerLoop();
+      })();
+
+      /* ---------- HANGMAN ---------- */
+      (function () {
+        const wordEl = document.getElementById("hangman-word");
+        const lettersEl = document.getElementById("hangman-letters");
+        const statusEl = document.getElementById("hangman-status");
+        const resetBtn = document.getElementById("hangman-reset");
+
+        if (!wordEl || !lettersEl || !statusEl || !resetBtn) return;
+
+        const words = [
+          "BILL",
+          "COMMITTEE",
+          "QUORUM",
+          "AMENDMENT",
+          "CAUCUS",
+          "RESOLUTION",
+          "CHAMBER",
+          "DRAFTING",
+          "FLOOR",
+          "GAVEL"
+        ];
+
+        let secret, revealed, attempts;
+
+        function pickWord() {
+          secret = words[Math.floor(Math.random() * words.length)];
+          revealed = Array(secret.length).fill("_");
+          attempts = 7;
+          wordEl.textContent = revealed.join(" ");
+          statusEl.textContent = "You have 7 attempts.";
+          renderLetters();
+        }
+
+        function renderLetters() {
+          lettersEl.innerHTML = "";
+          const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+          for (const ch of alphabet) {
+            const btn = document.createElement("button");
+            btn.textContent = ch;
+            btn.addEventListener("click", () => guessLetter(ch, btn));
+            lettersEl.appendChild(btn);
+          }
+        }
+
+        function guessLetter(ch, btn) {
+          btn.disabled = true;
+          let hit = false;
+          for (let i = 0; i < secret.length; i++) {
+            if (secret[i] === ch) {
+              revealed[i] = ch;
+              hit = true;
+            }
+          }
+          wordEl.textContent = revealed.join(" ");
+
+          if (!hit) {
+            attempts--;
           }
 
-          companionEl.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+          if (!revealed.includes("_")) {
+            statusEl.textContent =
+              "You nailed it. Reward: smug confidence next time someone uses that word incorrectly.";
+            disableAll();
+          } else if (attempts <= 0) {
+            statusEl.textContent = `Out of attempts. The word was: ${secret}.`;
+            disableAll();
+          } else {
+            statusEl.textContent = `Attempts left: ${attempts}`;
+          }
         }
-        requestAnimationFrame(moveCompanion);
-      }
-      moveCompanion();
 
-      window.addEventListener("resize", () => {
-        x = Math.min(x, window.innerWidth - size - 10);
-        y = Math.min(y, window.innerHeight - size - 10);
-      });
-    })();
+        function disableAll() {
+          const buttons = lettersEl.querySelectorAll("button");
+          buttons.forEach(b => (b.disabled = true));
+        }
+
+        resetBtn.addEventListener("click", pickWord);
+        pickWord();
+      })();
+
+      /* ---------- COMPANION ---------- */
+      (function () {
+        const buddy = document.getElementById("companionBuddy");
+        const barEnergy = document.getElementById("barEnergy");
+        const barMood = document.getElementById("barMood");
+        const barFocus = document.getElementById("barFocus");
+        const wrapper = document.querySelector(".companion-wrapper");
+        const actionButtons = document.querySelectorAll(".companion-actions button");
+
+        if (!buddy || !barEnergy || !barMood || !barFocus || !wrapper) return;
+
+        let state = {
+          pet: "dog",
+          energy: 80,
+          mood: 80,
+          focus: 60
+        };
+
+        const petIcons = {
+          dog: "🐶",
+          cat: "🐱",
+          koala: "🐨"
+        };
+
+        function updateBars() {
+          barEnergy.style.width = state.energy + "%";
+          barMood.style.width = state.mood + "%";
+          barFocus.style.width = state.focus + "%";
+        }
+
+        function clamp(val) {
+          return Math.max(0, Math.min(100, val));
+        }
+
+        function randomMove() {
+          const rect = wrapper.getBoundingClientRect();
+          const padding = 20;
+          const maxX = rect.width - 90;
+          const maxY = rect.height - 120;
+          const x = padding + Math.random() * Math.max(40, maxX - padding);
+          const y = padding + Math.random() * Math.max(40, maxY - padding);
+          buddy.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // Idle decay
+        setInterval(() => {
+          state.energy = clamp(state.energy - 0.3);
+          state.mood = clamp(state.mood - 0.2);
+          state.focus = clamp(state.focus - 0.15);
+          updateBars();
+        }, 2000);
+
+        // Drift around
+        setInterval(randomMove, 3500);
+        randomMove();
+        updateBars();
+
+        actionButtons.forEach(btn => {
+          const pet = btn.getAttribute("data-pet");
+          const action = btn.getAttribute("data-action");
+
+          if (pet) {
+            btn.addEventListener("click", () => {
+              state.pet = pet;
+              buddy.textContent = petIcons[pet] || "🐶";
+              state.mood = clamp(state.mood + 15);
+              state.energy = clamp(state.energy + 5);
+              updateBars();
+            });
+          }
+
+          if (action === "feed") {
+            btn.addEventListener("click", () => {
+              state.energy = clamp(state.energy + 20);
+              state.mood = clamp(state.mood + 5);
+              updateBars();
+            });
+          }
+          if (action === "play") {
+            btn.addEventListener("click", () => {
+              state.mood = clamp(state.mood + 20);
+              state.energy = clamp(state.energy - 5);
+              updateBars();
+            });
+          }
+          if (action === "study") {
+            btn.addEventListener("click", () => {
+              state.focus = clamp(state.focus + 20);
+              state.energy = clamp(state.energy - 5);
+              updateBars();
+            });
+          }
+        });
+
+        buddy.addEventListener("click", () => {
+          state.mood = clamp(state.mood + 10);
+          updateBars();
+        });
+      })();
+    });
   </script>
 </body>
 </html>
