@@ -11,12 +11,12 @@
   <header class="site-header">
     <div class="inner">
       <a href="index.html#hero" class="brand">
-        <span class="brand-mark">
+        <span class="brand-mark brand-mark-logo">
           <img src="logo-1.png" alt="SMCM MSL logo" />
         </span>
         <span class="brand-text">
-          <span class="brand-title">MSL</span>
-          <span class="brand-sub">SMCM Chapter</span>
+          <span class="brand-title">Maryland Student Legislature</span>
+          <span class="brand-sub">St. Mary’s College of Maryland Chapter</span>
         </span>
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
@@ -24,9 +24,9 @@
         <a href="index.html#hero">Home</a>
         <a href="index.html#maryland">About MSL</a>
         <a href="index.html#chapter">Our Chapter</a>
+        <a href="executive-board.html">Exec Board</a>
         <a href="index.html#journey">Your Journey</a>
         <a href="index.html#documents">Documents</a>
-        <a href="executive-board.html">Exec Board</a>
         <a href="resources.html">Resources</a>
         <a href="bulletin.html">Bulletin</a>
         <a href="msl-game.html">Games</a>
@@ -60,11 +60,11 @@
           <h2>Upcoming Votes</h2>
           <p class="section-body">
             These votes affect how our chapter runs, how we show up at session, and what priorities we
-            pursue. Members should review these items before the listed meeting date. 
+            pursue. Members should review these items before the listed meeting date.
           </p>
         </div>
         <div class="grid-2">
-          <!-- Example vote card #1 – edit as needed -->
+          <!-- Vote card #1 -->
           <article class="card plain-card">
             <h3>Executive Board Name Change to The Magistratum</h3>
             <p class="small">
@@ -73,14 +73,19 @@
               <strong>Type:</strong> Bylaws amendment
             </p>
             <p class="small">
-              Proposal to rename all executive board instances in the bylaws to The Magistratum. First General Body Vote.
+              Proposal to rename all executive board instances in the bylaws to The Magistratum.
+              First General Body Vote.
             </p>
             <ul class="checklist small">
-              <li><a href="docs/bylaws-social-media-amendment.pdf" target="_blank">Read full text (PDF)</a></li>
+              <li>
+                <a href="docs/bylaws-social-media-amendment.pdf" target="_blank">
+                  Read full text (PDF)
+                </a>
+              </li>
             </ul>
           </article>
 
-          <!-- Example vote card #2 – edit as needed -->
+          <!-- Vote card #2 -->
           <article class="card plain-card">
             <h3>Executive Board Election Timeline</h3>
             <p class="small">
@@ -90,13 +95,18 @@
             </p>
             <p class="small">
               Adoption of the proposed timeline for nominations, campaigns, and voting for the next
-              Executive Board term. Passed with favor by the board. 
+              Executive Board term. Passed with favor by the board.
             </p>
             <ul class="checklist small">
-              <li><a href="docs/exec-election-timeline.pdf" target="_blank">Election timeline (PDF)</a></li>
+              <li>
+                <a href="docs/exec-election-timeline.pdf" target="_blank">
+                  Election timeline (PDF)
+                </a>
+              </li>
             </ul>
           </article>
         </div>
+
         <p class="small" style="margin-top: 1rem;">
           Want something added to the bulletin? Talk to the President or Secretary, or
           email <a href="mailto:msl@smcm.edu">msl@smcm.edu</a>.
@@ -122,7 +132,7 @@
             <div class="timeline-card">
               <h3>Spring General Assembly Session</h3>
               <p class="small">
-                <strong>Date:</strong> April · <strong>Location:</strong> Annapolis <br />
+                <strong>Date:</strong> April · <strong>Location:</strong> Annapolis<br />
                 Final floor debate on delegate and senator bills, plus statewide elections and awards.
                 Take your polished drafted bill and argue for its passage so it may reach the official
                 Maryland General Assembly’s docket.
@@ -162,8 +172,8 @@
           <p class="eyebrow">Stay in the Loop</p>
           <h2>Join the Delegation Contact List</h2>
           <p class="section-body">
-            This is the same interest and contact form linked on our home page. If you’ve already filled
-            it out there, you’re all set—no need to submit it twice.
+            This is the same interest & contact form linked on our home page. If you’ve already filled it
+            out there, you’re all set—no need to submit it twice.
           </p>
           <p class="section-body">
             If you’re curious about how democracy works—or how it could work better—you belong in the
@@ -216,26 +226,31 @@
         </div>
 
         <div class="grid-2">
+          <!-- SMCM Chapter GroupMe -->
           <div class="card plain-card" style="text-align:center;">
             <h3>SMCM MSL Chapter GroupMe</h3>
             <p class="small">
               Scan this QR code to join the St. Mary’s College of Maryland MSL chapter GroupMe.
             </p>
             <div style="margin-top: 0.75rem;">
-              <!-- Inline view of the QR PDF -->
-              <iframe
-                src="qr-groupme.pdf"
-                width="100%"
-                height="260"
-                frameborder="0"
-              ></iframe>
+              <img
+                src="qr-groupme.png"
+                alt="QR code for SMCM MSL Chapter GroupMe"
+                style="max-width: 220px; width: 100%; height: auto; border-radius: 8px;"
+                onerror="this.style.display='none'; document.getElementById('qr1-fallback').style.display='block';"
+              />
+              <div id="qr1-fallback" style="display:none; margin-top: 0.75rem;">
+                <a href="qr-groupme.pdf" target="_blank" class="btn btn-primary small">
+                  Open SMCM Chapter QR (PDF)
+                </a>
+              </div>
             </div>
             <p class="small" style="margin-top: 0.5rem;">
-              If the preview doesn’t load on your device, you can
-              <a href="qr-groupme.pdf" target="_blank">open the QR in a new tab</a>.
+              If the preview doesn’t load on your device, use the button above to open the QR code instead.
             </p>
           </div>
 
+          <!-- Statewide GroupMe -->
           <div class="card plain-card" style="text-align:center;">
             <h3>Statewide MSL GroupMe</h3>
             <p class="small">
@@ -243,16 +258,20 @@
               with delegates from campuses across Maryland.
             </p>
             <div style="margin-top: 0.75rem;">
-              <iframe
-                src="qr-groupme2.pdf"
-                width="100%"
-                height="260"
-                frameborder="0"
-              ></iframe>
+              <img
+                src="qr-groupme2.png"
+                alt="QR code for statewide MSL GroupMe"
+                style="max-width: 220px; width: 100%; height: auto; border-radius: 8px;"
+                onerror="this.style.display='none'; document.getElementById('qr2-fallback').style.display='block';"
+              />
+              <div id="qr2-fallback" style="display:none; margin-top: 0.75rem;">
+                <a href="qr-groupme2.pdf" target="_blank" class="btn btn-primary small">
+                  Open Statewide GroupMe QR (PDF)
+                </a>
+              </div>
             </div>
             <p class="small" style="margin-top: 0.5rem;">
-              If the preview doesn’t load on your device, you can
-              <a href="qr-groupme2.pdf" target="_blank">open the QR in a new tab</a>.
+              Share this with trusted members who plan to participate in statewide sessions.
             </p>
           </div>
         </div>
