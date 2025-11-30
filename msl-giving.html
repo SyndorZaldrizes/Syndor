@@ -140,10 +140,35 @@
             </p>
           </div>
 
+          <div id="formCountdown" class="countdown">
+            <p class="countdown-label">
+              MSL Giving Form goes live in:
+            </p>
+            <div class="countdown-timer">
+              <div>
+                <span data-unit="days">--</span>
+                <small>Days</small>
+              </div>
+              <div>
+                <span data-unit="hours">--</span>
+                <small>Hours</small>
+              </div>
+              <div>
+                <span data-unit="mins">--</span>
+                <small>Minutes</small>
+              </div>
+              <div>
+                <span data-unit="secs">--</span>
+                <small>Seconds</small>
+              </div>
+            </div>
+          </div>
+
           <a
-            href="YOUR_LADDER_LINK_HERE"
-            class="btn btn-primary full"
+            href="https://www.smcm.edu/gt/sanchez-alvarado"
+            class="btn btn-primary full giving-form-link"
             target="_blank"
+            style="display: none;"
           >
             Open the MSL Giving Form
           </a>
@@ -278,7 +303,6 @@
             fees heading into the Spring session, so every vote directly supports students who want to be in the room.
           </p>
         </div>
-
         <div class="grid-2">
           <div>
             <h3>Milestone Incentives</h3>
@@ -351,9 +375,10 @@
               receipt directly from the College.
             </p>
             <a
-              href="YOUR_LADDER_LINK_HERE"
-              class="btn btn-primary"
+              href="https://www.smcm.edu/gt/sanchez-alvarado"
+              class="btn btn-primary giving-form-link"
               target="_blank"
+              style="display: none;"
             >
               Open the MSL Giving Form
             </a>
@@ -455,6 +480,49 @@
 
       updateCountdown();
       timer = setInterval(updateCountdown, 1000);
+    })();
+  </script>
+
+  <!-- Inline form go-live countdown script (Dec 2, 2025 at 12:00 AM Eastern) -->
+  <script>
+    (function () {
+      const goLiveTime = new Date("2025-12-02T00:00:00-05:00");
+      const countdownEl = document.getElementById("formCountdown");
+      const formLinks = document.querySelectorAll(".giving-form-link");
+      let timer = null;
+      function updateGoLiveCountdown() {
+        const now = new Date();
+        const diff = goLiveTime - now;
+        if (diff <= 0) {
+          formLinks.forEach((link) => {
+            link.style.display = "";
+          });
+          if (countdownEl) {
+            countdownEl.style.display = "none";
+          }
+          if (timer) {
+            clearInterval(timer);
+          }
+          return;
+        }
+        const totalSeconds = Math.floor(diff / 1000);
+        const days = Math.floor(totalSeconds / (3600 * 24));
+        const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+        if (countdownEl) {
+          const d = countdownEl.querySelector('[data-unit="days"]');
+          const h = countdownEl.querySelector('[data-unit="hours"]');
+          const m = countdownEl.querySelector('[data-unit="mins"]');
+          const s = countdownEl.querySelector('[data-unit="secs"]');
+          if (d) d.textContent = String(days);
+          if (h) h.textContent = String(hours).padStart(2, "0");
+          if (m) m.textContent = String(mins).padStart(2, "0");
+          if (s) s.textContent = String(secs).padStart(2, "0");
+        }
+      }
+      updateGoLiveCountdown();
+      timer = setInterval(updateGoLiveCountdown, 1000);
     })();
   </script>
 </body>
