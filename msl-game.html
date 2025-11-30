@@ -19,8 +19,8 @@
       padding-bottom: 3rem;
     }
 
-    .game-page h1, 
-    .game-page h2, 
+    .game-page h1,
+    .game-page h2,
     .game-page h3 {
       color: #f9fafb;
     }
@@ -78,7 +78,7 @@
       box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8);
     }
 
-    .game-page .small, 
+    .game-page .small,
     .game-page .section-body,
     .game-page p {
       color: #e5e7eb;
@@ -165,47 +165,50 @@
       min-height: 1.2em;
     }
 
-    /* Companion (Field Buddy) */
-    .companion-wrapper {
-      position: relative;
-      min-height: 220px;
-      overflow: hidden;
-      background: radial-gradient(circle at bottom, #0f172a, #020617);
+    /* Companion dock (corner widget) */
+    #companionDock {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 40;
+      font-size: 0.75rem;
+      color: #e5e7eb;
     }
-
-    .companion-buddy {
-      position: absolute;
-      width: 72px;
-      height: 72px;
+    #companionToggle {
+      width: 52px;
+      height: 52px;
       border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
       background: radial-gradient(circle at 30% 20%, #facc15, #f97316);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+      font-size: 1.75rem;
       cursor: pointer;
-      transition: transform 0.25s ease-out;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75);
     }
-
-    .companion-hud {
+    #companionPanel {
       position: absolute;
-      left: 0.75rem;
-      bottom: 0.75rem;
-      right: 0.75rem;
-      font-size: 0.8rem;
-      display: flex;
-      justify-content: space-between;
-      gap: 0.75rem;
-      flex-wrap: wrap;
+      right: 60px;
+      bottom: 0;
+      width: 230px;
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.9);
+      display: none;
+    }
+    #companionPanel.open {
+      display: block;
     }
 
     .companion-bars {
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
+      margin-bottom: 0.5rem;
     }
-
     .bar {
       min-width: 90px;
     }
@@ -241,6 +244,7 @@
       gap: 0.35rem;
       flex-wrap: wrap;
       justify-content: flex-end;
+      margin-top: 0.35rem;
     }
     .companion-actions button {
       border-radius: 999px;
@@ -374,7 +378,7 @@
               </div>
               <p class="small">
                 Classic snake-style game. Collect “bills” (squares) and avoid running into yourself.
-                <strong>Controls:</strong> W, A, S, D keys (desktop).
+                <strong>Controls:</strong> W, A, S, D keys on desktop. On mobile, this one is better viewed than played.
               </p>
               <div class="canvas-shell">
                 <canvas id="snakeCanvas" width="260" height="260"></canvas>
@@ -391,15 +395,17 @@
                 <span class="label game">Game</span>
               </div>
               <p class="small">
-                Dodge procedural triangles and hit “boost blocks” to pick up speed. 
-                <strong>Controls:</strong> Spacebar or click/tap inside the game box to jump (desktop or mobile).
+                Dodge procedural triangles, avoid gaps, and hit “boost blocks” to pick up speed.
+                <strong>Controls:</strong> Spacebar or tap/click inside the game box to jump.
               </p>
               <div class="canvas-shell">
                 <canvas id="runnerCanvas" width="260" height="160"></canvas>
               </div>
               <p class="controls-text">
-                Score increases over time. Don’t fall into gaps or hit a triangle.
+                Score = seconds survived. Make it to 5 minutes on a run to unlock the secret lab.
               </p>
+              <p id="runner-best" class="small" style="margin-top:0.35rem;"></p>
+              <div id="runner-leaderboard" class="small" style="margin-top:0.25rem;"></div>
             </article>
 
             <!-- Hangman -->
@@ -424,55 +430,76 @@
       </div>
     </section>
 
-    <!-- COMPANION SECTION -->
+    <!-- SECRET UNLOCK SECTION -->
+    <section class="section" id="secretSection" style="display:none;">
+      <div class="inner">
+        <article class="card plain-card">
+          <h2>Secret Page Unlocked</h2>
+          <p class="small">
+            You (or someone on this device) survived a full 5 minutes in Floor Runner. That earns access
+            to a hidden experiments page for future mini-games.
+          </p>
+          <p class="small">
+            <a href="msl-secret.html" class="btn btn-primary small">Open Secret Lab (Coming Soon)</a>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- COMPANION SECTION (TEXT ONLY) -->
     <section class="section bg-alt">
       <div class="inner">
         <div class="section-header">
           <p class="eyebrow">Field Companion</p>
           <h2>Your Little MSL Study Buddy</h2>
           <p class="section-body">
-            Pick a companion and let it wander the corner of the page while you study or play. Click the
-            buttons to feed, energize, or refocus it. It’s purely for vibes, but you deserve that.
+            Look for the little buddy in the bottom-right corner of this page. Tap or click it to open
+            quick controls, swap between dog / cat / koala, and keep an eye on its mood, energy, and focus
+            while you work through the games and quiz.
           </p>
         </div>
-
-        <article class="card plain-card companion-wrapper">
-          <div id="companionBuddy" class="companion-buddy" aria-label="Field companion">🐶</div>
-
-          <div class="companion-hud">
-            <div class="companion-bars">
-              <div class="bar">
-                <div class="bar-label">Energy</div>
-                <div class="bar-track">
-                  <div id="barEnergy" class="bar-fill energy"></div>
-                </div>
-              </div>
-              <div class="bar">
-                <div class="bar-label">Mood</div>
-                <div class="bar-track">
-                  <div id="barMood" class="bar-fill mood"></div>
-                </div>
-              </div>
-              <div class="bar">
-                <div class="bar-label">Focus</div>
-                <div class="bar-track">
-                  <div id="barFocus" class="bar-fill focus"></div>
-                </div>
-              </div>
-            </div>
-            <div class="companion-actions">
-              <button data-pet="dog">Dog</button>
-              <button data-pet="cat">Cat</button>
-              <button data-pet="koala">Koala</button>
-              <button data-action="feed">Feed</button>
-              <button data-action="play">Play</button>
-              <button data-action="study">Study Break</button>
-            </div>
-          </div>
-        </article>
       </div>
     </section>
   </main>
+
+  <!-- Floating companion widget -->
+  <div id="companionDock">
+    <button id="companionToggle" aria-label="Toggle companion panel">🐶</button>
+    <div id="companionPanel">
+      <p style="margin-bottom:0.35rem;">Field Companion</p>
+      <div class="companion-bars">
+        <div class="bar">
+          <div class="bar-label">Energy</div>
+          <div class="bar-track">
+            <div id="barEnergy" class="bar-fill energy"></div>
+          </div>
+        </div>
+        <div class="bar">
+          <div class="bar-label">Mood</div>
+          <div class="bar-track">
+            <div id="barMood" class="bar-fill mood"></div>
+          </div>
+        </div>
+        <div class="bar">
+          <div class="bar-label">Focus</div>
+          <div class="bar-track">
+            <div id="barFocus" class="bar-fill focus"></div>
+          </div>
+        </div>
+      </div>
+      <div class="companion-actions">
+        <button data-pet="dog">Dog</button>
+        <button data-pet="cat">Cat</button>
+        <button data-pet="koala">Koala</button>
+        <button data-action="feed">Feed</button>
+        <button data-action="play">Play</button>
+        <button data-action="study">Study</button>
+      </div>
+      <p class="small" style="margin-top:0.4rem; opacity:0.8;">
+        Bars slowly drift down over time. Use actions to top them back up.
+      </p>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <div class="inner footer-inner">
@@ -490,6 +517,23 @@
   <!-- Page-specific JS: all guarded so errors don't break the page -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      /* ---------- SECRET UNLOCK ---------- */
+      const secretSection = document.getElementById("secretSection");
+      function unlockSecret() {
+        if (!secretSection) return;
+        secretSection.style.display = "block";
+        try {
+          localStorage.setItem("mslSecretUnlocked", "true");
+        } catch (e) {}
+      }
+      (function restoreSecret() {
+        try {
+          if (localStorage.getItem("mslSecretUnlocked") === "true" && secretSection) {
+            secretSection.style.display = "block";
+          }
+        } catch (e) {}
+      })();
+
       /* ---------- QUIZ ---------- */
       (function () {
         const questionEl = document.getElementById("quiz-question");
@@ -604,7 +648,7 @@
         renderQuestion();
       })();
 
-      /* ---------- SNAKE GAME ---------- */
+      /* ---------- SNAKE GAME (desktop-focused) ---------- */
       (function () {
         const canvas = document.getElementById("snakeCanvas");
         if (!canvas) return;
@@ -628,7 +672,6 @@
             x: Math.floor(Math.random() * cols),
             y: Math.floor(Math.random() * rows)
           };
-          // avoid spawning on snake
           if (snake.some(seg => seg.x === food.x && seg.y === food.y)) {
             spawnFood();
           }
@@ -639,13 +682,11 @@
           const head = snake[0];
           const next = { x: head.x + dir.x, y: head.y + dir.y };
 
-          // wall collision
           if (next.x < 0 || next.x >= cols || next.y < 0 || next.y >= rows) {
             alive = false;
             return;
           }
 
-          // self collision
           if (snake.some(seg => seg.x === next.x && seg.y === next.y)) {
             alive = false;
             return;
@@ -662,7 +703,6 @@
 
         function draw() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          // grid background
           ctx.fillStyle = "#020617";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -677,7 +717,7 @@
 
           // snake
           ctx.fillStyle = "#22c55e";
-          snake.forEach((seg, idx) => {
+          snake.forEach(seg => {
             ctx.fillRect(
               seg.x * cellSize + 2,
               seg.y * cellSize + 2,
@@ -703,7 +743,7 @@
 
         resetSnake();
         draw();
-        const snakeInterval = setInterval(gameLoop, 150);
+        setInterval(gameLoop, 150);
 
         window.addEventListener("keydown", (e) => {
           if (!canvas) return;
@@ -723,8 +763,11 @@
 
           if (nextDir) {
             e.preventDefault();
-            // avoid reversing direction
-            if (snake.length > 1 && snake[0].x + nextDir.x === snake[1].x && snake[0].y + nextDir.y === snake[1].y) {
+            if (
+              snake.length > 1 &&
+              snake[0].x + nextDir.x === snake[1].x &&
+              snake[0].y + nextDir.y === snake[1].y
+            ) {
               return;
             }
             dir = nextDir;
@@ -732,24 +775,68 @@
         });
       })();
 
-      /* ---------- RUNNER GAME ---------- */
+      /* ---------- RUNNER GAME (with best score & leaderboard) ---------- */
       (function () {
         const canvas = document.getElementById("runnerCanvas");
-        if (!canvas) return;
+        const bestScoreEl = document.getElementById("runner-best");
+        const leaderboardEl = document.getElementById("runner-leaderboard");
+        if (!canvas || !bestScoreEl || !leaderboardEl) return;
         const ctx = canvas.getContext("2d");
 
         const groundY = canvas.height - 30;
-        let player, obstacles, boosts, speed, gravity, jumpVelocity, score, alive;
+        let player, obstacles, boosts, gaps, speed, gravity, jumpVelocity, score, alive, startTime;
+
+        let bestScore = 0;
+        let leaderboard = [];
+        const STORAGE_KEY = "mslRunnerLeaderboard";
+
+        function loadLeaderboard() {
+          try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+              const parsed = JSON.parse(stored);
+              bestScore = parsed.bestScore || 0;
+              leaderboard = parsed.entries || [];
+            }
+          } catch (e) {}
+        }
+
+        function saveBestAndLeaderboard() {
+          try {
+            localStorage.setItem(
+              STORAGE_KEY,
+              JSON.stringify({ bestScore, entries: leaderboard })
+            );
+          } catch (e) {}
+        }
+
+        function renderLeaderboard() {
+          bestScoreEl.textContent = `Best run on this device: ${Math.floor(bestScore)}s`;
+          if (!leaderboard.length) {
+            leaderboardEl.textContent =
+              "Local leaderboard appears here after a 5-minute run. (Stored only on this device.)";
+            return;
+          }
+          const lines = leaderboard.map((entry, idx) => {
+            return `${idx + 1}. ${entry.tag} – ${Math.floor(entry.score)}s`;
+          });
+          leaderboardEl.textContent = "Local leaderboard: " + lines.join(" · ");
+        }
+
+        loadLeaderboard();
+        renderLeaderboard();
 
         function resetRunner() {
           player = { x: 30, y: groundY, vy: 0, onGround: true };
           obstacles = [];
           boosts = [];
+          gaps = [];
           speed = 3;
           gravity = 0.4;
           jumpVelocity = -7.5;
           score = 0;
           alive = true;
+          startTime = Date.now();
         }
 
         function addObstacle() {
@@ -771,17 +858,57 @@
           });
         }
 
+        function addGap() {
+          const width = 40 + Math.random() * 40;
+          gaps.push({
+            x: canvas.width + 40,
+            w: width
+          });
+        }
+
         let frameCount = 0;
+
+        function handleGameOver() {
+          const runTime = score; // seconds
+          if (runTime > bestScore) {
+            bestScore = runTime;
+          }
+
+          if (runTime >= 300) {
+            // 5 minutes
+            let initials = prompt(
+              "You survived 5 minutes! Enter a 3-letter tag for the local leaderboard:",
+              "MSL"
+            );
+            if (initials) {
+              const tag = initials.toUpperCase().slice(0, 3);
+              leaderboard.push({ tag, score: runTime, date: new Date().toISOString() });
+              leaderboard.sort((a, b) => b.score - a.score);
+              leaderboard = leaderboard.slice(0, 10);
+              unlockSecret();
+            }
+          }
+
+          saveBestAndLeaderboard();
+          renderLeaderboard();
+        }
+
+        function endRun() {
+          if (!alive) return;
+          alive = false;
+          handleGameOver();
+        }
 
         function updateRunner() {
           if (!alive) return;
 
           frameCount++;
-          score += 0.03;
+          const elapsedSec = (Date.now() - startTime) / 1000;
+          score = elapsedSec;
 
-          // spawn obstacles and boosts periodically
           if (frameCount % 120 === 0) addObstacle();
           if (frameCount % 260 === 0) addBoost();
+          if (frameCount % 200 === 0) addGap();
 
           // physics
           player.vy += gravity;
@@ -806,13 +933,27 @@
           });
           boosts = boosts.filter(b => b.x + b.size > -10);
 
-          // collisions with obstacles
+          // move gaps
+          gaps.forEach(g => {
+            g.x -= speed;
+          });
+          gaps = gaps.filter(g => g.x + g.w > -10);
+
+          // obstacle collisions
           for (const o of obstacles) {
             const withinX = player.x + 12 > o.x && player.x - 8 < o.x + o.w;
             const withinY = player.y >= o.y && player.y <= o.y + o.h + 8;
             if (withinX && withinY) {
-              alive = false;
-              break;
+              endRun();
+              return;
+            }
+          }
+
+          // gap collisions (falling)
+          for (const g of gaps) {
+            if (player.x > g.x && player.x < g.x + g.w && player.y >= groundY) {
+              endRun();
+              return;
             }
           }
 
@@ -822,7 +963,6 @@
             const dy = player.y - (b.y + b.size / 2);
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < 20) {
-              // speed boost + jump boost short duration
               speed = 4.5;
               jumpVelocity = -9;
               setTimeout(() => {
@@ -841,13 +981,19 @@
           ctx.fillStyle = "#020617";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-          // ground
+          // ground line
           ctx.strokeStyle = "#4b5563";
           ctx.lineWidth = 2;
           ctx.beginPath();
           ctx.moveTo(0, groundY + 8);
           ctx.lineTo(canvas.width, groundY + 8);
           ctx.stroke();
+
+          // gaps (erase ground under them visually)
+          ctx.fillStyle = "#020617";
+          gaps.forEach(g => {
+            ctx.fillRect(g.x, groundY + 1, g.w, canvas.height - groundY - 1);
+          });
 
           // player
           ctx.fillStyle = "#38bdf8";
@@ -874,7 +1020,7 @@
           ctx.fillStyle = "#e5e7eb";
           ctx.font = "12px sans-serif";
           ctx.textAlign = "left";
-          ctx.fillText("Score: " + Math.floor(score), 8, 14);
+          ctx.fillText("Score: " + Math.floor(score) + "s", 8, 14);
 
           if (!alive) {
             ctx.fillStyle = "rgba(15,23,42,0.85)";
@@ -1006,16 +1152,14 @@
         pickWord();
       })();
 
-      /* ---------- COMPANION ---------- */
+      /* ---------- COMPANION (floating dock) ---------- */
       (function () {
-        const buddy = document.getElementById("companionBuddy");
+        const toggleBtn = document.getElementById("companionToggle");
+        const panel = document.getElementById("companionPanel");
         const barEnergy = document.getElementById("barEnergy");
         const barMood = document.getElementById("barMood");
         const barFocus = document.getElementById("barFocus");
-        const wrapper = document.querySelector(".companion-wrapper");
-        const actionButtons = document.querySelectorAll(".companion-actions button");
-
-        if (!buddy || !barEnergy || !barMood || !barFocus || !wrapper) return;
+        if (!toggleBtn || !panel || !barEnergy || !barMood || !barFocus) return;
 
         let state = {
           pet: "dog",
@@ -1040,16 +1184,6 @@
           return Math.max(0, Math.min(100, val));
         }
 
-        function randomMove() {
-          const rect = wrapper.getBoundingClientRect();
-          const padding = 20;
-          const maxX = rect.width - 90;
-          const maxY = rect.height - 120;
-          const x = padding + Math.random() * Math.max(40, maxX - padding);
-          const y = padding + Math.random() * Math.max(40, maxY - padding);
-          buddy.style.transform = `translate(${x}px, ${y}px)`;
-        }
-
         // Idle decay
         setInterval(() => {
           state.energy = clamp(state.energy - 0.3);
@@ -1058,11 +1192,13 @@
           updateBars();
         }, 2000);
 
-        // Drift around
-        setInterval(randomMove, 3500);
-        randomMove();
         updateBars();
 
+        toggleBtn.addEventListener("click", () => {
+          panel.classList.toggle("open");
+        });
+
+        const actionButtons = panel.querySelectorAll(".companion-actions button");
         actionButtons.forEach(btn => {
           const pet = btn.getAttribute("data-pet");
           const action = btn.getAttribute("data-action");
@@ -1070,7 +1206,7 @@
           if (pet) {
             btn.addEventListener("click", () => {
               state.pet = pet;
-              buddy.textContent = petIcons[pet] || "🐶";
+              toggleBtn.textContent = petIcons[pet] || "🐶";
               state.mood = clamp(state.mood + 15);
               state.energy = clamp(state.energy + 5);
               updateBars();
@@ -1098,11 +1234,6 @@
               updateBars();
             });
           }
-        });
-
-        buddy.addEventListener("click", () => {
-          state.mood = clamp(state.mood + 10);
-          updateBars();
         });
       })();
     });
