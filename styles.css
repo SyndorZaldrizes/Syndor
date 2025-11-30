@@ -847,3 +847,43 @@ textarea:focus {
   height: 40px;
   object-fit: contain;
 }
+/* --- Brand / header alignment tweaks --- */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-mark-logo img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.brand-sub {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+@media (min-width: 1024px) {
+  .brand-title {
+    font-size: 1.1rem;
+  }
+  .brand-sub {
+    font-size: 0.9rem;
+  }
+}
