@@ -2,440 +2,150 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>MSL Games – SMCM MSL</title>
+  <title>MSL Study & Games – SMCM MSL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="logo-1.png" />
 
-  <!-- Mini-game specific styles -->
+  <!-- Page-specific layout + game styles -->
   <style>
-    /* Page background: soft starfield / space vibes */
-    .games-page {
-      min-height: 100vh;
-      background-color: #020617;
-      background-image:
-        radial-gradient(circle at 20% 20%, rgba(248, 250, 252, 0.25), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(248, 250, 252, 0.18), transparent 50%),
-        radial-gradient(circle at 60% 70%, rgba(59, 130, 246, 0.25), transparent 55%),
-        linear-gradient(to bottom, #0f172a 0, #020617 45%, #000 100%);
-      background-attachment: fixed;
-      color: #e5e7eb;
+    .game-layout {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      margin-top: 1rem;
     }
 
-    .games-page main {
-      padding-bottom: 4rem;
+    .game-column-study {
+      flex: 3; /* ~60% */
+      min-width: 0;
     }
 
-    .game-wrapper {
-      max-width: 900px;
+    .game-column-play {
+      flex: 2; /* ~40% */
+      min-width: 0;
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .game-box {
+      margin-top: 0.5rem;
+    }
+
+    .game-canvas {
+      width: 100%;
+      max-width: 360px;
+      height: 260px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: #0b1520;
+      display: block;
       margin: 0 auto;
     }
 
-    .game-card {
-      margin-top: 1.5rem;
-      padding: 1.5rem 1.75rem;
-      border-radius: 16px;
-      background: rgba(15, 23, 42, 0.95);
-      color: #e5e7eb;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      backdrop-filter: blur(4px);
-      cursor: default;
-    }
-
-    .game-card a {
-      color: #facc15;
-      text-decoration: underline;
-    }
-
-    .game-card a:hover {
-      text-decoration: none;
-    }
-
-    .game-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
+    .game-status {
       font-size: 0.85rem;
-      opacity: 0.9;
-      margin-bottom: 0.4rem;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .game-question {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin: 0.4rem 0 1rem;
-    }
-
-    .game-choices {
-      display: grid;
-      gap: 0.6rem;
-      margin-bottom: 1rem;
-    }
-
-    .game-choice-btn {
-      width: 100%;
-      text-align: left;
-      padding: 0.65rem 0.75rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      background: rgba(15, 23, 42, 0.9);
-      color: #e5e7eb;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
-    }
-
-    .game-choice-btn:hover {
-      transform: translateY(-1px);
-      border-color: #facc15;
-      background: rgba(30, 64, 175, 0.9);
-    }
-
-    .game-choice-btn.correct {
-      background: #16a34a;
-      border-color: #bbf7d0;
-      color: #022c22;
-    }
-
-    .game-choice-btn.incorrect {
-      background: #b91c1c;
-      border-color: #fecaca;
-      color: #fef2f2;
-    }
-
-    .game-feedback {
-      font-size: 0.9rem;
-      margin-bottom: 0.8rem;
-    }
-
-    .game-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .game-progress {
-      font-size: 0.85rem;
+      margin-top: 0.5rem;
       opacity: 0.9;
     }
 
-    .btn-ghost-small {
-      border-radius: 999px;
-      padding: 0.45rem 0.9rem;
-      font-size: 0.85rem;
+    .hangman-word,
+    .hangman-letters,
+    .hangman-status {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      margin-top: 0.4rem;
     }
 
-    .game-result-card {
-      margin-top: 1.5rem;
-      padding: 1.5rem 1.75rem;
-      border-radius: 16px;
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      background: rgba(15, 23, 42, 0.98);
-      color: #f9fafb;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
-    }
-
-    .game-result-score {
+    .hangman-word {
       font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.35rem;
-    }
-
-    .game-result-sub {
-      font-size: 0.9rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .game-tagline {
-      font-size: 0.85rem;
-      opacity: 0.95;
-    }
-
-    .game-easter-egg {
-      margin-top: 0.9rem;
-      padding: 0.9rem 1rem;
-      border-radius: 12px;
-      border: 1px dashed rgba(234, 179, 8, 0.9);
-      background: rgba(250, 204, 21, 0.08);
-      font-size: 0.9rem;
-    }
-
-    .game-easter-egg a {
-      text-decoration: underline;
+      letter-spacing: 0.2rem;
       font-weight: 600;
     }
 
-    /* Bill Concept Lab styles */
-    .bill-lab-form {
-      display: grid;
-      gap: 0.9rem;
-      margin-top: 0.75rem;
-    }
-
-    .bill-lab-form label {
-      font-size: 0.9rem;
-      font-weight: 500;
-      display: block;
-    }
-
-    .bill-lab-form select,
-    .bill-lab-form input,
-    .bill-lab-form textarea {
-      width: 100%;
-      margin-top: 0.25rem;
-      padding: 0.5rem 0.6rem;
-      border-radius: 10px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      font-size: 0.9rem;
-      font-family: inherit;
-      background: rgba(15, 23, 42, 0.9);
-      color: #e5e7eb;
-    }
-
-    .bill-lab-form textarea::placeholder {
-      color: rgba(148, 163, 184, 0.8);
-    }
-
-    .bill-lab-output {
-      margin-top: 1.1rem;
-      padding: 1rem 1.1rem;
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.96);
-      color: #f9fafb;
-      font-size: 0.92rem;
-      white-space: pre-line;
-    }
-
-    .bill-lab-output h3 {
-      margin-top: 0;
-      margin-bottom: 0.3rem;
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    .bill-lab-meta {
-      font-size: 0.8rem;
-      opacity: 0.9;
-      margin-bottom: 0.5rem;
-    }
-
-    /* Arcade games */
-    #snakeCanvas,
-    #runnerCanvas {
-      width: 100%;
-      max-width: 400px;
-      display: block;
-      margin: 0.5rem auto 0.75rem;
-      background: #020617;
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-    }
-
-    .arcade-note {
-      font-size: 0.85rem;
-      opacity: 0.95;
-      margin-bottom: 0.5rem;
-    }
-
-    /* Pet / Field Companion widget */
-    .field-companion-widget {
-      position: fixed;
-      right: 1rem;
-      bottom: 1rem;
-      z-index: 50;
-      font-size: 0.85rem;
-    }
-
-    .field-companion-toggle {
+    .hangman-letters span {
+      display: inline-block;
+      margin-right: 0.25rem;
+      margin-bottom: 0.25rem;
+      padding: 0.1rem 0.35rem;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      background: rgba(15, 23, 42, 0.98);
-      color: #e5e7eb;
-      padding: 0.4rem 0.9rem;
-      cursor: pointer;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 0.75rem;
+    }
+
+    .hangman-input-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      align-items: center;
+    }
+
+    .hangman-input-row input {
+      max-width: 80px;
+    }
+
+    /* Field companion */
+    .companion-settings {
+      margin-top: 1.25rem;
+    }
+
+    .companion-settings label {
+      font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+      gap: 0.25rem;
+      margin-right: 0.75rem;
     }
 
-    .field-companion-toggle span {
-      font-size: 0.8rem;
-      opacity: 0.8;
-    }
-
-    .field-companion-panel {
-      margin-top: 0.5rem;
-      padding: 0.75rem 0.9rem;
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.98);
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
-      width: 260px;
-      display: none;
-    }
-
-    .field-companion-widget.open .field-companion-panel {
-      display: block;
-    }
-
-    .field-companion-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .field-companion-header-name {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .field-companion-header select {
-      padding: 0.25rem 0.6rem;
+    .field-companion-dot {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 56px;
+      height: 56px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      background: rgba(15, 23, 42, 0.95);
-      color: #e5e7eb;
-      font-size: 0.8rem;
-    }
-
-    .field-companion-body {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 0.6rem;
-      align-items: center;
-    }
-
-    .field-companion-body img {
-      width: 70px;
-      height: 70px;
-      border-radius: 18px;
-      object-fit: cover;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.7);
-      border: 2px solid rgba(248, 250, 252, 0.85);
-      background: #020617;
-    }
-
-    .field-companion-bars {
-      display: grid;
-      gap: 0.35rem;
-    }
-
-    .field-companion-bar-row {
+      background: radial-gradient(circle at 30% 20%, #ffffff, #ffd15c);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 0.4rem;
+      justify-content: center;
+      font-size: 1.9rem;
+      cursor: pointer;
+      z-index: 40;
+      user-select: none;
+      transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
     }
 
-    .field-companion-bar-label {
-      font-size: 0.75rem;
-      min-width: 55px;
-    }
-
-    .pet-bar {
-      flex: 1;
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.4);
-      overflow: hidden;
-    }
-
-    .pet-bar-fill {
-      height: 100%;
-      width: 50%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #22c55e, #facc15);
-      transition: width 0.2s ease-out;
-    }
-
-    .pet-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      margin-top: 0.5rem;
-    }
-
-    .pet-controls button {
-      font-size: 0.75rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-    }
-
-    .field-companion-status {
-      margin-top: 0.4rem;
-      font-size: 0.75rem;
+    .field-companion-dot.paused {
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
       opacity: 0.9;
     }
 
-    /* Hangman */
-    .hangman-word {
-      font-size: 1.5rem;
-      letter-spacing: 0.2em;
-      margin-bottom: 0.75rem;
-      font-weight: 700;
+    .field-companion-dot:hover {
+      transform: scale(1.06);
     }
 
-    .hangman-info {
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
+    .field-companion-dot:active {
+      transform: scale(0.97);
     }
 
-    .hangman-wrong {
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .hangman-controls {
-      margin-top: 0.8rem;
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .hangman-status {
-      font-size: 0.9rem;
+    .field-companion-hint {
+      font-size: 0.75rem;
+      opacity: 0.8;
       margin-top: 0.4rem;
     }
 
-    /* Stats & prompt */
-    .stats-list {
-      list-style: disc;
-      padding-left: 1.2rem;
-      margin: 0.4rem 0 0.75rem;
-      font-size: 0.9rem;
-    }
-
-    .stats-list li {
-      margin-bottom: 0.15rem;
-    }
-
-    .prompt-text {
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 640px) {
-      .game-card,
-      .game-result-card {
-        padding: 1.1rem 1.15rem;
-      }
-
-      .field-companion-panel {
-        width: 240px;
+    @media (max-width: 900px) {
+      .game-layout {
+        flex-direction: column;
       }
     }
   </style>
 </head>
-<body class="games-page">
+<body>
   <header class="site-header">
     <div class="inner">
       <a href="index.html#hero" class="brand">
@@ -457,331 +167,188 @@
         <a href="index.html#documents">Documents</a>
         <a href="resources.html">Resources</a>
         <a href="bulletin.html">Bulletin</a>
-        <a href="msl-game.html">Game</a>
-        <a href="msl-giving.html">GIVING TUESDAY CHAMPIONSHIP</a>
+        <a href="msl-game.html">Games</a>
         <a href="index.html#gallery">Gallery</a>
         <a href="index.html#contact">Join Us</a>
+        <a href="msl-giving.html">GIVING TUESDAY CHAMPIONSHIP</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- GAME 1: PARLIAMENTARY PRO QUIZ -->
     <section class="section">
-      <div class="inner game-wrapper">
+      <div class="inner">
         <div class="section-header center">
-          <p class="eyebrow">Practice the Rules Before You Hit the Floor</p>
-          <h1>Parliamentary Pro Lightning Round</h1>
+          <p class="eyebrow">Practice & Play</p>
+          <h1>MSL Study Zone & Mini-Games</h1>
           <p class="section-body">
-            Test your knowledge of motions, floor procedure, and session vibes in a quick-fire quiz.
-            Great for new delegates, petty bragging rights for veterans.
+            Use the left side to study, quiz yourself, and draft ideas. Use the right side to take a quick
+            break with mini-games that still keep you in the MSL mindset. Your field companion hangs out
+            with you while you work.
           </p>
         </div>
 
-        <div class="card game-card" id="gameCard" data-game="quiz">
-          <div class="game-meta">
-            <span id="gameStatus">Question 1</span>
-            <span id="gameScore">Score: 0</span>
-          </div>
-          <div class="game-question" id="gameQuestion">
-            Loading question…
-          </div>
-          <div class="game-choices" id="gameChoices">
-            <!-- buttons injected by JS -->
-          </div>
-          <div class="game-feedback" id="gameFeedback"></div>
-          <div class="game-controls">
-            <button id="nextBtn" class="btn btn-primary btn-ghost-small" disabled>
-              Next question →
-            </button>
-            <button id="restartBtn" class="btn btn-ghost btn-ghost-small" style="display:none;">
-              Play again
-            </button>
-            <span class="game-progress" id="gameProgress"></span>
-          </div>
-        </div>
+        <div class="game-layout">
+          <!-- 60% COLUMN – STUDY -->
+          <div class="game-column-study">
+            <article class="card plain-card">
+              <h2>Quick Quiz: MSL & Parliamentary Basics</h2>
+              <p class="small">
+                Test yourself on a few fundamentals you’ll use in session. Controls: click your answers,
+                then hit “Check Answers”.
+              </p>
 
-        <div id="gameResult" class="game-result-card" style="display:none;">
-          <div class="game-result-score" id="resultScore"></div>
-          <div class="game-result-sub" id="resultMessage"></div>
-          <p class="game-tagline">
-            Want to put this to use? Grab a bill idea, hit a workshop, and try this again after session.
-          </p>
+              <div class="game-box" id="quizBox">
+                <form id="mslQuiz">
+                  <div class="small" style="margin-bottom: 0.75rem;">
+                    <strong>1.</strong> In most chambers, what does it mean to “move the previous question”?
+                    <br />
+                    <label><input type="radio" name="q1" value="a" /> Start debate on a new bill</label><br />
+                    <label><input type="radio" name="q1" value="b" /> End debate and vote now</label><br />
+                    <label><input type="radio" name="q1" value="c" /> Send the bill back to committee</label>
+                  </div>
 
-          <!-- Secret reward: all correct -->
-          <div id="easterAllCorrect" class="game-easter-egg" style="display:none;">
-            <strong>Perfect run.</strong> You unlocked the secret link — clearly you read the rules.
-            <br />
-            👉 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Click for your “totally serious” reward</a>
-            <br />
-            <span style="font-size:0.8rem; opacity:0.8;">
-              (Coming Soon)
-            </span>
-          </div>
+                  <div class="small" style="margin-bottom: 0.75rem;">
+                    <strong>2.</strong> In MSL, a “quorum” most directly refers to:
+                    <br />
+                    <label><input type="radio" name="q2" value="a" /> The number of bills on the docket</label><br />
+                    <label><input type="radio" name="q2" value="b" /> The minimum members needed to do business</label><br />
+                    <label><input type="radio" name="q2" value="c" /> The number of officers on the Exec Board</label>
+                  </div>
 
-          <!-- Secret reward: zero correct -->
-          <div id="easterAllWrong" class="game-easter-egg" style="display:none;">
-            <strong>0/?? is a talent in itself.</strong> You also unlocked a secret link. Time to study… or double down.
-            <br />
-            👉 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Consolation “training montage”</a>
-          </div>
+                  <div class="small" style="margin-bottom: 0.75rem;">
+                    <strong>3.</strong> Which is the <em>best</em> sponsor speech opener?
+                    <br />
+                    <label><input type="radio" name="q3" value="a" /> “This bill is pretty self-explanatory, so…”</label><br />
+                    <label><input type="radio" name="q3" value="b" /> “Members, this bill addresses a specific Maryland problem…”</label><br />
+                    <label><input type="radio" name="q3" value="c" /> “I wrote this at 2 AM, so bear with me.”</label>
+                  </div>
 
-          <button id="resultRestartBtn" class="btn btn-primary btn-ghost-small" style="margin-top:0.75rem;">
-            Run the lightning round again
-          </button>
-        </div>
-      </div>
-    </section>
+                  <button type="button" class="btn btn-primary small" id="checkQuiz">
+                    Check Answers
+                  </button>
+                </form>
+                <p class="game-status" id="quizResult"></p>
+              </div>
+            </article>
 
-    <!-- GAME 2: BILL CONCEPT LAB -->
-    <section class="section bg-alt">
-      <div class="inner game-wrapper">
-        <div class="section-header center">
-          <p class="eyebrow">Turn Vibes Into Draft Ideas</p>
-          <h2>Bill Concept Lab</h2>
-          <p class="section-body">
-            Not sure what to write your first bill on? Answer a few quick questions and we’ll spit out
-            a rough bill concept you can refine with the Drafting Manual and your Exec Board.
-          </p>
-        </div>
+            <article class="card plain-card" style="margin-top: 1.25rem;">
+              <h2>Bill Idea Scratchpad</h2>
+              <p class="small">
+                Use this space to sketch a bill idea you might want to bring to committee. Think: problem,
+                who it affects in Maryland, and what your bill would actually do.
+              </p>
+              <div class="game-box">
+                <label class="small" for="billIdea">
+                  Jot down a rough sponsor pitch or bullet points:
+                </label>
+                <textarea
+                  id="billIdea"
+                  rows="7"
+                  placeholder="Example: A bill to expand broadband access in rural Maryland by..."
+                  style="width: 100%; margin-top: 0.35rem;"
+                ></textarea>
+                <p class="small" style="margin-top: 0.4rem; opacity: 0.8;">
+                  Tip: If you like what you write here, copy it into a doc and use the
+                  <strong>Legislative Drafting Manual</strong> from the Resources page to turn it into
+                  a full bill.
+                </p>
+              </div>
 
-        <div class="card game-card" id="billLabCard">
-          <form id="billLabForm" class="bill-lab-form">
-            <div>
-              <label for="policyArea">What policy area are you drawn to?</label>
-              <select id="policyArea" required>
-                <option value="">Select a policy area…</option>
-                <option value="environmental protection">Environment & Chesapeake Bay</option>
-                <option value="education policy">Education & Higher Ed</option>
-                <option value="public transportation and infrastructure">Transportation & Infrastructure</option>
-                <option value="civil rights and liberties">Civil Rights & Civil Liberties</option>
-                <option value="public health and safety">Public Health & Safety</option>
-                <option value="housing and economic opportunity">Housing & Economic Opportunity</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="changeLevel">What scale of change are you thinking?</label>
-              <select id="changeLevel" required>
-                <option value="">Choose one…</option>
-                <option value="a targeted fix to an existing statute">Small, precise fix</option>
-                <option value="a major reform to current practice">Major reform</option>
-                <option value="a pilot program to test a new idea">Pilot program</option>
-                <option value="a resolution to send a strong message">Symbolic resolution</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="impactType">What kind of impact do you want?</label>
-              <select id="impactType" required>
-                <option value="">Pick your impact…</option>
-                <option value="direct services or aid to Maryland residents">Direct aid / services</option>
-                <option value="new standards or regulations for agencies or businesses">Regulation / standards</option>
-                <option value="financial incentives or grants for local actors">Incentives / grants</option>
-                <option value="statewide awareness, education, or data collection">Awareness / data</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="issueText">What specific Maryland issue or community are you thinking about? (optional but powerful)</label>
-              <textarea
-                id="issueText"
-                rows="3"
-                placeholder="Example: runoff into the St. Mary’s River, broadband access in rural counties, transportation for community college students…"
-              ></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-ghost-small">
-              Generate Bill Concept
-            </button>
-          </form>
-
-          <div id="billLabOutput" class="bill-lab-output" style="display:none;">
-            <div class="bill-lab-meta" id="billLabMeta"></div>
-            <h3 id="billLabTitle"></h3>
-            <p id="billLabSummary"></p>
-            <p class="small" style="margin-top:0.7rem;">
-              Next steps: check the <a href="Legislative-Drafting-Manual.pdf" target="_blank">Drafting Manual (PDF)</a>,
-              talk to the Exec Board, and refine this into real bill sections.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ARCADE CORNER -->
-    <section class="section bg-alt">
-      <div class="inner game-wrapper">
-        <div class="section-header center">
-          <p class="eyebrow">Brain Off, Reflexes On</p>
-          <h2>Arcade Corner</h2>
-          <p class="section-body">
-            Take a break with some low-stakes mini games. Scores here still count toward unlocking a secret page. (WIP)
-            Click a game’s card to focus its controls.
-          </p>
-        </div>
-
-        <!-- Snake -->
-        <div class="card game-card" id="snakeGameCard" data-game="snake">
-          <h3>MSL Snake: Rival on the Floor</h3>
-          <p class="arcade-note">
-            Click this card, then use <strong>W A S D</strong> to move. Eat the snacks, avoid the walls, your own tail,
-            and the <strong>rival snake</strong> that chases the same food.
-          </p>
-          <canvas id="snakeCanvas" width="320" height="320"></canvas>
-          <div class="game-meta">
-            <span id="snakeScoreLabel">Score: 0</span>
-            <span id="snakeBestLabel">Best: 0</span>
-          </div>
-          <p class="small" id="snakeStatus">Click this card, then press W, A, S, or D to start.</p>
-        </div>
-
-        <!-- Runner -->
-        <div class="card game-card" id="runnerGameCard" data-game="runner" style="margin-top:1.5rem;">
-          <h3>Runner on the Floor</h3>
-          <p class="arcade-note">
-            Click this card, then press space or ↑ to jump over triangular obstacles and gaps. Hit special blocks to spawn a
-            flower that chases you , touch it for a temporary speed & jump boost.
-          </p>
-          <canvas id="runnerCanvas" width="400" height="200"></canvas>
-          <div class="game-meta">
-            <span id="runnerScoreLabel">Score: 0</span>
-            <span id="runnerBestLabel">Best: 0</span>
-          </div>
-          <p class="small" id="runnerStatus">Click this card, then press space or ↑ to start running.</p>
-        </div>
-
-        <!-- Secret unlock card -->
-        <div class="game-result-card" id="secretUnlockCard" style="display:none; margin-top:1.5rem;">
-          <div class="game-result-score">Secret unlocked.</div>
-          <div class="game-result-sub">
-            You’ve hit the quiz threshold, used the Bill Concept Lab, and scored in both arcade games.
-          </div>
-          <p class="game-tagline">
-            Hidden page access:
-            <a href="secret.html" id="secretLink">Open secret page</a><br />
-            (Change this URL or page name to whatever you want for your “real” reward.)
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- HANGMAN -->
-    <section class="section">
-      <div class="inner game-wrapper">
-        <div class="section-header center">
-          <p class="eyebrow">Words from the Chamber</p>
-          <h2>MSL Hangman</h2>
-          <p class="section-body">
-            Click the card, then use your keyboard to guess letters. Terms are pulled from this site and our legislative world.
-          </p>
-        </div>
-
-        <div class="card game-card" id="hangmanCard" data-game="hangman">
-          <div class="hangman-word" id="hangmanWord">_ _ _ _ _</div>
-          <div class="hangman-info">
-            Wrong guesses: <span id="hangmanWrongCount">0</span> / <span id="hangmanMax">7</span>
-          </div>
-          <div class="hangman-wrong">
-            Letters used: <span id="hangmanWrongLetters">—</span>
-          </div>
-          <div class="hangman-controls">
-            <button type="button" class="btn btn-primary btn-ghost-small" id="hangmanNewBtn">New word</button>
-            <span class="small">Click this card, then type A–Z to guess.</span>
-          </div>
-          <div class="hangman-status small" id="hangmanStatus"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- STATS & PRACTICE PROMPTS -->
-    <section class="section bg-alt">
-      <div class="inner game-wrapper">
-        <div class="section-header center">
-          <p class="eyebrow">Level Up Between Sessions</p>
-          <h2>Arcade Stats & Practice Prompts</h2>
-          <p class="section-body">
-            Track your arcade wins and pull quick prompts or concepts to practice before real MSL business.
-          </p>
-        </div>
-
-        <div class="grid-2">
-          <div class="card game-card" id="statsCard">
-            <h3>Your Arcade Snapshot</h3>
-            <ul class="stats-list">
-              <li id="statsQuizBest">Best quiz score: —</li>
-              <li id="statsSnakeBest">Best Snake score: —</li>
-              <li id="statsRunnerBest">Best Runner score: —</li>
-              <li id="statsHangmanWins">Hangman words solved: —</li>
-            </ul>
-            <button type="button" class="btn btn-ghost btn-ghost-small" id="statsResetBtn">
-              Reset arcade stats
-            </button>
-            <p class="small" style="margin-top:0.5rem;">
-              Stats live only in your browser – clearing site data will wipe them.
-            </p>
+              <div class="card plain-card companion-settings">
+                <h3>Field Companion</h3>
+                <p class="small">
+                  Choose a companion to float around your screen while you study and play. Click your
+                  companion to pause or resume their little orbit.
+                </p>
+                <div class="small" style="margin-top: 0.4rem;">
+                  <label>
+                    <input type="radio" name="companion" value="dog" checked />
+                    🐶 Dog
+                  </label>
+                  <label>
+                    <input type="radio" name="companion" value="cat" />
+                    🐱 Cat
+                  </label>
+                  <label>
+                    <input type="radio" name="companion" value="koala" />
+                    🐨 Koala
+                  </label>
+                </div>
+                <p class="field-companion-hint">
+                  Your companion dot in the corner matches your choice above. Click it if you need some
+                  stillness while you focus.
+                </p>
+              </div>
+            </article>
           </div>
 
-          <div class="card game-card" id="promptCard">
-            <h3>Practice Prompt Generator</h3>
-            <p class="small">
-              Use these for 60-second speeches, sponsor intros, or improv practice before session.
-            </p>
-            <p class="prompt-text" id="promptText" style="margin-top:0.75rem;"></p>
-            <button type="button" class="btn btn-primary btn-ghost-small" id="promptNewBtn" style="margin-top:0.5rem;">
-              New prompt
-            </button>
-            <div class="rule-of-visit" style="margin-top:0.9rem; border-top:1px solid rgba(148,163,184,0.6); padding-top:0.7rem;">
-              <p class="small" id="ruleText"></p>
+          <!-- 40% COLUMN – GAMES -->
+          <div class="game-column-play">
+            <div class="game-grid">
+              <!-- Snake -->
+              <article class="card plain-card">
+                <h2>Snake: Session Snack Run</h2>
+                <p class="small">
+                  Collect “snacks” to grow your snake without crashing into yourself. Controls:
+                  <strong>WASD</strong> keys only.
+                </p>
+                <div class="game-box">
+                  <canvas id="snakeCanvas" class="game-canvas"></canvas>
+                  <p class="game-status" id="snakeStatus">
+                    Use W, A, S, D to move. Don’t hit the walls or yourself.
+                  </p>
+                </div>
+              </article>
+
+              <!-- Runner -->
+              <article class="card plain-card">
+                <h2>Floor Runner</h2>
+                <p class="small">
+                  Dodge triangular “procedural hurdles” on the floor. Grab boost flowers for a speed
+                  burst. Controls: <strong>Space</strong> or <strong>W</strong> to jump.
+                </p>
+                <div class="game-box">
+                  <canvas id="runnerCanvas" class="game-canvas"></canvas>
+                  <p class="game-status" id="runnerStatus">
+                    Stay on the platform and avoid the spikes. One jump at a time.
+                  </p>
+                </div>
+              </article>
+
+              <!-- Hangman -->
+              <article class="card plain-card">
+                <h2>Hangman: MSL Lingo</h2>
+                <p class="small">
+                  Guess the MSL-related term before you run out of attempts. You’ll see terms used
+                  across our site and docs.
+                </p>
+                <div class="game-box">
+                  <div class="hangman-word" id="hmWord">_ _ _ _ _</div>
+                  <div class="hangman-letters small" id="hmGuesses"></div>
+                  <div class="hangman-status small" id="hmStatus"></div>
+                  <div class="hangman-input-row">
+                    <input
+                      type="text"
+                      id="hmInput"
+                      maxlength="1"
+                      placeholder="Letter"
+                    />
+                    <button type="button" class="btn btn-primary small" id="hmGuessBtn">
+                      Guess
+                    </button>
+                    <button type="button" class="btn btn-ghost small" id="hmNewWord">
+                      New Word
+                    </button>
+                  </div>
+                </div>
+              </article>
             </div>
           </div>
         </div>
       </div>
     </section>
   </main>
-
-  <!-- FIELD COMPANION WIDGET -->
-  <div class="field-companion-widget" id="fieldCompanionWidget">
-    <button class="field-companion-toggle" id="fieldCompanionToggle">
-      🐾 Field Companion
-      <span>click to open</span>
-    </button>
-    <div class="field-companion-panel" id="fieldCompanionPanel">
-      <div class="field-companion-header">
-        <span class="field-companion-header-name" id="petNameLabel">Delegate Dog</span>
-        <select id="petType">
-          <option value="dog">Dog</option>
-          <option value="cat">Cat</option>
-          <option value="koala">Koala</option>
-        </select>
-      </div>
-      <div class="field-companion-body">
-        <img id="petImage" src="pet-dog.gif" alt="Field companion" />
-        <div>
-          <div class="field-companion-bars">
-            <div class="field-companion-bar-row">
-              <span class="field-companion-bar-label">Hunger</span>
-              <div class="pet-bar"><div class="pet-bar-fill" id="petHungerBar"></div></div>
-            </div>
-            <div class="field-companion-bar-row">
-              <span class="field-companion-bar-label">Happiness</span>
-              <div class="pet-bar"><div class="pet-bar-fill" id="petHappyBar"></div></div>
-            </div>
-            <div class="field-companion-bar-row">
-              <span class="field-companion-bar-label">Energy</span>
-              <div class="pet-bar"><div class="pet-bar-fill" id="petEnergyBar"></div></div>
-            </div>
-          </div>
-          <div class="pet-controls">
-            <button type="button" class="btn btn-primary btn-ghost-small" id="petFeedBtn">Feed</button>
-            <button type="button" class="btn btn-ghost btn-ghost-small" id="petPlayBtn">Play</button>
-            <button type="button" class="btn btn-ghost btn-ghost-small" id="petRestBtn">Rest</button>
-          </div>
-          <p class="field-companion-status" id="petStatus"></p>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <footer class="site-footer">
     <div class="inner footer-inner">
@@ -796,1311 +363,533 @@
 
   <script src="script.js"></script>
 
-  <!-- Mini-game logic -->
+  <!-- Page-specific game logic -->
   <script>
-    // ---------- ACHIEVEMENT TRACKING / SECRET PAGE ----------
-    const QUIZ_TARGET = 6;
-    const SNAKE_TARGET = 5;
-    const RUNNER_TARGET = 150;
-    const STORAGE_KEY = "mslArcadeProgress";
-
-    const secretUnlockCard = document.getElementById("secretUnlockCard");
-
-    // Game focus: only the focused game listens to keyboard
-    let currentGameFocus = null;
-
-    function setGameFocus(name) {
-      currentGameFocus = name;
+    // Prevent game keys from firing while typing in inputs/textareas
+    function isTypingTarget(e) {
+      const tag = (e.target.tagName || "").toLowerCase();
+      return tag === "input" || tag === "textarea";
     }
 
-    // Attach focus handlers to cards
-    const focusCards = document.querySelectorAll("[data-game]");
-    focusCards.forEach(card => {
-      const gameName = card.getAttribute("data-game");
-      card.addEventListener("click", () => {
-        setGameFocus(gameName);
-      });
-    });
+    // -------------------------
+    // QUIZ LOGIC
+    // -------------------------
+    (function () {
+      const btn = document.getElementById("checkQuiz");
+      const result = document.getElementById("quizResult");
+      if (!btn || !result) return;
 
-    const progress = loadProgress();
+      btn.addEventListener("click", function () {
+        const form = document.getElementById("mslQuiz");
+        if (!form) return;
+        const answers = { q1: "b", q2: "b", q3: "b" };
+        let score = 0;
+        let total = 3;
 
-    function loadProgress() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) {
-          return {
-            quizThreshold: false,
-            quizBest: 0,
-            quizQuestions: 0,
-            billLabUsed: false,
-            snakeBest: 0,
-            runnerBest: 0,
-            hangmanWins: 0
-          };
+        Object.keys(answers).forEach((q) => {
+          const checked = form.querySelector(`input[name="${q}"]:checked`);
+          if (checked && checked.value === answers[q]) score++;
+        });
+
+        if (score === total) {
+          result.textContent =
+            "3/3 – nice. You officially unlocked the ‘actually-knows-what’s-going-on-in-session’ badge.";
+        } else if (score === 2) {
+          result.textContent =
+            "2/3 – close. Re-skim the Resources page and you’ll be unstoppable.";
+        } else {
+          result.textContent =
+            score +
+            "/3 – that’s why this page exists. Missed questions are just future strengths.";
         }
-        const parsed = JSON.parse(raw);
-        return Object.assign(
-          {
-            quizThreshold: false,
-            quizBest: 0,
-            quizQuestions: 0,
-            billLabUsed: false,
-            snakeBest: 0,
-            runnerBest: 0,
-            hangmanWins: 0
-          },
-          parsed
-        );
-      } catch (e) {
-        return {
-          quizThreshold: false,
-          quizBest: 0,
-          quizQuestions: 0,
-          billLabUsed: false,
-          snakeBest: 0,
-          runnerBest: 0,
-          hangmanWins: 0
+      });
+    })();
+
+    // -------------------------
+    // SNAKE GAME (WASD ONLY)
+    // -------------------------
+    (function () {
+      const canvas = document.getElementById("snakeCanvas");
+      const statusEl = document.getElementById("snakeStatus");
+      if (!canvas || !canvas.getContext) return;
+      const ctx = canvas.getContext("2d");
+
+      const cols = 20;
+      const rows = 20;
+      const cellSize = Math.floor(canvas.width / cols) || 15;
+
+      let snake, dir, food, alive, tickInterval;
+
+      function resetSnake() {
+        snake = [{ x: 10, y: 10 }];
+        dir = { x: 1, y: 0 };
+        food = { x: 5, y: 5 };
+        alive = true;
+        if (statusEl) {
+          statusEl.textContent = "Use W, A, S, D to move. Don’t hit the walls or yourself.";
+        }
+      }
+
+      function spawnFood() {
+        food = {
+          x: Math.floor(Math.random() * cols),
+          y: Math.floor(Math.random() * rows),
         };
       }
-    }
 
-    function saveProgress() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-      } catch (e) {
-        // ignore
-      }
-    }
+      function drawSnake() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // background
+        ctx.fillStyle = "#0b1520";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    function checkSecretUnlock() {
-      if (
-        progress.quizThreshold &&
-        progress.billLabUsed &&
-        progress.snakeBest >= SNAKE_TARGET &&
-        progress.runnerBest >= RUNNER_TARGET
-      ) {
-        if (secretUnlockCard) {
-          secretUnlockCard.style.display = "block";
-        }
-      }
-    }
+        // food
+        ctx.fillStyle = "#facc15";
+        ctx.fillRect(
+          food.x * cellSize + 2,
+          food.y * cellSize + 2,
+          cellSize - 4,
+          cellSize - 4
+        );
 
-    checkSecretUnlock();
-
-    // ---------- GAME 1: PARLIAMENTARY PRO QUIZ ----------
-    const questions = [
-      {
-        question: "In a mock legislative session, what is the purpose of a motion for the Previous Question?",
-        choices: [
-          "To postpone a bill indefinitely",
-          "To end debate and move immediately to a vote",
-          "To send the bill back to committee",
-          "To challenge the ruling of the chair"
-        ],
-        correctIndex: 1,
-        explanation: "A motion for the Previous Question is used to close debate and move straight to a vote on the pending question."
-      },
-      {
-        question: "You think the chair has misapplied a rule. What should you rise to?",
-        choices: [
-          "A point of personal privilege",
-          "A point of order",
-          "A motion to amend",
-          "A motion to reconsider"
-        ],
-        correctIndex: 1,
-        explanation: "A Point of Order is used to question whether proper procedure is being followed."
-      },
-      {
-        question: "Which of the following is the BEST opening line for a sponsor speech in MSL?",
-        choices: [
-          "'So yeah, this bill is kind of self-explanatory.'",
-          "'Members of the chamber, this bill addresses a gap in Maryland's current policy on…'",
-          "'I'm not really sure why I'm sponsoring this, but here we go.'",
-          "'I promise this will be quick, so please don't vote it down.'"
-        ],
-        correctIndex: 1,
-        explanation: "Framing the issue clearly and in a Maryland context is the strongest way to start a sponsor speech."
-      },
-      {
-        question: "A delegate wants to change a single line in your bill without rewriting the whole thing. What should they use?",
-        choices: [
-          "Motion to table",
-          "Friendly amendment or amendment from the floor",
-          "Motion to adjourn",
-          "Appeal from the decision of the chair"
-        ],
-        correctIndex: 1,
-        explanation: "Amendments—friendly or from the floor—are how members change specific language in a bill."
-      },
-      {
-        question: "In committee, which of these behaviors is the MOST helpful to moving business forward?",
-        choices: [
-          "Repeating the same point in every speech to 'drive it home'",
-          "Listening for new information and building on or responding to it",
-          "Talking over the chair to speed up debate",
-          "Only speaking when you completely agree with the sponsor"
-        ],
-        correctIndex: 1,
-        explanation: "Good committee work builds on what others say, responds to concerns, and helps refine the bill."
-      },
-      {
-        question: "You need a short break to caucus or grab water without ending the meeting. What motion is most appropriate?",
-        choices: [
-          "Motion to recess",
-          "Motion to adjourn",
-          "Motion to lay on the table",
-          "Motion to postpone indefinitely"
-        ],
-        correctIndex: 0,
-        explanation: "A motion to recess allows a temporary break while keeping the meeting technically in session."
-      },
-      {
-        question: "Why does MSL care so much about using Maryland-specific issues and law?",
-        choices: [
-          "Because national politics are banned in the chamber",
-          "Because it’s fun to memorize obscure state code sections for no reason",
-          "Because MSL simulates the Maryland General Assembly, where state-level issues and statutes matter most",
-          "Because it makes writing bills easier than doing campus policy"
-        ],
-        correctIndex: 2,
-        explanation: "MSL is modeled on the Maryland General Assembly, so centering state issues keeps the simulation realistic and useful."
-      },
-      {
-        question: "You’re not recognized but you shout from the gallery anyway. What’s the likely outcome?",
-        choices: [
-          "You automatically win Debater of the Year",
-          "The chair ignores you or gavels you out of order",
-          "Your comment is added to the bill text",
-          "The chamber pauses to debate your interruption"
-        ],
-        correctIndex: 1,
-        explanation: "Speaking without recognition is out of order; good floor work relies on being recognized by the chair."
-      }
-    ];
-
-    let currentIndex = 0;
-    let score = 0;
-    let hasAnswered = false;
-
-    const questionEl = document.getElementById("gameQuestion");
-    const choicesEl = document.getElementById("gameChoices");
-    const feedbackEl = document.getElementById("gameFeedback");
-    const statusEl = document.getElementById("gameStatus");
-    const scoreEl = document.getElementById("gameScore");
-    const progressEl = document.getElementById("gameProgress");
-    const nextBtn = document.getElementById("nextBtn");
-    const restartBtn = document.getElementById("restartBtn");
-    const resultRestartBtn = document.getElementById("resultRestartBtn");
-    const resultCard = document.getElementById("gameResult");
-    const resultScore = document.getElementById("resultScore");
-    const resultMessage = document.getElementById("resultMessage");
-    const easterAllCorrect = document.getElementById("easterAllCorrect");
-    const easterAllWrong = document.getElementById("easterAllWrong");
-
-    function renderQuestion() {
-      const q = questions[currentIndex];
-      hasAnswered = false;
-
-      statusEl.textContent = "Question " + (currentIndex + 1);
-      scoreEl.textContent = "Score: " + score;
-      progressEl.textContent = (currentIndex + 1) + " of " + questions.length;
-      questionEl.textContent = q.question;
-      feedbackEl.textContent = "";
-      nextBtn.textContent = currentIndex === questions.length - 1 ? "See results →" : "Next question →";
-      nextBtn.disabled = true;
-      restartBtn.style.display = "none";
-
-      choicesEl.innerHTML = "";
-
-      q.choices.forEach(function (choiceText, idx) {
-        const btn = document.createElement("button");
-        btn.className = "game-choice-btn";
-        btn.textContent = choiceText;
-        btn.addEventListener("click", function () {
-          handleChoice(idx);
+        // snake
+        snake.forEach((seg, index) => {
+          ctx.fillStyle = index === 0 ? "#22c55e" : "#16a34a";
+          ctx.fillRect(
+            seg.x * cellSize + 1,
+            seg.y * cellSize + 1,
+            cellSize - 2,
+            cellSize - 2
+          );
         });
-        choicesEl.appendChild(btn);
-      });
-    }
+      }
 
-    function handleChoice(selectedIndex) {
-      if (hasAnswered) return;
-      hasAnswered = true;
+      function tick() {
+        if (!alive) return;
+        const head = snake[0];
+        const newHead = { x: head.x + dir.x, y: head.y + dir.y };
 
-      const q = questions[currentIndex];
-      const buttons = Array.prototype.slice.call(document.querySelectorAll(".game-choice-btn"));
-
-      buttons.forEach(function (btn, idx) {
-        btn.disabled = true;
-        if (idx === q.correctIndex) {
-          btn.classList.add("correct");
+        // wall collision
+        if (
+          newHead.x < 0 ||
+          newHead.x >= cols ||
+          newHead.y < 0 ||
+          newHead.y >= rows
+        ) {
+          alive = false;
         }
-        if (idx === selectedIndex && idx !== q.correctIndex) {
-          btn.classList.add("incorrect");
+
+        // self collision
+        if (
+          alive &&
+          snake.some((seg) => seg.x === newHead.x && seg.y === newHead.y)
+        ) {
+          alive = false;
         }
-      });
 
-      if (selectedIndex === q.correctIndex) {
-        score++;
-        feedbackEl.innerHTML = "<strong>Correct!</strong> " + q.explanation;
-      } else {
-        feedbackEl.innerHTML = "<strong>Not quite.</strong> " + q.explanation;
-      }
-
-      scoreEl.textContent = "Score: " + score;
-      nextBtn.disabled = false;
-    }
-
-    function showResults() {
-      const total = questions.length;
-      const percent = Math.round((score / total) * 100);
-      resultScore.textContent = "You scored " + score + " out of " + total + " (" + percent + "%).";
-
-      let msg;
-      if (percent >= 85) {
-        msg = "You’re chamber-ready. Grab a bill and go bully the mic (respectfully).";
-      } else if (percent >= 60) {
-        msg = "Solid foundation. A couple more sessions and you’ll be running committee.";
-      } else {
-        msg = "Good start. Pair this with a workshop and one real session and you’ll level up fast.";
-      }
-
-      resultMessage.textContent = msg;
-
-      easterAllCorrect.style.display = "none";
-      easterAllWrong.style.display = "none";
-
-      if (score === total) {
-        easterAllCorrect.style.display = "block";
-      } else if (score === 0) {
-        easterAllWrong.style.display = "block";
-      }
-
-      // Track best quiz score and threshold
-      if (score >= QUIZ_TARGET) {
-        progress.quizThreshold = true;
-      }
-      if (score > (progress.quizBest || 0)) {
-        progress.quizBest = score;
-      }
-      progress.quizQuestions = questions.length;
-      saveProgress();
-      checkSecretUnlock();
-      updateStatsUI();
-
-      resultCard.style.display = "block";
-      restartBtn.style.display = "inline-flex";
-    }
-
-    function nextQuestion() {
-      if (currentIndex < questions.length - 1) {
-        currentIndex++;
-        renderQuestion();
-      } else {
-        showResults();
-      }
-    }
-
-    function restartGame() {
-      currentIndex = 0;
-      score = 0;
-      resultCard.style.display = "none";
-      renderQuestion();
-    }
-
-    if (nextBtn) nextBtn.addEventListener("click", nextQuestion);
-    if (restartBtn) restartBtn.addEventListener("click", restartGame);
-    if (resultRestartBtn) resultRestartBtn.addEventListener("click", restartGame);
-
-    renderQuestion();
-
-    // ---------- GAME 2: BILL CONCEPT LAB ----------
-    const billLabForm = document.getElementById("billLabForm");
-    const policyAreaEl = document.getElementById("policyArea");
-    const changeLevelEl = document.getElementById("changeLevel");
-    const impactTypeEl = document.getElementById("impactType");
-    const issueTextEl = document.getElementById("issueText");
-    const billLabOutput = document.getElementById("billLabOutput");
-    const billLabMeta = document.getElementById("billLabMeta");
-    const billLabTitle = document.getElementById("billLabTitle");
-    const billLabSummary = document.getElementById("billLabSummary");
-
-    if (billLabForm) {
-      billLabForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const area = policyAreaEl.value;
-        const change = changeLevelEl.value;
-        const impact = impactTypeEl.value;
-        const issueRaw = issueTextEl.value.trim();
-
-        if (!area || !change || !impact) {
+        if (!alive) {
+          if (statusEl) statusEl.textContent = "Game over – press R to restart.";
           return;
         }
 
-        const issue = issueRaw || "a priority identified by SMCM delegates and Maryland students";
-        const title = "An Act Concerning " + capitalizeFirst(area) + " and " + shortenIssue(issue);
-        const meta = "Draft concept • " + capitalizeFirst(area) + " • " + change;
-        const summary =
-          "This bill would address " + issue +
-          " by pursuing " + change +
-          " in the area of " + area +
-          ", using a framework centered on " + impact +
-          ".\n\n" +
-          "Key pieces to develop:\n" +
-          "• A clear findings section explaining why this issue matters in Maryland.\n" +
-          "• Definitions for any technical terms or agencies mentioned.\n" +
-          "• Specific sections describing what the state, local governments, or partners must do.\n" +
-          "• An effective date and, if needed, a sunset or reporting requirement.";
+        snake.unshift(newHead);
 
-        billLabMeta.textContent = meta;
-        billLabTitle.textContent = title;
-        billLabSummary.textContent = summary;
-        billLabOutput.style.display = "block";
+        // food
+        if (newHead.x === food.x && newHead.y === food.y) {
+          spawnFood();
+        } else {
+          snake.pop();
+        }
 
-        progress.billLabUsed = true;
-        saveProgress();
-        checkSecretUnlock();
-      });
-    }
+        drawSnake();
+      }
 
-    function capitalizeFirst(text) {
-      if (!text) return "";
-      return text.charAt(0).toUpperCase() + text.slice(1);
-    }
-
-    function shortenIssue(issue) {
-      const max = 60;
-      if (issue.length <= max) return issue;
-      return issue.slice(0, max).trim() + "…";
-    }
-
-    // ---------- GAME 3: SNAKE WITH RIVAL (WASD ONLY) ----------
-    const snakeCanvas = document.getElementById("snakeCanvas");
-    const snakeScoreLabel = document.getElementById("snakeScoreLabel");
-    const snakeBestLabel = document.getElementById("snakeBestLabel");
-    const snakeStatus = document.getElementById("snakeStatus");
-
-    let snakeCtx = null;
-    let snake = [];
-    let snakeDir = { x: 1, y: 0 };
-    let snakeNextDir = { x: 1, y: 0 };
-    let snakeFood = { x: 10, y: 10 };
-    let snakeScore = 0;
-    let snakeBest = progress.snakeBest || 0;
-    let snakeInterval = null;
-    const snakeGridSize = 16;
-
-    // Rival snake
-    let rival = [];
-    let rivalLength = 4;
-
-    if (snakeBestLabel) {
-      snakeBestLabel.textContent = "Best: " + snakeBest;
-    }
-
-    function snakeInit() {
-      if (!snakeCanvas) return;
-      snakeCtx = snakeCanvas.getContext("2d");
       resetSnake();
-      document.addEventListener("keydown", snakeKeyHandler);
-    }
-
-    function resetSnake() {
-      const cols = Math.floor(snakeCanvas.width / snakeGridSize);
-      const rows = Math.floor(snakeCanvas.height / snakeGridSize);
-
-      snake = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2) }];
-      snakeDir = { x: 1, y: 0 };
-      snakeNextDir = { x: 1, y: 0 };
-      snakeScore = 0;
-      updateSnakeScore();
-
-      // Rival starting position
-      rival = [];
-      const rx = Math.floor(cols / 4);
-      const ry = Math.floor(rows / 4);
-      for (let i = 0; i < rivalLength; i++) {
-        rival.push({ x: rx - i, y: ry });
-      }
-
-      placeSnakeFood();
       drawSnake();
+      tickInterval = setInterval(tick, 150);
 
-      if (snakeStatus) snakeStatus.textContent = "Click the card, then press W, A, S, or D to start.";
-      if (snakeInterval) {
-        clearInterval(snakeInterval);
-        snakeInterval = null;
-      }
-    }
-
-    function placeSnakeFood() {
-      const cols = Math.floor(snakeCanvas.width / snakeGridSize);
-      const rows = Math.floor(snakeCanvas.height / snakeGridSize);
-      let fx, fy, safe = false;
-
-      while (!safe) {
-        fx = Math.floor(Math.random() * cols);
-        fy = Math.floor(Math.random() * rows);
-        safe = true;
-
-        // Avoid placing directly on snake or rival segments
-        for (let i = 0; i < snake.length; i++) {
-          if (snake[i].x === fx && snake[i].y === fy) {
-            safe = false;
-            break;
-          }
-        }
-        for (let j = 0; j < rival.length && safe; j++) {
-          if (rival[j].x === fx && rival[j].y === fy) {
-            safe = false;
-            break;
-          }
-        }
-      }
-
-      snakeFood.x = fx;
-      snakeFood.y = fy;
-    }
-
-    function snakeKeyHandler(e) {
-      if (currentGameFocus !== "snake") return;
-
-      const key = e.key;
-      if (key === "w" || key === "W") {
-        if (snakeDir.y === 1) return;
-        snakeNextDir = { x: 0, y: -1 };
-      } else if (key === "s" || key === "S") {
-        if (snakeDir.y === -1) return;
-        snakeNextDir = { x: 0, y: 1 };
-      } else if (key === "a" || key === "A") {
-        if (snakeDir.x === 1) return;
-        snakeNextDir = { x: -1, y: 0 };
-      } else if (key === "d" || key === "D") {
-        if (snakeDir.x === -1) return;
-        snakeNextDir = { x: 1, y: 0 };
-      } else {
-        return;
-      }
-
-      if (!snakeInterval) {
-        if (snakeStatus) snakeStatus.textContent = "Game on. Rival is hungry too.";
-        snakeInterval = setInterval(snakeTick, 110);
-      }
-    }
-
-    function snakeTick() {
-      if (!snakeCtx) return;
-
-      snakeDir = snakeNextDir;
-      const cols = Math.floor(snakeCanvas.width / snakeGridSize);
-      const rows = Math.floor(snakeCanvas.height / snakeGridSize);
-
-      // Player head
-      const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
-
-      // wall collision
-      if (head.x < 0 || head.y < 0 || head.x >= cols || head.y >= rows) {
-        snakeGameOver("You hit the wall.");
-        return;
-      }
-
-      // self collision
-      for (let i = 0; i < snake.length; i++) {
-        if (snake[i].x === head.x && snake[i].y === head.y) {
-          snakeGameOver("You ran into yourself.");
+      document.addEventListener("keydown", (e) => {
+        if (isTypingTarget(e)) return;
+        const key = e.key.toLowerCase();
+        if (!alive && key === "r") {
+          resetSnake();
+          drawSnake();
           return;
         }
-      }
-
-      // collision with rival body
-      for (let i = 0; i < rival.length; i++) {
-        if (rival[i].x === head.x && rival[i].y === head.y) {
-          snakeGameOver("You collided with the rival snake.");
-          return;
-        }
-      }
-
-      snake.unshift(head);
-
-      if (head.x === snakeFood.x && head.y === snakeFood.y) {
-        snakeScore++;
-        updateSnakeScore();
-        placeSnakeFood();
-      } else {
-        snake.pop();
-      }
-
-      // Rival movement towards food
-      moveRival(cols, rows);
-
-      // Rival eats food?
-      const rivalHead = rival[0];
-      if (rivalHead.x === snakeFood.x && rivalHead.y === snakeFood.y) {
-        if (snakeStatus) snakeStatus.textContent = "Rival stole the snack! New target…";
-        placeSnakeFood();
-      }
-
-      // Rival collides with player head/body after moving
-      for (let i = 0; i < rival.length; i++) {
-        if (rival[i].x === head.x && rival[i].y === head.y) {
-          snakeGameOver("You collided with the rival snake.");
-          return;
-        }
-      }
-
-      drawSnake();
-    }
-
-    function moveRival(cols, rows) {
-      if (!rival.length) return;
-
-      const head = { x: rival[0].x, y: rival[0].y };
-
-      // Simple chase AI: prioritize horizontal, then vertical
-      let dx = 0;
-      let dy = 0;
-      if (head.x < snakeFood.x) dx = 1;
-      else if (head.x > snakeFood.x) dx = -1;
-      else if (head.y < snakeFood.y) dy = 1;
-      else if (head.y > snakeFood.y) dy = -1;
-
-      const newHead = { x: head.x + dx, y: head.y + dy };
-
-      if (newHead.x < 0 || newHead.y < 0 || newHead.x >= cols || newHead.y >= rows) {
-        return;
-      }
-
-      rival.unshift(newHead);
-      while (rival.length > rivalLength) {
-        rival.pop();
-      }
-    }
-
-    function drawSnake() {
-      snakeCtx.clearRect(0, 0, snakeCanvas.width, snakeCanvas.height);
-
-      // food
-      snakeCtx.fillStyle = "#facc15";
-      snakeCtx.fillRect(
-        snakeFood.x * snakeGridSize,
-        snakeFood.y * snakeGridSize,
-        snakeGridSize,
-        snakeGridSize
-      );
-
-      // player snake
-      snakeCtx.fillStyle = "#22c55e";
-      snake.forEach(function (seg) {
-        snakeCtx.fillRect(
-          seg.x * snakeGridSize,
-          seg.y * snakeGridSize,
-          snakeGridSize - 1,
-          snakeGridSize - 1
-        );
+        if (key === "w" && dir.y !== 1) dir = { x: 0, y: -1 };
+        else if (key === "s" && dir.y !== -1) dir = { x: 0, y: 1 };
+        else if (key === "a" && dir.x !== 1) dir = { x: -1, y: 0 };
+        else if (key === "d" && dir.x !== -1) dir = { x: 1, y: 0 };
       });
+    })();
 
-      // rival snake
-      snakeCtx.fillStyle = "#ef4444";
-      rival.forEach(function (seg) {
-        snakeCtx.fillRect(
-          seg.x * snakeGridSize,
-          seg.y * snakeGridSize,
-          snakeGridSize - 1,
-          snakeGridSize - 1
-        );
-      });
-    }
+    // -------------------------
+    // RUNNER GAME
+    // -------------------------
+    (function () {
+      const canvas = document.getElementById("runnerCanvas");
+      const statusEl = document.getElementById("runnerStatus");
+      if (!canvas || !canvas.getContext) return;
+      const ctx = canvas.getContext("2d");
 
-    function updateSnakeScore() {
-      if (snakeScoreLabel) snakeScoreLabel.textContent = "Score: " + snakeScore;
-      if (snakeScore > snakeBest) {
-        snakeBest = snakeScore;
-        if (snakeBestLabel) snakeBestLabel.textContent = "Best: " + snakeBest;
-        progress.snakeBest = snakeBest;
-        saveProgress();
-        checkSecretUnlock();
-        updateStatsUI();
-      }
-    }
+      const width = canvas.width;
+      const height = canvas.height;
+      const groundY = height - 40;
 
-    function snakeGameOver(msg) {
-      if (snakeStatus) snakeStatus.textContent = "Game over. " + msg + " Click the card, then press W, A, S, or D to restart.";
-      clearInterval(snakeInterval);
-      snakeInterval = null;
-      setTimeout(resetSnake, 500);
-    }
+      let player = {
+        x: 40,
+        y: groundY - 24,
+        w: 24,
+        h: 24,
+        vy: 0,
+        jumping: false,
+        speedBoost: 0,
+        boostTime: 0,
+      };
 
-    if (snakeCanvas) {
-      snakeInit();
-    }
+      let obstacles = [];
+      let flowers = [];
+      let speed = 4;
+      let running = true;
 
-    // ---------- GAME 4: RUNNER ----------
-    const runnerCanvas = document.getElementById("runnerCanvas");
-    const runnerScoreLabel = document.getElementById("runnerScoreLabel");
-    const runnerBestLabel = document.getElementById("runnerBestLabel");
-    const runnerStatus = document.getElementById("runnerStatus");
-
-    let runnerCtx = null;
-    let runnerAnimId = null;
-    let runnerRunning = false;
-    let runnerScore = 0;
-    let runnerBest = progress.runnerBest || 0;
-
-    let player = {
-      x: 40,
-      y: 0,
-      width: 26,
-      height: 38,
-      vy: 0,
-      onGround: false
-    };
-
-    const baseGravity = 0.8;
-    const baseJumpVelocity = -12;
-    const baseGroundY = 160;
-
-    let gravity = baseGravity;
-    let jumpVelocity = baseJumpVelocity;
-    let groundY = baseGroundY;
-
-    let obstacles = [];
-    let obstacleTimer = 0;
-
-    let gaps = [];
-    let gapTimer = 0;
-
-    let blocks = [];
-    let blockTimer = 0;
-
-    let flowers = [];
-    let boostActive = false;
-    let boostTimer = 0;
-    const BOOST_DURATION_FRAMES = 60 * 5;
-
-    if (runnerBestLabel) {
-      runnerBestLabel.textContent = "Best: " + runnerBest;
-    }
-
-    function runnerInit() {
-      if (!runnerCanvas) return;
-      runnerCtx = runnerCanvas.getContext("2d");
-      resetRunner();
-      document.addEventListener("keydown", runnerKeyHandler);
-    }
-
-    function resetRunner() {
-      player.y = groundY - player.height;
-      player.vy = 0;
-      player.onGround = true;
-      runnerScore = 0;
-      obstacles = [];
-      obstacleTimer = 0;
-      gaps = [];
-      gapTimer = 0;
-      blocks = [];
-      blockTimer = 0;
-      flowers = [];
-      boostActive = false;
-      boostTimer = 0;
-      gravity = baseGravity;
-      jumpVelocity = baseJumpVelocity;
-
-      updateRunnerScore();
-      if (runnerStatus) runnerStatus.textContent = "Click the card, then press space or ↑ to start running.";
-      if (runnerAnimId) {
-        cancelAnimationFrame(runnerAnimId);
-        runnerAnimId = null;
-      }
-      drawRunnerFrame();
-      runnerRunning = false;
-    }
-
-    function runnerKeyHandler(e) {
-      if (currentGameFocus !== "runner") return;
-
-      if (e.key === " " || e.key === "ArrowUp") {
-        e.preventDefault();
-        if (!runnerRunning) {
-          runnerRunning = true;
-          if (runnerStatus) runnerStatus.textContent = "Stay alive. Jump gaps and obstacles, grab boosts.";
-          runnerAnimId = requestAnimationFrame(runnerLoop);
-        }
-        if (player.onGround) {
-          player.vy = jumpVelocity;
-          player.onGround = false;
-        }
-      }
-    }
-
-    function runnerLoop() {
-      updateRunner();
-      drawRunnerFrame();
-      if (runnerRunning) {
-        runnerAnimId = requestAnimationFrame(runnerLoop);
-      }
-    }
-
-    function updateRunner() {
-      player.vy += gravity;
-      player.y += player.vy;
-
-      const playerCenterX = player.x + player.width / 2;
-      const overSolidGround = !isOverGap(playerCenterX);
-
-      if (overSolidGround && player.y >= groundY - player.height) {
-        player.y = groundY - player.height;
-        player.vy = 0;
-        player.onGround = true;
-      } else if (!overSolidGround && player.y > runnerCanvas.height) {
-        runnerGameOver("You fell into a gap.");
-        return;
-      }
-
-      obstacleTimer++;
-      if (obstacleTimer > 60) {
-        obstacleTimer = 0;
+      function spawnObstacle() {
         obstacles.push({
-          x: runnerCanvas.width + 10,
-          y: groundY - 24,
-          width: 20,
-          height: 24,
-          speed: boostActive ? 6 : 4
+          x: width + Math.random() * 100,
+          y: groundY - 20,
+          w: 26,
+          h: 20,
         });
       }
 
-      gapTimer++;
-      if (gapTimer > 160) {
-        gapTimer = 0;
-        const gapWidth = 60 + Math.random() * 40;
-        gaps.push({
-          x: runnerCanvas.width + 50,
-          width: gapWidth,
-          speed: 4
-        });
-      }
-
-      blockTimer++;
-      if (blockTimer > 220) {
-        blockTimer = 0;
-        blocks.push({
-          x: runnerCanvas.width + 30,
+      function spawnFlower() {
+        flowers.push({
+          x: width + 150 + Math.random() * 200,
           y: groundY - 40,
-          width: 26,
-          height: 26,
-          speed: 4
+          r: 10,
         });
       }
 
-      obstacles.forEach(function (ob) {
-        ob.x -= boostActive ? 6 : 4;
-      });
-      gaps.forEach(function (g) {
-        g.x -= 4;
-      });
-      blocks.forEach(function (b) {
-        b.x -= 4;
-      });
-      flowers.forEach(function (f) {
-        const targetX = playerCenterX + 20;
-        if (f.x > targetX) f.x -= 3;
-        else if (f.x < targetX) f.x += 2;
-
-        const targetY = player.y;
-        if (f.y > targetY - 20) f.y -= 1.5;
-        else if (f.y < targetY - 20) f.y += 1.2;
-      });
-
-      obstacles = obstacles.filter(ob => ob.x + ob.width > -20);
-      gaps = gaps.filter(g => g.x + g.width > -20);
-      blocks = blocks.filter(b => b.x + b.width > -20);
-      flowers = flowers.filter(f => f.x > -40 && f.x < runnerCanvas.width + 40);
-
-      for (let i = 0; i < obstacles.length; i++) {
-        const ob = obstacles[i];
-        if (
-          player.x < ob.x + ob.width &&
-          player.x + player.width > ob.x &&
-          player.y < ob.y + ob.height &&
-          player.y + player.height > ob.y
-        ) {
-          runnerGameOver("You hit an obstacle.");
-          return;
+      function resetRunner() {
+        player.y = groundY - 24;
+        player.vy = 0;
+        player.jumping = false;
+        player.speedBoost = 0;
+        player.boostTime = 0;
+        obstacles = [];
+        flowers = [];
+        speed = 4;
+        running = true;
+        if (statusEl) {
+          statusEl.textContent =
+            "Stay on the platform and avoid the spikes. Press Space or W to jump. R to restart.";
         }
+        spawnObstacle();
+        spawnFlower();
       }
 
-      for (let i = blocks.length - 1; i >= 0; i--) {
-        const b = blocks[i];
-        if (
-          player.x < b.x + b.width &&
-          player.x + player.width > b.x &&
-          player.y < b.y + b.height &&
-          player.y + player.height > b.y
-        ) {
-          flowers.push({
-            x: b.x,
-            y: b.y - 10
-          });
-          blocks.splice(i, 1);
-          if (runnerStatus) runnerStatus.textContent = "Flower spawned – let it catch you for a boost.";
+      resetRunner();
+
+      function updateRunner() {
+        if (!running) return;
+
+        // gravity
+        player.vy += 0.7;
+        player.y += player.vy;
+
+        // ground
+        if (player.y + player.h >= groundY) {
+          player.y = groundY - player.h;
+          player.vy = 0;
+          player.jumping = false;
         }
+
+        // boosts
+        if (player.boostTime > 0) {
+          player.boostTime -= 1;
+          if (player.boostTime <= 0) {
+            player.speedBoost = 0;
+          }
+        }
+
+        const currentSpeed = speed + player.speedBoost;
+
+        // move obstacles
+        obstacles.forEach((ob) => {
+          ob.x -= currentSpeed;
+        });
+        obstacles = obstacles.filter((ob) => ob.x + ob.w > -10);
+        if (obstacles.length < 3 && Math.random() < 0.03) {
+          spawnObstacle();
+        }
+
+        // move flowers
+        flowers.forEach((f) => {
+          f.x -= currentSpeed * 0.9;
+        });
+        flowers = flowers.filter((f) => f.x + f.r > -10);
+        if (flowers.length < 2 && Math.random() < 0.01) {
+          spawnFlower();
+        }
+
+        // collisions - obstacles
+        obstacles.forEach((ob) => {
+          const collide =
+            player.x < ob.x + ob.w &&
+            player.x + player.w > ob.x &&
+            player.y < ob.y + ob.h &&
+            player.y + player.h > ob.y;
+          if (collide) {
+            running = false;
+            if (statusEl) {
+              statusEl.textContent =
+                "Ouch. You hit a hurdle. Press R to try again.";
+            }
+          }
+        });
+
+        // collisions - flowers
+        flowers.forEach((f) => {
+          const dx = player.x + player.w / 2 - f.x;
+          const dy = player.y + player.h / 2 - f.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < f.r + 16) {
+            // collect boost
+            player.speedBoost = 2;
+            player.boostTime = 300; // ~5 seconds at 60fps
+            f.collected = true;
+          }
+        });
+        flowers = flowers.filter((f) => !f.collected);
       }
 
-      for (let i = flowers.length - 1; i >= 0; i--) {
-        const f = flowers[i];
-        if (
-          player.x < f.x + 16 &&
-          player.x + player.width > f.x - 16 &&
-          player.y < f.y + 16 &&
-          player.y + player.height > f.y - 16
-        ) {
-          flowers.splice(i, 1);
-          activateBoost();
-        }
+      function drawRunner() {
+        ctx.clearRect(0, 0, width, height);
+
+        // background
+        ctx.fillStyle = "#020617";
+        ctx.fillRect(0, 0, width, height);
+
+        // ground
+        ctx.fillStyle = "#1e293b";
+        ctx.fillRect(0, groundY, width, height - groundY);
+
+        // player
+        ctx.fillStyle = "#38bdf8";
+        ctx.fillRect(player.x, player.y, player.w, player.h);
+
+        // obstacles – triangles
+        ctx.fillStyle = "#f97316";
+        obstacles.forEach((ob) => {
+          ctx.beginPath();
+          ctx.moveTo(ob.x, ob.y + ob.h);
+          ctx.lineTo(ob.x + ob.w / 2, ob.y);
+          ctx.lineTo(ob.x + ob.w, ob.y + ob.h);
+          ctx.closePath();
+          ctx.fill();
+        });
+
+        // flowers – little circles
+        ctx.fillStyle = "#22c55e";
+        flowers.forEach((f) => {
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
       }
 
-      if (boostActive) {
-        boostTimer++;
-        if (boostTimer > BOOST_DURATION_FRAMES) {
-          boostActive = false;
-          boostTimer = 0;
-          gravity = baseGravity;
-          jumpVelocity = baseJumpVelocity;
-          if (runnerStatus) runnerStatus.textContent = "Boost ended. Back to normal speed.";
+      function loop() {
+        updateRunner();
+        drawRunner();
+        requestAnimationFrame(loop);
+      }
+      loop();
+
+      document.addEventListener("keydown", (e) => {
+        if (isTypingTarget(e)) return;
+        const key = e.key.toLowerCase();
+        if ((key === " " || key === "w") && !player.jumping && running) {
+          player.vy = -12;
+          player.jumping = true;
+        } else if (key === "r") {
+          resetRunner();
         }
+      });
+    })();
+
+    // -------------------------
+    // HANGMAN GAME
+    // -------------------------
+    (function () {
+      const words = [
+        "quorum",
+        "amendment",
+        "caucus",
+        "gavel",
+        "resolution",
+        "committee",
+        "docket",
+        "sponsor",
+        "motion",
+        "chamber",
+      ];
+
+      const wordEl = document.getElementById("hmWord");
+      const guessesEl = document.getElementById("hmGuesses");
+      const statusEl = document.getElementById("hmStatus");
+      const inputEl = document.getElementById("hmInput");
+      const guessBtn = document.getElementById("hmGuessBtn");
+      const newBtn = document.getElementById("hmNewWord");
+
+      if (!wordEl || !guessesEl || !statusEl || !inputEl || !guessBtn || !newBtn) return;
+
+      let currentWord = "";
+      let revealed = [];
+      let guesses = [];
+      let wrong = 0;
+      const maxWrong = 6;
+
+      function pickWord() {
+        currentWord = words[Math.floor(Math.random() * words.length)];
+        revealed = currentWord.split("").map((ch) => (ch === "-" ? "-" : "_"));
+        guesses = [];
+        wrong = 0;
+        render();
+        statusEl.textContent = "Guess a letter related to our MSL universe.";
       }
 
-      runnerScore += 1;
-      updateRunnerScore();
-    }
+      function render() {
+        wordEl.textContent = revealed.join(" ");
+        guessesEl.innerHTML = "";
+        guesses.forEach((g) => {
+          const span = document.createElement("span");
+          span.textContent = g;
+          guessesEl.appendChild(span);
+        });
+      }
 
-    function isOverGap(x) {
-      for (let i = 0; i < gaps.length; i++) {
-        const g = gaps[i];
-        if (x >= g.x && x <= g.x + g.width) {
+      function checkWinLose() {
+        if (!revealed.includes("_")) {
+          statusEl.textContent =
+            "You got it! Secret reward: you now officially know at least one piece of MSL jargon on purpose.";
           return true;
         }
-      }
-      return false;
-    }
-
-    function activateBoost() {
-      boostActive = true;
-      boostTimer = 0;
-      gravity = baseGravity * 0.8;
-      jumpVelocity = baseJumpVelocity * 1.15;
-      if (runnerStatus) runnerStatus.textContent = "Boost active! Higher jumps & faster pace.";
-    }
-
-    function drawRunnerFrame() {
-      if (!runnerCtx) return;
-      runnerCtx.clearRect(0, 0, runnerCanvas.width, runnerCanvas.height);
-
-      runnerCtx.fillStyle = "#1e293b";
-      const groundHeight = 4;
-      runnerCtx.fillRect(0, groundY, runnerCanvas.width, groundHeight);
-
-      runnerCtx.fillStyle = "#020617";
-      gaps.forEach(function (g) {
-        runnerCtx.fillRect(g.x, groundY, g.width, groundHeight + 20);
-      });
-
-      runnerCtx.fillStyle = boostActive ? "#22c55e" : "#16a34a";
-      runnerCtx.fillRect(player.x, player.y, player.width, player.height);
-
-      runnerCtx.fillStyle = "#f97316";
-      obstacles.forEach(function (ob) {
-        runnerCtx.beginPath();
-        runnerCtx.moveTo(ob.x, ob.y + ob.height);
-        runnerCtx.lineTo(ob.x + ob.width / 2, ob.y);
-        runnerCtx.lineTo(ob.x + ob.width, ob.y + ob.height);
-        runnerCtx.closePath();
-        runnerCtx.fill();
-      });
-
-      runnerCtx.fillStyle = "#facc15";
-      blocks.forEach(function (b) {
-        runnerCtx.fillRect(b.x, b.y, b.width, b.height);
-      });
-
-      runnerCtx.fillStyle = "#ea580c";
-      flowers.forEach(function (f) {
-        runnerCtx.beginPath();
-        runnerCtx.arc(f.x, f.y, 10, 0, Math.PI * 2);
-        runnerCtx.fill();
-      });
-    }
-
-    function updateRunnerScore() {
-      if (runnerScoreLabel) runnerScoreLabel.textContent = "Score: " + runnerScore;
-      if (runnerScore > runnerBest) {
-        runnerBest = runnerScore;
-        if (runnerBestLabel) runnerBestLabel.textContent = "Best: " + runnerBest;
-        progress.runnerBest = runnerBest;
-        saveProgress();
-        checkSecretUnlock();
-        updateStatsUI();
-      }
-    }
-
-    function runnerGameOver(reason) {
-      runnerRunning = false;
-      if (runnerStatus) runnerStatus.textContent = "You lost: " + reason + " Click the card, then press space or ↑ to try again.";
-      setTimeout(resetRunner, 600);
-    }
-
-    if (runnerCanvas) {
-      runnerInit();
-    }
-
-    // ---------- PET: FIELD COMPANION ----------
-    const fieldCompanionWidget = document.getElementById("fieldCompanionWidget");
-    const fieldCompanionToggle = document.getElementById("fieldCompanionToggle");
-
-    if (fieldCompanionToggle && fieldCompanionWidget) {
-      fieldCompanionToggle.addEventListener("click", () => {
-        fieldCompanionWidget.classList.toggle("open");
-      });
-    }
-
-    const petTypeEl = document.getElementById("petType");
-    const petImageEl = document.getElementById("petImage");
-    const petNameLabelEl = document.getElementById("petNameLabel");
-    const petHungerBar = document.getElementById("petHungerBar");
-    const petHappyBar = document.getElementById("petHappyBar");
-    const petEnergyBar = document.getElementById("petEnergyBar");
-    const petStatusEl = document.getElementById("petStatus");
-
-    const petFeedBtn = document.getElementById("petFeedBtn");
-    const petPlayBtn = document.getElementById("petPlayBtn");
-    const petRestBtn = document.getElementById("petRestBtn");
-
-    const PET_KEY = "mslPetState";
-
-    let petState = loadPetState();
-
-    function loadPetState() {
-      try {
-        const raw = localStorage.getItem(PET_KEY);
-        if (!raw) {
-          return {
-            type: "dog",
-            hunger: 70,
-            happiness: 70,
-            energy: 70
-          };
+        if (wrong >= maxWrong) {
+          statusEl.textContent =
+            "Out of attempts. The word was \"" + currentWord + "\". Hit ‘New Word’ to try again.";
+          return true;
         }
-        const parsed = JSON.parse(raw);
-        return Object.assign(
-          {
-            type: "dog",
-            hunger: 70,
-            happiness: 70,
-            energy: 70
-          },
-          parsed
-        );
-      } catch (e) {
-        return {
-          type: "dog",
-          hunger: 70,
-          happiness: 70,
-          energy: 70
-        };
-      }
-    }
-
-    function savePetState() {
-      try {
-        localStorage.setItem(PET_KEY, JSON.stringify(petState));
-      } catch (e) {
-        // ignore
-      }
-    }
-
-    function getPetAsset(type) {
-      if (type === "dog") return "pet-dog.gif";
-      if (type === "cat") return "pet-cat.gif";
-      if (type === "koala") return "pet-koala.gif";
-      return "pet-dog.gif";
-    }
-
-    function getPetName(type) {
-      if (type === "dog") return "Delegate Dog";
-      if (type === "cat") return "Committee Cat";
-      if (type === "koala") return "Caucus Koala";
-      return "Field Friend";
-    }
-
-    function clampStat(v) {
-      return Math.max(0, Math.min(100, v));
-    }
-
-    function updatePetUI(message) {
-      if (petImageEl) {
-        petImageEl.src = getPetAsset(petState.type);
-      }
-      if (petNameLabelEl) {
-        petNameLabelEl.textContent = getPetName(petState.type);
+        return false;
       }
 
-      if (petHungerBar) petHungerBar.style.width = petState.hunger + "%";
-      if (petHappyBar) petHappyBar.style.width = petState.happiness + "%";
-      if (petEnergyBar) petEnergyBar.style.width = petState.energy + "%";
-
-      if (petStatusEl) {
-        petStatusEl.textContent = message || "";
-      }
-    }
-
-    if (petTypeEl) {
-      petTypeEl.value = petState.type;
-      petTypeEl.addEventListener("change", function () {
-        petState.type = petTypeEl.value;
-        savePetState();
-        updatePetUI("You switched companions. Be kind to whoever’s on duty.");
-      });
-    }
-
-    if (petFeedBtn) {
-      petFeedBtn.addEventListener("click", function () {
-        petState.hunger = clampStat(petState.hunger + 18);
-        petState.energy = clampStat(petState.energy + 6);
-        savePetState();
-        updatePetUI("Snack delivered. Hunger improved.");
-      });
-    }
-
-    if (petPlayBtn) {
-      petPlayBtn.addEventListener("click", function () {
-        petState.happiness = clampStat(petState.happiness + 15);
-        petState.energy = clampStat(petState.energy - 8);
-        petState.hunger = clampStat(petState.hunger - 5);
-        savePetState();
-        updatePetUI("Play session logged. Happiness up.");
-      });
-    }
-
-    if (petRestBtn) {
-      petRestBtn.addEventListener("click", function () {
-        petState.energy = clampStat(petState.energy + 20);
-        petState.hunger = clampStat(petState.hunger - 5);
-        savePetState();
-        updatePetUI("Short break taken. Energy restored.");
-      });
-    }
-
-    setInterval(function () {
-      petState.hunger = clampStat(petState.hunger - 2);
-      petState.happiness = clampStat(petState.happiness - 1);
-      petState.energy = clampStat(petState.energy - 1);
-      savePetState();
-      updatePetUI();
-    }, 30000);
-
-    updatePetUI();
-
-    // ---------- HANGMAN ----------
-    const hangmanWords = [
-      "maryland",
-      "delegate",
-      "caucus",
-      "bill",
-      "session",
-      "constitution",
-      "bylaws",
-      "democracy",
-      "amendment",
-      "parliamentary"
-    ];
-
-    const hangmanWordEl = document.getElementById("hangmanWord");
-    const hangmanWrongCountEl = document.getElementById("hangmanWrongCount");
-    const hangmanMaxEl = document.getElementById("hangmanMax");
-    const hangmanWrongLettersEl = document.getElementById("hangmanWrongLetters");
-    const hangmanStatusEl = document.getElementById("hangmanStatus");
-    const hangmanNewBtn = document.getElementById("hangmanNewBtn");
-
-    let hangmanCurrentWord = "";
-    let hangmanRevealed = [];
-    let hangmanWrongLetters = [];
-    let hangmanWrongCount = 0;
-    const HANGMAN_MAX = 7;
-    let hangmanFinished = false;
-    hangmanMaxEl.textContent = HANGMAN_MAX;
-
-    function startHangman() {
-      const idx = Math.floor(Math.random() * hangmanWords.length);
-      hangmanCurrentWord = hangmanWords[idx];
-      hangmanRevealed = Array(hangmanCurrentWord.length).fill(false);
-      hangmanWrongLetters = [];
-      hangmanWrongCount = 0;
-      hangmanFinished = false;
-      updateHangmanUI("New word loaded. Type letters to guess.");
-    }
-
-    function updateHangmanUI(message) {
-      let displayWord = "";
-      for (let i = 0; i < hangmanCurrentWord.length; i++) {
-        displayWord += (hangmanRevealed[i] ? hangmanCurrentWord[i].toUpperCase() : "_") + " ";
-      }
-      hangmanWordEl.textContent = displayWord.trim();
-      hangmanWrongCountEl.textContent = hangmanWrongCount;
-      hangmanWrongLettersEl.textContent = hangmanWrongLetters.length
-        ? hangmanWrongLetters.map(l => l.toUpperCase()).join(", ")
-        : "—";
-      hangmanStatusEl.textContent = message || "";
-
-      const allRevealed = hangmanRevealed.every(v => v);
-      if (allRevealed && !hangmanFinished) {
-        hangmanFinished = true;
-        hangmanStatusEl.textContent = "You got it. Very legislative of you.";
-        progress.hangmanWins = (progress.hangmanWins || 0) + 1;
-        saveProgress();
-        updateStatsUI();
-      } else if (hangmanWrongCount >= HANGMAN_MAX && !hangmanFinished) {
-        hangmanFinished = true;
-        hangmanStatusEl.textContent = "Out of guesses. The word was: " + hangmanCurrentWord.toUpperCase();
-      }
-    }
-
-    function handleHangmanKey(key) {
-      if (!hangmanCurrentWord) return;
-      if (!/^[a-zA-Z]$/.test(key)) return;
-
-      const letter = key.toLowerCase();
-      const allRevealed = hangmanRevealed.every(v => v);
-      if (allRevealed || hangmanWrongCount >= HANGMAN_MAX) {
-        return;
-      }
-
-      if (hangmanRevealed.some((rev, idx) => rev && hangmanCurrentWord[idx] === letter)) {
-        return;
-      }
-      if (hangmanWrongLetters.includes(letter)) {
-        return;
-      }
-
-      let found = false;
-      for (let i = 0; i < hangmanCurrentWord.length; i++) {
-        if (hangmanCurrentWord[i] === letter) {
-          hangmanRevealed[i] = true;
-          found = true;
+      function handleGuess() {
+        const raw = inputEl.value.toLowerCase().trim();
+        inputEl.value = "";
+        if (!raw || raw.length !== 1 || !/[a-z]/.test(raw)) {
+          statusEl.textContent = "Enter a single letter (A–Z).";
+          return;
         }
+        if (guesses.includes(raw)) {
+          statusEl.textContent = "You already tried that letter.";
+          return;
+        }
+        guesses.push(raw);
+
+        if (currentWord.includes(raw)) {
+          currentWord.split("").forEach((ch, i) => {
+            if (ch === raw) revealed[i] = ch;
+          });
+          statusEl.textContent = "Nice. That letter is in the word.";
+        } else {
+          wrong++;
+          statusEl.textContent =
+            "Nope. " + (maxWrong - wrong) + " attempts left.";
+        }
+        render();
+        checkWinLose();
       }
 
-      if (!found) {
-        hangmanWrongLetters.push(letter);
-        hangmanWrongCount++;
-        updateHangmanUI("Not in the word.");
-      } else {
-        updateHangmanUI("Nice pull.");
-      }
-    }
-
-    if (hangmanNewBtn) {
-      hangmanNewBtn.addEventListener("click", function () {
-        startHangman();
+      guessBtn.addEventListener("click", handleGuess);
+      inputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleGuess();
+        }
       });
-    }
+      newBtn.addEventListener("click", pickWord);
 
-    document.addEventListener("keydown", function (e) {
-      if (currentGameFocus !== "hangman") return;
-      if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key)) {
-        handleHangmanKey(e.key);
+      pickWord();
+    })();
+
+    // -------------------------
+    // FIELD COMPANION FLOATING DOT
+    // -------------------------
+    (function () {
+      const companionEl = document.createElement("div");
+      companionEl.id = "fieldCompanion";
+      companionEl.className = "field-companion-dot paused";
+      companionEl.textContent = "🐶";
+      document.body.appendChild(companionEl);
+
+      const radios = document.querySelectorAll('input[name="companion"]');
+      const emojiMap = {
+        dog: "🐶",
+        cat: "🐱",
+        koala: "🐨",
+      };
+
+      let x = window.innerWidth * 0.7;
+      let y = window.innerHeight * 0.6;
+      let vx = 1.2;
+      let vy = 0.9;
+      const size = 56;
+      let moving = true;
+
+      function updateEmoji() {
+        const checked = Array.from(radios).find((r) => r.checked);
+        const emoji = emojiMap[checked ? checked.value : "dog"] || "🐶";
+        companionEl.textContent = emoji;
       }
-    });
 
-    startHangman();
-
-    // ---------- STATS & PROMPTS ----------
-    const statsQuizBestEl = document.getElementById("statsQuizBest");
-    const statsSnakeBestEl = document.getElementById("statsSnakeBest");
-    const statsRunnerBestEl = document.getElementById("statsRunnerBest");
-    const statsHangmanWinsEl = document.getElementById("statsHangmanWins");
-    const statsResetBtn = document.getElementById("statsResetBtn");
-
-    function updateStatsUI() {
-      if (!statsQuizBestEl) return;
-      const quizBest = progress.quizBest || 0;
-      const quizTotal = progress.quizQuestions || questions.length;
-      statsQuizBestEl.textContent = quizBest
-        ? "Best quiz score: " + quizBest + " / " + quizTotal
-        : "Best quiz score: —";
-      statsSnakeBestEl.textContent = "Best Snake score: " + (progress.snakeBest || 0);
-      statsRunnerBestEl.textContent = "Best Runner score: " + (progress.runnerBest || 0);
-      statsHangmanWinsEl.textContent = "Hangman words solved: " + (progress.hangmanWins || 0);
-    }
-
-    if (statsResetBtn) {
-      statsResetBtn.addEventListener("click", function () {
-        progress.quizThreshold = false;
-        progress.quizBest = 0;
-        progress.quizQuestions = questions.length;
-        progress.billLabUsed = false;
-        progress.snakeBest = 0;
-        progress.runnerBest = 0;
-        progress.hangmanWins = 0;
-        saveProgress();
-        updateStatsUI();
-        if (secretUnlockCard) secretUnlockCard.style.display = "none";
+      radios.forEach((r) => {
+        r.addEventListener("change", updateEmoji);
       });
-    }
+      updateEmoji();
 
-    const practicePrompts = [
-      "You are recognized for a 1-minute speech in favor of a bill expanding broadband access in rural Maryland counties.",
-      "You are speaking against a bill that would cut funding for environmental restoration in the Chesapeake Bay watershed.",
-      "You rise as the sponsor of a bill to improve campus mental health resources across Maryland public colleges.",
-      "You are giving a closing speech on a resolution supporting student voter registration efforts in Maryland.",
-      "You are recognized to oppose a bill that weakens tenant protections in student-heavy communities.",
-      "You are the floor leader explaining a complex amendment that strengthens police accountability reporting.",
-      "You are speaking in favor of a pilot program to provide free bus passes for community college students.",
-      "You are introducing a resolution honoring local volunteers who responded to a recent climate-related disaster."
-    ];
+      companionEl.addEventListener("click", () => {
+        moving = !moving;
+        companionEl.classList.toggle("paused", !moving);
+      });
 
-    const ruleSnippets = [
-      {
-        term: "Previous Question",
-        text: "A motion used to end debate and move immediately to a vote on the pending question."
-      },
-      {
-        term: "Point of Order",
-        text: "A question raised to the chair about whether proper procedure is being followed."
-      },
-      {
-        term: "Amendment",
-        text: "A change proposed to a bill or resolution, often adding, striking, or substituting language."
-      },
-      {
-        term: "Recess",
-        text: "A short break in the meeting that pauses business without adjourning the session."
-      },
-      {
-        term: "Caucus",
-        text: "A group of members who meet to strategize, share information, or coordinate positions."
+      function moveCompanion() {
+        if (moving) {
+          x += vx;
+          y += vy;
+
+          const maxX = window.innerWidth - size - 10;
+          const maxY = window.innerHeight - size - 10;
+          const minX = 10;
+          const minY = 10;
+
+          if (x < minX || x > maxX) {
+            vx *= -1;
+            x = Math.min(Math.max(x, minX), maxX);
+          }
+          if (y < minY || y > maxY) {
+            vy *= -1;
+            y = Math.min(Math.max(y, minY), maxY);
+          }
+
+          companionEl.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        }
+        requestAnimationFrame(moveCompanion);
       }
-    ];
+      moveCompanion();
 
-    const promptTextEl = document.getElementById("promptText");
-    const ruleTextEl = document.getElementById("ruleText");
-    const promptNewBtn = document.getElementById("promptNewBtn");
-
-    function generatePrompt() {
-      if (!promptTextEl || !ruleTextEl) return;
-      const p = practicePrompts[Math.floor(Math.random() * practicePrompts.length)];
-      const r = ruleSnippets[Math.floor(Math.random() * ruleSnippets.length)];
-      promptTextEl.textContent = p;
-      ruleTextEl.textContent = r.term + ": " + r.text;
-    }
-
-    if (promptNewBtn) {
-      promptNewBtn.addEventListener("click", generatePrompt);
-    }
-
-    // Initial stats & prompt
-    updateStatsUI();
-    generatePrompt();
+      window.addEventListener("resize", () => {
+        x = Math.min(x, window.innerWidth - size - 10);
+        y = Math.min(y, window.innerHeight - size - 10);
+      });
+    })();
   </script>
 </body>
 </html>
