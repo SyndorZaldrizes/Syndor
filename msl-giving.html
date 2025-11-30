@@ -1,10 +1,82 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Giving Tuesday – Power SMCM MSL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Page-specific tweaks for readability + sticky countdown -->
+  <style>
+    body.giving-page {
+      font-size: 16px;
+      line-height: 1.6;
+      padding-bottom: 3rem; /* space so sticky bar doesn't cover text */
+    }
+
+    .giving-page .section-body {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .giving-page .small {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .giving-page .countdown-timer span {
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+
+    .giving-page .countdown-timer small {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Sticky countdown bar that stays visible while scrolling */
+    .countdown-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 1rem;
+      background: rgba(0, 0, 0, 0.9);
+      color: #ffffff;
+      font-size: 0.9rem;
+    }
+
+    .countdown-bar .countdown-timer {
+      display: flex;
+      gap: 0.75rem;
+      align-items: baseline;
+    }
+
+    .countdown-bar .countdown-timer span {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .countdown-bar .countdown-timer small {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 600px) {
+      .countdown-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 <body class="giving-page">
   <header class="site-header">
@@ -57,25 +129,25 @@
         </div>
 
         <div class="giving-hero-side">
-          <div class="countdown" id="countdown">
-            <p class="countdown-label" id="cd-banner">
+          <div class="countdown" data-countdown>
+            <p class="countdown-label">
               Ladder competition ends in:
             </p>
             <div class="countdown-timer">
               <div>
-                <span id="cd-days">--</span>
+                <span data-unit="days">--</span>
                 <small>Days</small>
               </div>
               <div>
-                <span id="cd-hours">--</span>
+                <span data-unit="hours">--</span>
                 <small>Hours</small>
               </div>
               <div>
-                <span id="cd-mins">--</span>
+                <span data-unit="mins">--</span>
                 <small>Minutes</small>
               </div>
               <div>
-                <span id="cd-secs">--</span>
+                <span data-unit="secs">--</span>
                 <small>Seconds</small>
               </div>
             </div>
@@ -117,10 +189,9 @@
           <p class="section-body">
             We’re not just debating in a vacuum. MSL sessions put students into a real legislative
             simulation rooted in Maryland policy. Your gift makes sure money is never the reason a
-            student can’t participate. Thanks to the generosity of the State-wide MSL organization,
-            our chapter was able to attend this past Fall Special Session at UMD:College Park, where 
-            we had an outstanding 11 members attend over the 2 day event as a brandly new established 
-            chapter. 
+            student can’t participate. Thanks to the generosity of the statewide MSL organization,
+            our chapter was able to attend this past Fall Special Session at UMD College Park, where
+            we had an outstanding 11 members attend over the two-day event as a brand-new chapter.
           </p>
         </div>
         <div class="cards-3">
@@ -186,8 +257,8 @@
           <p class="section-body">
             I’m serving as the Giving Tuesday Champion for the SMCM MSL Chapter because I’ve seen what
             this program does for students who never thought they’d speak in a chamber, write policy, or
-            build coalitions beyond campus. I am a firm beliver that democracy works only when everyone 
-            has the oppurtunity to participate, my sole purpose and intention in creating this club was 
+            build coalitions beyond campus. I am a firm believer that democracy works only when everyone 
+            has the opportunity to participate; my sole purpose and intention in creating this club was 
             to empower everyone in the legislative process as it empowered me before. 
           </p>
           <p class="section-body">
@@ -196,8 +267,8 @@
           </p>
           <p class="section-body">
             If you’ve ever believed students should understand how democracy actually works, not just in
-            a textbook but in real world issues, this is one direct, concrete way to make that happen. Our
-            Executive Board also has other milestones incentives coming up such as....
+            a textbook but in real-world issues, this is one direct, concrete way to make that happen. 
+            We’ve even tied our ladder milestones to chapter-wide incentives to keep things fun as we climb.
           </p>
         </div>
         <div class="card plain-card" style="text-align:center;">
@@ -220,6 +291,64 @@
       </div>
     </section>
 
+    <!-- INCENTIVES & LADDER GOALS -->
+    <section class="section bg-alt">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">Incentives & Ladder Goals</p>
+          <h2>Every $10 Vote Moves Us Up the Ladder</h2>
+          <p class="section-body">
+            The Giving Tuesday ladder tracks <strong>votes</strong>, not just dollars. Each person who gives 
+            at least <strong>$10</strong> casts <strong>one ladder vote</strong> for SMCM MSL. That means a single $10 gift
+            genuinely helps us climb. This campaign is also the main way we’ll provide funds for our members’ 
+            fees heading into the Spring session, so every vote directly supports students who want to be in the room.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <h3>Milestone Incentives</h3>
+            <ul class="checklist small">
+              <li>
+                <strong>Hit the leaderboard:</strong> Executive Board members will volunteer to take a 
+                classic whipped-cream pie to the face at a chapter event.
+              </li>
+              <li>
+                <strong>Every $100 raised:</strong> Members will run a celebratory mile for every $100 
+                we raise. We’ll track the total distance as a way of showing how far your support takes us.
+              </li>
+              <li>
+                <strong>Top 3 finish on the ladder:</strong> Willing members will take part in a safe, 
+                supervised SMCM river plunge to celebrate the win.
+              </li>
+              <li>
+                <strong>1st place on the ladder:</strong> Unlocks a <strong>super secret chapter surprise</strong> 
+                we’ll only reveal if we reach the top spot.
+              </li>
+            </ul>
+            <p class="small" style="margin-top:0.75rem;">
+              All participation in these incentives is voluntary, and we’ll always prioritize safety and 
+              campus guidelines while we celebrate.
+            </p>
+          </div>
+
+          <div class="card plain-card">
+            <h3>Your Vote, Your Impact</h3>
+            <p class="small">
+              Because the ladder is based on vote counts, not just large one-time gifts, 
+              <strong>many small donors are just as powerful as a few big ones</strong>. If you’re able to give 
+              at least $10, that single vote helps our delegation unlock funding for delegate fees, travel, 
+              and programming for the Spring session.
+            </p>
+            <p class="small">
+              Whether you’re an alumnus, a friend, a family member, or a fellow student, your vote for 
+              SMCM MSL tells our members that their voices are worth investing in.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- HOW TO GIVE -->
     <section class="section bg-alt">
       <div class="inner section-layout">
@@ -233,10 +362,12 @@
               Click the button on this page to open the official SMCM Giving Tuesday form.
             </li>
             <li>
-              Make a gift of at least <strong>$10</strong> using your card or other accepted method.
+              Make a gift of at least <strong>$10</strong>. Each person who gives $10 or more casts
+              <strong>one ladder vote</strong> for SMCM MSL.
             </li>
             <li>
-              Make sure our <strong>MSL cause</strong> is selected so your gift helps us climb the ladder.
+              Make sure our <strong>MSL cause</strong> is selected so your gift helps us climb the ladder
+              and support delegate fees for the upcoming Spring session.
             </li>
           </ol>
           <div class="card plain-card">
@@ -270,52 +401,86 @@
     </section>
   </main>
 
+  <!-- Sticky countdown bar visible on all scroll positions -->
+  <div class="countdown-bar" data-countdown>
+    <p class="countdown-label">
+      Giving Tuesday ladder ends in:
+    </p>
+    <div class="countdown-timer">
+      <div>
+        <span data-unit="days">--</span>
+        <small>Days</small>
+      </div>
+      <div>
+        <span data-unit="hours">--</span>
+        <small>Hours</small>
+      </div>
+      <div>
+        <span data-unit="mins">--</span>
+        <small>Minutes</small>
+      </div>
+      <div>
+        <span data-unit="secs">--</span>
+        <small>Seconds</small>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 
   <!-- Inline countdown script (Dec 2, 2025 at 11:59 PM Eastern) -->
   <script>
     (function () {
       const endTime = new Date("2025-12-02T23:59:00-05:00");
+      const blocks = document.querySelectorAll("[data-countdown]");
+      if (!blocks.length) return;
 
-      const daysEl = document.getElementById("cd-days");
-      const hoursEl = document.getElementById("cd-hours");
-      const minsEl = document.getElementById("cd-mins");
-      const secsEl = document.getElementById("cd-secs");
-      const bannerEl = document.getElementById("cd-banner");
-
-      if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
+      let timer = null;
 
       function updateCountdown() {
         const now = new Date();
         const diff = endTime - now;
 
-        if (diff <= 0) {
-          if (bannerEl) {
-            bannerEl.textContent =
-              "The ladder competition has ended — thank you for your support!";
+        blocks.forEach((block) => {
+          const daysEl = block.querySelector('[data-unit="days"]');
+          const hoursEl = block.querySelector('[data-unit="hours"]');
+          const minsEl = block.querySelector('[data-unit="mins"]');
+          const secsEl = block.querySelector('[data-unit="secs"]');
+          const labelEl = block.querySelector(".countdown-label");
+
+          if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
+
+          if (diff <= 0) {
+            if (labelEl) {
+              labelEl.textContent =
+                "The ladder competition has ended — thank you for your support!";
+            }
+            daysEl.textContent = "0";
+            hoursEl.textContent = "00";
+            minsEl.textContent = "00";
+            secsEl.textContent = "00";
+            return;
           }
-          daysEl.textContent = "0";
-          hoursEl.textContent = "00";
-          minsEl.textContent = "00";
-          secsEl.textContent = "00";
+
+          const totalSeconds = Math.floor(diff / 1000);
+          const days = Math.floor(totalSeconds / (3600 * 24));
+          const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+          const mins = Math.floor((totalSeconds % 3600) / 60);
+          const secs = totalSeconds % 60;
+
+          daysEl.textContent = String(days);
+          hoursEl.textContent = String(hours).padStart(2, "0");
+          minsEl.textContent = String(mins).padStart(2, "0");
+          secsEl.textContent = String(secs).padStart(2, "0");
+        });
+
+        if (diff <= 0 && timer) {
           clearInterval(timer);
-          return;
         }
-
-        const totalSeconds = Math.floor(diff / 1000);
-        const days = Math.floor(totalSeconds / (3600 * 24));
-        const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-        const mins = Math.floor((totalSeconds % 3600) / 60);
-        const secs = totalSeconds % 60;
-
-        daysEl.textContent = String(days);
-        hoursEl.textContent = String(hours).padStart(2, "0");
-        minsEl.textContent = String(mins).padStart(2, "0");
-        secsEl.textContent = String(secs).padStart(2, "0");
       }
 
       updateCountdown();
-      const timer = setInterval(updateCountdown, 1000);
+      timer = setInterval(updateCountdown, 1000);
     })();
   </script>
 </body>
