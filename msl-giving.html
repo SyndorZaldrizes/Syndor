@@ -42,10 +42,18 @@
       letter-spacing: 0.06em;
     }
 
+    .countdown-bar .countdown-cta {
+      margin-left: auto;
+    }
+
     @media (max-width: 600px) {
       .countdown-bar {
         flex-direction: column;
         align-items: flex-start;
+      }
+      .countdown-bar .countdown-cta {
+        margin-left: 0;
+        margin-top: 0.5rem;
       }
     }
   </style>
@@ -96,6 +104,11 @@
             class="giving-hero-flag"
           />
           <div class="giving-hero-actions">
+            <a href="https://www.smcm.edu/gt/sanchez-alvarado"
+               class="btn btn-primary giving-form-link"
+               target="_blank" rel="noopener noreferrer">
+              Make Your Giving Tuesday Gift
+            </a>
             <a href="#impact" class="btn btn-ghost">
               See what your gift supports
             </a>
@@ -140,35 +153,11 @@
             </p>
           </div>
 
-          <div id="formCountdown" class="countdown">
-            <p class="countdown-label">
-              MSL Giving Form goes live in:
-            </p>
-            <div class="countdown-timer">
-              <div>
-                <span data-unit="days">--</span>
-                <small>Days</small>
-              </div>
-              <div>
-                <span data-unit="hours">--</span>
-                <small>Hours</small>
-              </div>
-              <div>
-                <span data-unit="mins">--</span>
-                <small>Minutes</small>
-              </div>
-              <div>
-                <span data-unit="secs">--</span>
-                <small>Seconds</small>
-              </div>
-            </div>
-          </div>
-
+          <!-- FORM BUTTON: always visible now -->
           <a
             href="https://www.smcm.edu/gt/sanchez-alvarado"
             class="btn btn-primary full giving-form-link"
-            target="_blank"
-            style="display: none;"
+            target="_blank" rel="noopener noreferrer"
           >
             Open the MSL Giving Form
           </a>
@@ -230,7 +219,7 @@
           </p>
           <ul class="checklist small">
             <li>
-              <a href="proposal.pdf" target="_blank">
+              <a href="proposal.pdf" target="_blank" rel="noopener noreferrer">
                 Read the full Delegation Support Proposal (PDF)
               </a>
             </li>
@@ -377,8 +366,7 @@
             <a
               href="https://www.smcm.edu/gt/sanchez-alvarado"
               class="btn btn-primary giving-form-link"
-              target="_blank"
-              style="display: none;"
+              target="_blank" rel="noopener noreferrer"
             >
               Open the MSL Giving Form
             </a>
@@ -422,6 +410,15 @@
         <span data-unit="secs">--</span>
         <small>Seconds</small>
       </div>
+    </div>
+    <div class="countdown-cta">
+      <a
+        href="https://www.smcm.edu/gt/sanchez-alvarado"
+        class="btn btn-primary btn-small giving-form-link"
+        target="_blank" rel="noopener noreferrer"
+      >
+        Give Now
+      </a>
     </div>
   </div>
 
@@ -480,49 +477,6 @@
 
       updateCountdown();
       timer = setInterval(updateCountdown, 1000);
-    })();
-  </script>
-
-  <!-- Inline form go-live countdown script (Dec 2, 2025 at 12:00 AM Eastern) -->
-  <script>
-    (function () {
-      const goLiveTime = new Date("2025-12-02T00:00:00-05:00");
-      const countdownEl = document.getElementById("formCountdown");
-      const formLinks = document.querySelectorAll(".giving-form-link");
-      let timer = null;
-      function updateGoLiveCountdown() {
-        const now = new Date();
-        const diff = goLiveTime - now;
-        if (diff <= 0) {
-          formLinks.forEach((link) => {
-            link.style.display = "";
-          });
-          if (countdownEl) {
-            countdownEl.style.display = "none";
-          }
-          if (timer) {
-            clearInterval(timer);
-          }
-          return;
-        }
-        const totalSeconds = Math.floor(diff / 1000);
-        const days = Math.floor(totalSeconds / (3600 * 24));
-        const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-        const mins = Math.floor((totalSeconds % 3600) / 60);
-        const secs = totalSeconds % 60;
-        if (countdownEl) {
-          const d = countdownEl.querySelector('[data-unit="days"]');
-          const h = countdownEl.querySelector('[data-unit="hours"]');
-          const m = countdownEl.querySelector('[data-unit="mins"]');
-          const s = countdownEl.querySelector('[data-unit="secs"]');
-          if (d) d.textContent = String(days);
-          if (h) h.textContent = String(hours).padStart(2, "0");
-          if (m) m.textContent = String(mins).padStart(2, "0");
-          if (s) s.textContent = String(secs).padStart(2, "0");
-        }
-      }
-      updateGoLiveCountdown();
-      timer = setInterval(updateGoLiveCountdown, 1000);
     })();
   </script>
 </body>
