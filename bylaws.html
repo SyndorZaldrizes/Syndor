@@ -4,18 +4,37 @@
   <meta charset="UTF-8" />
   <title>SMCM MSL Bylaws</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="logo-1.png" />
 </head>
 <body>
   <header class="site-header">
     <div class="inner">
-      <a href="index.html" class="brand">
-        <span class="brand-mark">MSL</span>
+      <a href="index.html#hero" class="brand">
+        <span class="brand-mark brand-mark-logo">
+          <img src="logo-1.png" alt="SMCM MSL logo" />
+        </span>
         <span class="brand-text">
-          <span class="brand-title">Maryland Student Legislature</span>
+          <span class="brand-title">MSL</span>
           <span class="brand-sub">SMCM Chapter</span>
         </span>
       </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      <nav class="nav" id="mainNav">
+        <a class="nav-link" href="index.html#hero">Home</a>
+        <a class="nav-link" href="index.html#maryland">About MSL</a>
+        <a class="nav-link" href="index.html#chapter">Our Chapter</a>
+        <a class="nav-link" href="index.html#journey">Your Journey</a>
+        <a class="nav-link nav-link--active" aria-current="page" href="index.html#documents">Documents</a>
+        <a class="nav-link" href="executive-board.html">Exec Board</a>
+        <a class="nav-link" href="resources.html">Resources</a>
+        <a class="nav-link" href="bulletin.html">Bulletin</a>
+        <a class="nav-link" href="msl-game.html">Games</a>
+        <a class="nav-link" href="index.html#gallery">Gallery</a>
+        <a class="nav-link" href="index.html#contact">Join Us</a>
+        <a class="nav-link" href="neophytus.html">Neophytus</a>
+      </nav>
     </div>
   </header>
 
@@ -44,5 +63,6 @@
       </div>
     </div>
   </main>
+  <script src="script.js"></script>
 </body>
 </html>
