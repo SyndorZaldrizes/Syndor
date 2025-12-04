@@ -111,10 +111,29 @@ a:hover {
   display: none;
 }
 
-.nav a {
+.nav a,
+.nav .nav-link {
   font-size: 0.85rem;
   opacity: 0.9;
   padding: 0.25rem 0;
+  position: relative;
+}
+
+.nav .nav-link--active {
+  font-weight: 700;
+  opacity: 1;
+}
+
+.nav .nav-link--active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.25rem;
+  height: 2px;
+  background: #facc15;
+  opacity: 0.9;
+  border-radius: 999px;
 }
 
 /* Burger button */

@@ -259,6 +259,59 @@
       background: rgba(37, 99, 235, 0.4);
     }
 
+    .pet-playground {
+      position: relative;
+      height: 210px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      background: radial-gradient(circle at 20% 20%, rgba(96, 165, 250, 0.1), rgba(37, 99, 235, 0.05)),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.85));
+    }
+
+    .pet-avatar {
+      position: absolute;
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      left: 50%;
+      top: 65%;
+      transform: translate(-50%, -50%);
+      transition: filter 0.2s ease;
+      pointer-events: none;
+    }
+
+    .pet-controls {
+      display: grid;
+      gap: 0.35rem;
+      margin-top: 0.35rem;
+    }
+
+    .pet-controls .btn {
+      width: 100%;
+    }
+
+    .pet-choices,
+    .pet-actions {
+      display: grid;
+      gap: 0.35rem;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    }
+
+    .reaction-shell {
+      border: 1px dashed rgba(148, 163, 184, 0.5);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      background: rgba(15, 23, 42, 0.45);
+    }
+
+    .reaction-controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 0.5rem 0;
+    }
+
     /* YouTube embed ratio */
     .video-shell {
       position: relative;
@@ -292,18 +345,18 @@
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
       <nav class="nav" id="mainNav">
-        <a href="index.html#hero">Home</a>
-        <a href="index.html#maryland">About MSL</a>
-        <a href="index.html#chapter">Our Chapter</a>
-        <a href="index.html#journey">Your Journey</a>
-        <a href="index.html#documents">Documents</a>
-        <a href="executive-board.html">Exec Board</a>
-        <a href="resources.html">Resources</a>
-        <a href="bulletin.html">Bulletin</a>
-        <a href="msl-game.html">Games</a>
-        <a href="index.html#gallery">Gallery</a>
-        <a href="index.html#contact">Join Us</a>
-        <a href="msl-giving.html">GIVING TUESDAY CHAMPIONSHIP</a>
+        <a class="nav-link" href="index.html#hero">Home</a>
+        <a class="nav-link" href="index.html#maryland">About MSL</a>
+        <a class="nav-link" href="index.html#chapter">Our Chapter</a>
+        <a class="nav-link" href="index.html#journey">Your Journey</a>
+        <a class="nav-link" href="index.html#documents">Documents</a>
+        <a class="nav-link" href="executive-board.html">Exec Board</a>
+        <a class="nav-link" href="resources.html">Resources</a>
+        <a class="nav-link" href="bulletin.html">Bulletin</a>
+        <a class="nav-link nav-link--active" aria-current="page" href="msl-game.html">Games</a>
+        <a class="nav-link" href="index.html#gallery">Gallery</a>
+        <a class="nav-link" href="index.html#contact">Join Us</a>
+        <a class="nav-link" href="neophytus.html">Neophytus</a>
       </nav>
     </div>
   </header>
@@ -424,6 +477,54 @@
               <button id="hangman-reset" class="btn btn-primary small" style="margin-top:0.5rem;">
                 New Word
               </button>
+            </article>
+
+            <!-- Reaction time game -->
+            <article class="card plain-card">
+              <div class="game-card-title">
+                <h2>Gavel Reflex Drill</h2>
+                <span class="label game">Game</span>
+              </div>
+              <p class="small">
+                The presiding officer calls a vote—react as soon as you see “GO” to log a lightning-fast time.
+                Click or press the space bar when the prompt appears.
+              </p>
+              <div class="reaction-shell">
+                <p id="reactionStatus" class="small">Press “Start round” to begin.</p>
+                <div class="reaction-controls">
+                  <button id="reactionStart" class="btn btn-primary small">Start round</button>
+                  <button id="reactionTap" class="btn btn-ghost small" disabled>Tap when you see “GO”</button>
+                </div>
+                <p id="reactionResult" class="small"></p>
+                <p id="reactionBest" class="small" style="opacity:0.75;"></p>
+              </div>
+            </article>
+
+            <!-- Moving pet widget -->
+            <article class="card plain-card">
+              <div class="game-card-title">
+                <h2>Roaming Study Buddy</h2>
+                <span class="label game">Widget</span>
+              </div>
+              <p class="small">
+                Pick a pet and guide it around the board with your mouse or a tap. Drop a treat to send it
+                chasing across the space, or recentre it before the next round of games.
+              </p>
+              <div id="petPlayground" class="pet-playground" aria-label="Interactive pet playground">
+                <img id="petAvatar" class="pet-avatar" src="pet-dog.gif" alt="Animated study buddy" />
+              </div>
+              <p id="petStatus" class="small" style="margin-top:0.35rem; opacity:0.85;">Move your cursor inside the box to guide the dog.</p>
+              <div class="pet-controls">
+                <div class="pet-choices">
+                  <button class="btn btn-ghost small" data-pet-select="dog">Dog</button>
+                  <button class="btn btn-ghost small" data-pet-select="cat">Cat</button>
+                  <button class="btn btn-ghost small" data-pet-select="koala">Koala</button>
+                </div>
+                <div class="pet-actions">
+                  <button class="btn btn-primary small" id="petTreat">Drop a treat</button>
+                  <button class="btn btn-ghost small" id="petRoam">Calm &amp; center</button>
+                </div>
+              </div>
             </article>
           </div>
         </div>
@@ -1150,6 +1251,180 @@
 
         resetBtn.addEventListener("click", pickWord);
         pickWord();
+      })();
+
+      /* ---------- REACTION GAME ---------- */
+      (function () {
+        const startBtn = document.getElementById("reactionStart");
+        const tapBtn = document.getElementById("reactionTap");
+        const statusEl = document.getElementById("reactionStatus");
+        const resultEl = document.getElementById("reactionResult");
+        const bestEl = document.getElementById("reactionBest");
+        if (!startBtn || !tapBtn || !statusEl || !resultEl || !bestEl) return;
+
+        let waitingForGo = false;
+        let liveRound = false;
+        let startTime = 0;
+        let timeoutId = null;
+        let best = null;
+
+        function scheduleRound() {
+          clearTimeout(timeoutId);
+          tapBtn.disabled = true;
+          liveRound = false;
+          waitingForGo = true;
+          statusEl.textContent = "Wait for GO…";
+          resultEl.textContent = "";
+          timeoutId = setTimeout(triggerGo, 1200 + Math.random() * 2200);
+        }
+
+        function triggerGo() {
+          waitingForGo = false;
+          liveRound = true;
+          tapBtn.disabled = false;
+          tapBtn.focus();
+          statusEl.textContent = "GO! Tap now.";
+          startTime = performance.now();
+        }
+
+        function endRound(message) {
+          statusEl.textContent = message;
+          tapBtn.disabled = true;
+          liveRound = false;
+        }
+
+        startBtn.addEventListener("click", () => {
+          scheduleRound();
+        });
+
+        tapBtn.addEventListener("click", () => {
+          if (waitingForGo) {
+            endRound("Too soon. Resetting the round.");
+            clearTimeout(timeoutId);
+            setTimeout(scheduleRound, 600);
+            return;
+          }
+
+          if (!liveRound) return;
+          const reaction = Math.round(performance.now() - startTime);
+          resultEl.textContent = `Reaction time: ${reaction} ms`;
+          if (best === null || reaction < best) {
+            best = reaction;
+            bestEl.textContent = `Personal best: ${best} ms`;
+          }
+          endRound("Nice reflexes. Start another round when ready.");
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if ((event.code === "Space" || event.key === " ") && !tapBtn.disabled) {
+            event.preventDefault();
+            tapBtn.click();
+          }
+        });
+
+        bestEl.textContent = "Personal best: —";
+      })();
+
+      /* ---------- PET PLAYGROUND ---------- */
+      (function () {
+        const playground = document.getElementById("petPlayground");
+        const avatar = document.getElementById("petAvatar");
+        const statusEl = document.getElementById("petStatus");
+        const petButtons = document.querySelectorAll("[data-pet-select]");
+        const treatBtn = document.getElementById("petTreat");
+        const centerBtn = document.getElementById("petRoam");
+        if (!playground || !avatar || !statusEl) return;
+
+        const petSources = {
+          dog: { src: "pet-dog.gif", label: "dog" },
+          cat: { src: "pet-cat.gif", label: "cat" },
+          koala: { src: "pet-koala.gif", label: "koala" }
+        };
+
+        let currentPet = "dog";
+        let position = { x: 50, y: 65 };
+        let target = { x: 50, y: 65 };
+
+        function updateAvatar(pet) {
+          const info = petSources[pet] || petSources.dog;
+          avatar.src = info.src;
+          avatar.alt = `Animated ${info.label} study buddy`;
+          statusEl.textContent = `The ${info.label} is pacing—guide it with your cursor.`;
+        }
+
+        function clamp(val) {
+          return Math.max(8, Math.min(92, val));
+        }
+
+        function setTarget(clientX, clientY) {
+          const rect = playground.getBoundingClientRect();
+          target.x = clamp(((clientX - rect.left) / rect.width) * 100);
+          target.y = clamp(((clientY - rect.top) / rect.height) * 100);
+        }
+
+        function randomizeTarget(message) {
+          target.x = clamp(Math.random() * 84 + 8);
+          target.y = clamp(Math.random() * 70 + 15);
+          statusEl.textContent = message;
+        }
+
+        playground.addEventListener("mousemove", (event) => {
+          setTarget(event.clientX, event.clientY);
+        });
+
+        playground.addEventListener("click", (event) => {
+          setTarget(event.clientX, event.clientY);
+          statusEl.textContent = "Treat spotted—your buddy is sprinting toward it.";
+        });
+
+        playground.addEventListener(
+          "touchmove",
+          (event) => {
+            const touch = event.touches[0];
+            if (!touch) return;
+            event.preventDefault();
+            setTarget(touch.clientX, touch.clientY);
+          },
+          { passive: false }
+        );
+
+        playground.addEventListener("mouseleave", () => {
+          target = { x: 50, y: 75 };
+          statusEl.textContent = "Buddy is waiting near the corner.";
+        });
+
+        petButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const pet = btn.getAttribute("data-pet-select") || "dog";
+            currentPet = pet;
+            updateAvatar(pet);
+          });
+        });
+
+        if (treatBtn) {
+          treatBtn.addEventListener("click", () => {
+            randomizeTarget("Treat tossed—watch the dash!");
+          });
+        }
+
+        if (centerBtn) {
+          centerBtn.addEventListener("click", () => {
+            target = { x: 50, y: 65 };
+            statusEl.textContent = "Reset and ready for the next prompt.";
+          });
+        }
+
+        function animate() {
+          position.x += (target.x - position.x) * 0.08;
+          position.y += (target.y - position.y) * 0.08;
+          avatar.style.left = position.x + "%";
+          avatar.style.top = position.y + "%";
+          avatar.style.filter = `drop-shadow(0 6px 10px rgba(0,0,0,0.45)) hue-rotate(${currentPet === "koala" ? 20 : 0}deg)`;
+          requestAnimationFrame(animate);
+        }
+
+        updateAvatar(currentPet);
+        animate();
       })();
 
       /* ---------- COMPANION (floating dock) ---------- */
