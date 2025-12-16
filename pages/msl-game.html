@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <title>MSL Study Lab & Games – SMCM MSL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/png" href="logo-1.png" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="icon" type="image/png" href="../assets/img/logo-1.png" />
 
   <!-- Page-specific layout tweaks -->
   <style>
@@ -165,195 +165,6 @@
       min-height: 1.2em;
     }
 
-    /* Companion dock (corner widget) */
-    #companionDock {
-      position: fixed;
-      right: 1rem;
-      bottom: 1rem;
-      z-index: 40;
-      font-size: 0.75rem;
-      color: #e5e7eb;
-    }
-    #companionToggle {
-      width: 52px;
-      height: 52px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: radial-gradient(circle at 30% 20%, #facc15, #f97316);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.75rem;
-      cursor: pointer;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75);
-    }
-    #companionPanel {
-      position: absolute;
-      right: 60px;
-      bottom: 0;
-      width: 230px;
-      padding: 0.75rem;
-      border-radius: 0.75rem;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.9);
-      display: none;
-    }
-    #companionPanel.open {
-      display: block;
-    }
-
-    .companion-bars {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.5rem;
-    }
-    .bar {
-      min-width: 90px;
-    }
-    .bar-label {
-      font-size: 0.7rem;
-      opacity: 0.8;
-    }
-    .bar-track {
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      overflow: hidden;
-      margin-top: 0.1rem;
-    }
-    .bar-fill {
-      height: 100%;
-      border-radius: inherit;
-      width: 100%;
-      transition: width 0.3s ease-out;
-    }
-    .bar-fill.energy {
-      background: #22c55e;
-    }
-    .bar-fill.mood {
-      background: #facc15;
-    }
-    .bar-fill.focus {
-      background: #38bdf8;
-    }
-
-    .companion-actions {
-      display: flex;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      margin-top: 0.35rem;
-    }
-    .companion-actions button {
-      border-radius: 999px;
-      padding: 0.2rem 0.6rem;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(15, 23, 42, 0.95);
-      color: #e5e7eb;
-      font-size: 0.7rem;
-      cursor: pointer;
-    }
-    .companion-actions button:hover {
-      background: rgba(37, 99, 235, 0.4);
-    }
-
-    .pet-playground {
-      position: relative;
-      height: 280px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      border-radius: 0.9rem;
-      overflow: hidden;
-      background: radial-gradient(circle at 20% 20%, rgba(96, 165, 250, 0.1), rgba(37, 99, 235, 0.05)),
-        linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
-    }
-
-    .pet-avatar {
-      position: absolute;
-      width: 108px;
-      height: 108px;
-      object-fit: contain;
-      left: 50%;
-      top: 65%;
-      transform: translate(-50%, -50%);
-      transition: filter 0.2s ease, transform 0.2s ease;
-      pointer-events: none;
-    }
-
-    .pet-treat {
-      position: absolute;
-      width: 72px;
-      height: 72px;
-      object-fit: cover;
-      border-radius: 0.65rem;
-      border: 2px solid rgba(148, 163, 184, 0.7);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
-      transform: translate(-50%, -50%);
-      transition: opacity 0.25s ease;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .pet-treat.active {
-      opacity: 1;
-    }
-
-    .pet-pop {
-      position: absolute;
-      font-size: 0.9rem;
-      color: #facc15;
-      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.7);
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .pet-pop.show {
-      animation: popRise 0.9s ease-out;
-    }
-
-    @keyframes popRise {
-      0% {
-        opacity: 0;
-        transform: translate(-50%, -10%);
-      }
-      30% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-      }
-    }
-
-    @media (max-width: 640px) {
-      .pet-playground {
-        height: 230px;
-      }
-      .pet-avatar {
-        width: 96px;
-        height: 96px;
-      }
-    }
-
-    .pet-controls {
-      display: grid;
-      gap: 0.35rem;
-      margin-top: 0.35rem;
-    }
-
-    .pet-controls .btn {
-      width: 100%;
-    }
-
-    .pet-choices,
-    .pet-actions {
-      display: grid;
-      gap: 0.35rem;
-      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-    }
-
     .reaction-shell {
       border: 1px dashed rgba(148, 163, 184, 0.5);
       border-radius: 0.75rem;
@@ -390,28 +201,28 @@
 <body class="game-page">
   <header class="site-header">
     <div class="inner">
-      <a href="index.html#hero" class="brand">
+      <a href="../index.html#hero" class="brand">
         <span class="brand-mark brand-mark-logo">
-          <img src="logo-1.png" alt="SMCM MSL logo" />
+          <img src="../assets/img/logo-1.png" alt="SMCM MSL logo" />
         </span>
         <span class="brand-text">
-          <span class="brand-title">Maryland Student Legislature</span>
-          <span class="brand-sub">St. Mary’s College of Maryland Chapter</span>
+          <span class="brand-title">MSL SMCM</span>
+          <span class="brand-sub">Student Chapter</span>
         </span>
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
       <nav class="nav" id="mainNav">
-        <a class="nav-link" href="index.html#hero">Home</a>
-        <a class="nav-link" href="index.html#maryland">About MSL</a>
-        <a class="nav-link" href="index.html#chapter">Our Chapter</a>
-        <a class="nav-link" href="index.html#journey">Your Journey</a>
-        <a class="nav-link" href="index.html#documents">Documents</a>
+        <a class="nav-link" href="../index.html#hero">Home</a>
+        <a class="nav-link" href="../index.html#maryland">About MSL</a>
+        <a class="nav-link" href="../index.html#chapter">Our Chapter</a>
+        <a class="nav-link" href="../index.html#journey">Your Journey</a>
+        <a class="nav-link" href="../index.html#documents">Documents</a>
+        <a class="nav-link" href="../index.html#gallery">Gallery</a>
+        <a class="nav-link" href="../index.html#contact">Join Us</a>
+        <a class="nav-link" href="bulletin.html">Bulletin</a>
         <a class="nav-link" href="executive-board.html">Exec Board</a>
         <a class="nav-link" href="resources.html">Resources</a>
-        <a class="nav-link" href="bulletin.html">Bulletin</a>
         <a class="nav-link nav-link--active" aria-current="page" href="msl-game.html">Games</a>
-        <a class="nav-link" href="index.html#gallery">Gallery</a>
-        <a class="nav-link" href="index.html#contact">Join Us</a>
         <a class="nav-link" href="neophytus.html">Neophytus</a>
       </nav>
     </div>
@@ -426,8 +237,8 @@
           <h1>MSL Study Lab & Mini-Games</h1>
           <p class="section-body">
             Use this space to quiz yourself on legislative basics, watch a short explainer on how bills
-            become law, and then unwind with some low-stakes mini-games and a floating “field companion.”
-            Desktop is recommended for the games (keyboard controls), but the video and quiz work on mobile too.
+            become law, and then unwind with some low-stakes mini-games. Desktop is recommended for the
+            games (keyboard controls), but the video and quiz work on mobile too.
           </p>
         </div>
 
@@ -559,34 +370,6 @@
                 <p id="reactionBest" class="small" style="opacity:0.75;"></p>
               </div>
             </article>
-
-            <!-- Moving pet widget -->
-            <article class="card plain-card">
-              <div class="game-card-title">
-                <h2>Roaming Study Buddy</h2>
-                <span class="label game">Widget</span>
-              </div>
-              <p class="small">
-                Pick a pet and guide it around the board with your mouse or a tap. Drop a treat to send it
-                chasing across the space, or recentre it before the next round of games.
-              </p>
-              <p class="small" style="opacity:0.8;">Mood: Low-stress clicker with collectible treats.</p>
-              <div id="petPlayground" class="pet-playground" aria-label="Interactive pet playground">
-                <img id="petAvatar" class="pet-avatar" src="pet-dog.gif" alt="Animated study buddy" />
-              </div>
-              <p id="petStatus" class="small" style="margin-top:0.35rem; opacity:0.85;">Move your cursor inside the box to guide the dog.</p>
-              <div class="pet-controls">
-                <div class="pet-choices">
-                  <button class="btn btn-ghost small" data-pet-select="dog">Dog</button>
-                  <button class="btn btn-ghost small" data-pet-select="cat">Cat</button>
-                  <button class="btn btn-ghost small" data-pet-select="koala">Koala</button>
-                </div>
-                <div class="pet-actions">
-                  <button class="btn btn-primary small" id="petTreat">Drop a treat</button>
-                  <button class="btn btn-ghost small" id="petRoam">Calm &amp; center</button>
-                </div>
-              </div>
-            </article>
           </div>
         </div>
       </div>
@@ -608,60 +391,7 @@
       </div>
     </section>
 
-    <!-- COMPANION SECTION (TEXT ONLY) -->
-    <section class="section bg-alt">
-      <div class="inner">
-        <div class="section-header">
-          <p class="eyebrow">Field Companion</p>
-          <h2>Your Little MSL Study Buddy</h2>
-          <p class="section-body">
-            Look for the little buddy in the bottom-right corner of this page. Tap or click it to open
-            quick controls, swap between dog / cat / koala, and keep an eye on its mood, energy, and focus
-            while you work through the games and quiz.
-          </p>
-        </div>
-      </div>
-    </section>
   </main>
-
-  <!-- Floating companion widget -->
-  <div id="companionDock">
-    <button id="companionToggle" aria-label="Toggle companion panel">🐶</button>
-    <div id="companionPanel">
-      <p style="margin-bottom:0.35rem;">Field Companion</p>
-      <div class="companion-bars">
-        <div class="bar">
-          <div class="bar-label">Energy</div>
-          <div class="bar-track">
-            <div id="barEnergy" class="bar-fill energy"></div>
-          </div>
-        </div>
-        <div class="bar">
-          <div class="bar-label">Mood</div>
-          <div class="bar-track">
-            <div id="barMood" class="bar-fill mood"></div>
-          </div>
-        </div>
-        <div class="bar">
-          <div class="bar-label">Focus</div>
-          <div class="bar-track">
-            <div id="barFocus" class="bar-fill focus"></div>
-          </div>
-        </div>
-      </div>
-      <div class="companion-actions">
-        <button data-pet="dog">Dog</button>
-        <button data-pet="cat">Cat</button>
-        <button data-pet="koala">Koala</button>
-        <button data-action="feed">Feed</button>
-        <button data-action="play">Play</button>
-        <button data-action="study">Study</button>
-      </div>
-      <p class="small" style="margin-top:0.4rem; opacity:0.8;">
-        Bars slowly drift down over time. Use actions to top them back up.
-      </p>
-    </div>
-  </div>
 
   <footer class="site-footer">
     <div class="inner footer-inner">
@@ -674,7 +404,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="../assets/js/script.js"></script>
 
   <!-- Page-specific JS: all guarded so errors don't break the page -->
   <script>
@@ -1394,255 +1124,6 @@
         bestEl.textContent = "Personal best: —";
       })();
 
-      /* ---------- PET PLAYGROUND ---------- */
-      (function () {
-        const playground = document.getElementById("petPlayground");
-        const avatar = document.getElementById("petAvatar");
-        const statusEl = document.getElementById("petStatus");
-        const petButtons = document.querySelectorAll("[data-pet-select]");
-        const treatBtn = document.getElementById("petTreat");
-        const centerBtn = document.getElementById("petRoam");
-        if (!playground || !avatar || !statusEl) return;
-
-        const petSources = {
-          dog: { src: "pet-dog.gif", label: "dog" },
-          cat: { src: "pet-cat.gif", label: "cat" },
-          koala: { src: "pet-koala.gif", label: "koala" }
-        };
-
-        const treatImages = ["secret-bg-alpha.jpg", "secret-bg-beta.jpg"];
-        const treatEl = document.createElement("img");
-        treatEl.className = "pet-treat";
-        playground.appendChild(treatEl);
-
-        const popEl = document.createElement("div");
-        popEl.className = "pet-pop";
-        popEl.textContent = "+1 treat!";
-        playground.appendChild(popEl);
-
-        let currentPet = "dog";
-        let position = { x: 50, y: 65 };
-        let target = { x: 50, y: 65 };
-        let treatPos = { x: 48, y: 62 };
-        let treatActive = false;
-
-        function clamp(val) {
-          return Math.max(8, Math.min(92, val));
-        }
-
-        function updateAvatar(pet) {
-          const info = petSources[pet] || petSources.dog;
-          avatar.src = info.src;
-          avatar.alt = `Animated ${info.label} study buddy`;
-          statusEl.textContent = `The ${info.label} is pacing—guide it with your cursor.`;
-        }
-
-        function setTarget(clientX, clientY) {
-          const rect = playground.getBoundingClientRect();
-          const x = clamp(((clientX - rect.left) / rect.width) * 100);
-          const y = clamp(((clientY - rect.top) / rect.height) * 100);
-          target.x = x;
-          target.y = y;
-          return { x, y };
-        }
-
-        function randomizeTarget(message) {
-          target.x = clamp(Math.random() * 84 + 8);
-          target.y = clamp(Math.random() * 70 + 15);
-          if (message) statusEl.textContent = message;
-        }
-
-        function placeTreat(x, y, message) {
-          // Drop a small treat tile and set the buddy's target toward it.
-          treatPos = { x: clamp(x, 10, 90), y: clamp(y, 14, 88) };
-          treatEl.src = treatImages[Math.floor(Math.random() * treatImages.length)];
-          treatEl.style.left = treatPos.x + "%";
-          treatEl.style.top = treatPos.y + "%";
-          treatEl.classList.add("active");
-          treatActive = true;
-          target = { ...treatPos };
-          if (message) statusEl.textContent = message;
-        }
-
-        function celebrateTreat() {
-          popEl.classList.remove("show");
-          void popEl.offsetWidth;
-          popEl.style.left = treatPos.x + "%";
-          popEl.style.top = treatPos.y - 4 + "%";
-          popEl.classList.add("show");
-        }
-
-        function clearTreat(message) {
-          treatEl.classList.remove("active");
-          treatActive = false;
-          if (message) statusEl.textContent = message;
-        }
-
-        function checkTreatCollision() {
-          if (!treatActive) return;
-          const dx = position.x - treatPos.x;
-          const dy = position.y - treatPos.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 5) {
-            celebrateTreat();
-            clearTreat("Treat gobbled! Drop another or guide your buddy around.");
-            randomizeTarget("Wandering until the next snack.");
-          }
-        }
-
-        playground.addEventListener("mousemove", (event) => {
-          setTarget(event.clientX, event.clientY);
-        });
-
-        playground.addEventListener("click", (event) => {
-          const coords = setTarget(event.clientX, event.clientY);
-          placeTreat(coords.x, coords.y, "Treat spotted—your buddy is sprinting toward it.");
-        });
-
-        playground.addEventListener(
-          "touchmove",
-          (event) => {
-            const touch = event.touches[0];
-            if (!touch) return;
-            event.preventDefault();
-            setTarget(touch.clientX, touch.clientY);
-          },
-          { passive: false }
-        );
-
-        playground.addEventListener("touchstart", (event) => {
-          const touch = event.touches[0];
-          if (!touch) return;
-          const coords = setTarget(touch.clientX, touch.clientY);
-          placeTreat(coords.x, coords.y, "Snack dropped—watch the dash.");
-        });
-
-        playground.addEventListener("mouseleave", () => {
-          target = { x: 50, y: 75 };
-          statusEl.textContent = "Buddy is waiting near the corner.";
-        });
-
-        petButtons.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const pet = btn.getAttribute("data-pet-select") || "dog";
-            currentPet = pet;
-            updateAvatar(pet);
-          });
-        });
-
-        if (treatBtn) {
-          treatBtn.addEventListener("click", () => {
-            placeTreat(Math.random() * 78 + 11, Math.random() * 60 + 20, "Treat tossed—watch the dash!");
-          });
-        }
-
-        if (centerBtn) {
-          centerBtn.addEventListener("click", () => {
-            target = { x: 50, y: 65 };
-            clearTreat();
-            statusEl.textContent = "Reset and ready for the next prompt.";
-          });
-        }
-
-        function animate() {
-          position.x += (target.x - position.x) * 0.08;
-          position.y += (target.y - position.y) * 0.08;
-          avatar.style.left = position.x + "%";
-          avatar.style.top = position.y + "%";
-          avatar.style.filter = `drop-shadow(0 6px 10px rgba(0,0,0,0.45)) hue-rotate(${currentPet === "koala" ? 20 : 0}deg)`;
-          avatar.style.transform = `translate(-50%, -50%) scale(${1 + Math.min(0.08, Math.hypot(target.x - position.x, target.y - position.y) / 120)})`;
-          checkTreatCollision();
-          requestAnimationFrame(animate);
-        }
-
-        updateAvatar(currentPet);
-        animate();
-      })();
-
-      /* ---------- COMPANION (floating dock) ---------- */
-      (function () {
-        const toggleBtn = document.getElementById("companionToggle");
-        const panel = document.getElementById("companionPanel");
-        const barEnergy = document.getElementById("barEnergy");
-        const barMood = document.getElementById("barMood");
-        const barFocus = document.getElementById("barFocus");
-        if (!toggleBtn || !panel || !barEnergy || !barMood || !barFocus) return;
-
-        let state = {
-          pet: "dog",
-          energy: 80,
-          mood: 80,
-          focus: 60
-        };
-
-        const petIcons = {
-          dog: "🐶",
-          cat: "🐱",
-          koala: "🐨"
-        };
-
-        function updateBars() {
-          barEnergy.style.width = state.energy + "%";
-          barMood.style.width = state.mood + "%";
-          barFocus.style.width = state.focus + "%";
-        }
-
-        function clamp(val) {
-          return Math.max(0, Math.min(100, val));
-        }
-
-        // Idle decay
-        setInterval(() => {
-          state.energy = clamp(state.energy - 0.3);
-          state.mood = clamp(state.mood - 0.2);
-          state.focus = clamp(state.focus - 0.15);
-          updateBars();
-        }, 2000);
-
-        updateBars();
-
-        toggleBtn.addEventListener("click", () => {
-          panel.classList.toggle("open");
-        });
-
-        const actionButtons = panel.querySelectorAll(".companion-actions button");
-        actionButtons.forEach(btn => {
-          const pet = btn.getAttribute("data-pet");
-          const action = btn.getAttribute("data-action");
-
-          if (pet) {
-            btn.addEventListener("click", () => {
-              state.pet = pet;
-              toggleBtn.textContent = petIcons[pet] || "🐶";
-              state.mood = clamp(state.mood + 15);
-              state.energy = clamp(state.energy + 5);
-              updateBars();
-            });
-          }
-
-          if (action === "feed") {
-            btn.addEventListener("click", () => {
-              state.energy = clamp(state.energy + 20);
-              state.mood = clamp(state.mood + 5);
-              updateBars();
-            });
-          }
-          if (action === "play") {
-            btn.addEventListener("click", () => {
-              state.mood = clamp(state.mood + 20);
-              state.energy = clamp(state.energy - 5);
-              updateBars();
-            });
-          }
-          if (action === "study") {
-            btn.addEventListener("click", () => {
-              state.focus = clamp(state.focus + 20);
-              state.energy = clamp(state.energy - 5);
-              updateBars();
-            });
-          }
-        });
-      })();
     });
   </script>
 </body>

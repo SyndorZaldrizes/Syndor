@@ -612,6 +612,39 @@ h3 {
   margin: 0 0 0.6rem;
 }
 
+.contact-subsection {
+  margin-top: 2rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.iframe-shell {
+  margin-top: 0.75rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.qr-card {
+  text-align: center;
+}
+
+.qr-shell {
+  margin-top: 0.75rem;
+}
+
+.qr-image {
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
 /* Form */
 
 form label {

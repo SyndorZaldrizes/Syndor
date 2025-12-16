@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MSL Bill & Resolution Builder (Prototype)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #11182e;
+      --panel-strong: #0d1224;
+      --border: #243357;
+      --text: #e5e7ff;
+      --muted: #9ca3af;
+      --accent: #5c6cf8;
+      --accent-2: #22c55e;
+      --accent-3: #facc15;
+    }
+
+    * { box-sizing: border-box; }
+
+    body.builder-page {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      background: radial-gradient(circle at top, #0f172a, #050816 46%, #020611 80%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: #9dc5ff; }
+
+    .builder-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }
+
+    .builder-hero {
+      background: linear-gradient(135deg, rgba(92,108,248,0.15), rgba(34,197,94,0.12));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 1rem;
+      padding: 1.5rem 1.5rem 1.25rem;
+      box-shadow: 0 18px 45px rgba(5, 8, 22, 0.65);
+    }
+
+    .builder-hero h1 {
+      margin: 0.35rem 0 0.25rem;
+      font-size: clamp(1.6rem, 3vw + 1rem, 2.3rem);
+    }
+
+    .eyebrow {
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: var(--accent-3);
+      margin: 0;
+    }
+
+    .builder-note {
+      margin: 0.2rem 0 0.5rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .builder-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.6rem;
+      margin: 0.8rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .builder-steps li {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 0.8rem;
+      padding: 0.65rem 0.75rem;
+      font-size: 0.92rem;
+    }
+
+    .builder-steps strong { display: block; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 0.2rem; }
+
+    .builder-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .builder-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem 1.35rem;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.45);
+    }
+
+    .builder-card h2, .builder-card h3 { margin-top: 0; }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.9rem 1rem;
+    }
+
+    .field { margin-bottom: 0.85rem; }
+    .field label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .helper { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+
+    input[type="text"], input[type="email"], select, textarea {
+      width: 100%;
+      padding: 0.55rem 0.65rem;
+      border-radius: 0.65rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--panel-strong);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    textarea { min-height: 70px; resize: vertical; }
+
+    .inline-options { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .inline-options label { display: flex; align-items: center; gap: 0.35rem; font-size: 0.9rem; }
+
+    .output-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem; }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.55rem 1.15rem;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.06s ease, box-shadow 0.12s ease;
+    }
+
+    button.primary { background: var(--accent); color: #fff; }
+    button.secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    button.ghost { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid rgba(255,255,255,0.08); }
+    button:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,0.35); }
+
+    .output-area {
+      width: 100%;
+      min-height: 280px;
+      background: #050712;
+      border: 1px solid var(--border);
+      border-radius: 0.9rem;
+      color: var(--text);
+      font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 0.9rem;
+      padding: 0.8rem;
+      resize: vertical;
+    }
+
+    .output-card h3 { margin-top: 1.1rem; }
+
+    .status {
+      margin-top: 0.35rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      min-height: 1.2em;
+    }
+    .status.error { color: #fca5a5; }
+    .status.success { color: var(--accent-2); }
+
+    .quick-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+
+    @media (max-width: 900px) {
+      .builder-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="builder-page">
+  <div class="builder-wrapper">
+    <header class="builder-hero">
+      <div style="display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap;">
+        <div>
+          <p class="eyebrow">Internal Prototype</p>
+          <h1>MSL Bill &amp; Resolution Builder</h1>
+          <p class="builder-note">
+            Rapidly turn a rough idea into a formatted draft. This page is intentionally hidden from the
+            main navigation—share the link directly with teammates.
+          </p>
+        </div>
+        <div class="quick-links">
+          <a class="btn btn-primary" style="text-decoration:none; padding:0.55rem 1rem; border-radius:999px;" href="../index.html#documents">Return to site</a>
+        </div>
+      </div>
+      <ul class="builder-steps">
+        <li><strong>Step 1</strong>Pick Bill or Resolution & chamber.</li>
+        <li><strong>Step 2</strong>Fill context, purpose, and actions with clear bullets.</li>
+        <li><strong>Step 3</strong>Generate, skim for gaps, and copy as text or markdown.</li>
+      </ul>
+    </header>
+
+    <div class="builder-layout">
+      <section class="builder-card">
+        <h2>Inputs</h2>
+        <p class="helper">Fields with defaults can be tweaked. Leave number blank to auto-fill placeholders.</p>
+        <form id="builderForm">
+          <div class="field">
+            <label>Type</label>
+            <div class="inline-options">
+              <label><input type="radio" name="docType" value="bill" checked /> Bill</label>
+              <label><input type="radio" name="docType" value="resolution" /> Resolution</label>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="chamber">Chamber</label>
+              <select id="chamber">
+                <option value="HOUSE">House of Delegates</option>
+                <option value="SENATE">Senate</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="billNumber">Bill / Resolution Number (optional)</label>
+              <input type="text" id="billNumber" placeholder="e.g., 26, 16, 01" />
+              <div class="helper">Leave blank to use a placeholder.</div>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="shortTitle">Short title / topic</label>
+              <input type="text" id="shortTitle" placeholder="e.g., Campus Wellness & Study Break Act" required />
+            </div>
+            <div class="field">
+              <label for="sessionInfo">Session / year (optional)</label>
+              <input type="text" id="sessionInfo" value="2025–2026 Session" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="problem">Problem or context</label>
+            <textarea id="problem" placeholder="What issue are you trying to address?" required>Students report gaps in study space availability and mental health resources during peak exam periods.</textarea>
+          </div>
+
+          <div class="field">
+            <label for="purpose">Purpose (what this bill/resolution does)</label>
+            <textarea id="purpose" placeholder="In 1–3 sentences, what is this trying to accomplish?" required>Improve access to wellness supports and focused study spaces so students can succeed academically without sacrificing wellbeing.</textarea>
+          </div>
+
+          <div class="field">
+            <label for="whoAffected">Who is affected?</label>
+            <textarea id="whoAffected" placeholder="Students, faculty, law enforcement, campus admin, etc.">Undergraduate students, campus wellness staff, library operations, and student organizations hosting study events.</textarea>
+          </div>
+
+          <div class="field">
+            <label for="keyActions">Key actions or changes</label>
+            <textarea id="keyActions" placeholder="List the main things your bill/resolution would require, allow, or encourage." required>Fund extended library hours during finals week.
+Create a wellness micro-grant for student-led study breaks.
+Require the publication of a consolidated finals-week resource guide.</textarea>
+          </div>
+
+          <div class="field">
+            <label for="effectiveDate">Effective date (optional)</label>
+            <input type="text" id="effectiveDate" placeholder="e.g., October 1, 2026" />
+          </div>
+
+          <h3>Sponsor information</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="sponsorName">Sponsor name</label>
+              <input type="text" id="sponsorName" placeholder="Your name" />
+            </div>
+            <div class="field">
+              <label for="sponsorSchool">School / chapter</label>
+              <input type="text" id="sponsorSchool" value="St. Mary’s College of Maryland" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="sponsorEmail">Sponsor email (optional)</label>
+            <input type="email" id="sponsorEmail" placeholder="you@school.edu" />
+          </div>
+
+          <div class="output-actions">
+            <button type="button" class="primary" id="generateBtn">Generate Draft</button>
+            <button type="button" class="secondary" id="copyBtn">Copy text</button>
+            <button type="button" class="ghost" id="copyMarkdownBtn">Copy markdown</button>
+          </div>
+          <div id="status" class="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <section class="builder-card output-card">
+        <h2>Draft output</h2>
+        <textarea id="output" class="output-area" readonly placeholder="Your draft bill or resolution will appear here."></textarea>
+
+        <h3>Markdown export</h3>
+        <p class="helper">Paste this into notes, GitHub issues, or shared docs.</p>
+        <textarea id="markdownOutput" class="output-area" readonly placeholder="Markdown version will appear here."></textarea>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const statusEl = document.getElementById("status");
+      const outputEl = document.getElementById("output");
+      const markdownEl = document.getElementById("markdownOutput");
+
+      function getRadioValue(name) {
+        const el = document.querySelector('input[name="' + name + '"]:checked');
+        return el ? el.value : null;
+      }
+
+      function toBullets(text) {
+        const lines = text.split(/\n+/).map(l => l.trim()).filter(Boolean);
+        return lines.length ? lines.map(l => `  - ${l}`).join("\n") : "  - [Add specific actions here]";
+      }
+
+      function buildBillTemplate(data) {
+        const chamberName = data.chamber === "HOUSE" ? "HOUSE BILL" : "SENATE BILL";
+        const number = data.number || "___";
+        const sessionLine = data.session ? ("Session: " + data.session + "\n") : "";
+        const emailLine = data.sponsorEmail ? ", " + data.sponsorEmail : "";
+        const shortTitle = data.shortTitle || "An Act relating to ____";
+
+        const actions = toBullets(data.keyActions || "");
+
+        return (
+`${chamberName} ${number}
+Sponsor: ${data.sponsorName || "[Your Name]"}, ${data.sponsorSchool || "[Your School]"}${emailLine}
+${sessionLine}
+A BILL ENTITLED
+AN ACT concerning
+
+${shortTitle}
+
+FOR the purpose of
+${data.purpose || "[Insert purpose of the bill here in 1–3 sentences.]"}
+
+BY adding to
+[Insert Article of the Annotated Code or internal MSL code here]
+
+SECTION 1. BE IT ENACTED BY THE MARYLAND STUDENT LEGISLATURE, THAT:
+(A) Findings and intent:
+  - ${data.problem || "[Describe the problem or context here.]"}
+
+(B) Core provisions:
+${actions}
+
+(C) Affected parties and implementation:
+  - ${data.whoAffected || "[Describe who is affected.]"}
+
+SECTION 2. BE IT FURTHER ENACTED, THAT:
+If any provision of this Act or its application to any person or circumstance is held invalid, the remainder of the Act and the application of the provisions to other persons or circumstances are not affected.
+
+SECTION 3. BE IT FURTHER ENACTED, THAT:
+This Act shall take effect on ${data.effectiveDate || "[Insert effective date]"}.
+`);
+      }
+
+      function buildResolutionTemplate(data) {
+        const chamberName = data.chamber === "HOUSE" ? "HOUSE RESOLUTION" : "SENATE RESOLUTION";
+        const number = data.number || "___";
+        const sessionLine = data.session ? ("Session: " + data.session + "\n") : "";
+        const emailLine = data.sponsorEmail ? ", " + data.sponsorEmail : "";
+        const shortTitle = data.shortTitle || "A Resolution concerning ____";
+        const actions = toBullets(data.keyActions || "");
+
+        return (
+`${chamberName} ${number}
+Sponsor: ${data.sponsorName || "[Your Name]"}, ${data.sponsorSchool || "[Your School]"}${emailLine}
+${sessionLine}
+A RESOLUTION CONCERNING
+
+${shortTitle}
+
+WHEREAS, ${data.problem || "[Describe the background / context.]"}
+
+WHEREAS, ${data.purpose || "[Insert purpose of the resolution here.]"}
+
+WHEREAS, ${data.whoAffected || "[Describe who is affected or involved.]"}
+
+NOW, THEREFORE, BE IT RESOLVED BY THE ${data.chamber === "HOUSE" ? "HOUSE OF DELEGATES" : "SENATE"} OF THE MARYLAND STUDENT LEGISLATURE, THAT:
+${actions}
+
+BE IT FURTHER RESOLVED, THAT:
+  - Copies of this Resolution may be transmitted to [insert relevant individuals, offices, or organizations].
+`);
+      }
+
+      function buildMarkdown(data, renderedText) {
+        const actions = data.keyActions.split(/\n+/).map(l => l.trim()).filter(Boolean);
+        const actionList = actions.length ? actions.map(a => `- ${a}`).join("\n") : "- [Add actions]";
+
+        return (
+`## ${data.shortTitle || "Draft"}
+- Type: ${data.docType === "resolution" ? "Resolution" : "Bill"}
+- Chamber: ${data.chamber === "HOUSE" ? "House of Delegates" : "Senate"}
+- Session: ${data.session || "[Session]"}
+- Sponsor: ${data.sponsorName || "[Name]"} (${data.sponsorSchool || "[School]"})${data.sponsorEmail ? ` · ${data.sponsorEmail}` : ""}
+- Number: ${data.number || "___"}
+
+### Purpose
+${data.purpose || "[Purpose goes here]"}
+
+### Problem / Context
+${data.problem || "[Context goes here]"}
+
+### Key Actions
+${actionList}
+
+### Full Text
+
+\`\`\`
+${renderedText.trim()}
+\`\`\`
+`);
+      }
+
+      function setStatus(message, type = "info") {
+        if (!statusEl) return;
+        statusEl.textContent = message;
+        statusEl.className = `status ${type === "error" ? "error" : type === "success" ? "success" : ""}`;
+      }
+
+      function copyFrom(element) {
+        if (!element) return;
+        const value = element.value.trim();
+        if (!value) {
+          setStatus("Nothing to copy yet—generate a draft first.", "error");
+          return;
+        }
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(value).then(() => {
+            setStatus("Copied to clipboard.", "success");
+          }).catch(() => setStatus("Copy failed. Try again.", "error"));
+        } else {
+          element.select();
+          document.execCommand("copy");
+          setStatus("Copied to clipboard.", "success");
+        }
+      }
+
+      document.getElementById("copyBtn").addEventListener("click", () => copyFrom(outputEl));
+      document.getElementById("copyMarkdownBtn").addEventListener("click", () => copyFrom(markdownEl));
+
+      document.getElementById("generateBtn").addEventListener("click", () => {
+        const data = {
+          docType: getRadioValue("docType") || "bill",
+          chamber: document.getElementById("chamber").value,
+          number: document.getElementById("billNumber").value.trim(),
+          shortTitle: document.getElementById("shortTitle").value.trim(),
+          session: document.getElementById("sessionInfo").value.trim(),
+          problem: document.getElementById("problem").value.trim(),
+          purpose: document.getElementById("purpose").value.trim(),
+          whoAffected: document.getElementById("whoAffected").value.trim(),
+          keyActions: document.getElementById("keyActions").value.trim(),
+          effectiveDate: document.getElementById("effectiveDate").value.trim(),
+          sponsorName: document.getElementById("sponsorName").value.trim(),
+          sponsorSchool: document.getElementById("sponsorSchool").value.trim(),
+          sponsorEmail: document.getElementById("sponsorEmail").value.trim()
+        };
+
+        const missing = [
+          { key: "shortTitle", label: "Short title" },
+          { key: "problem", label: "Problem / context" },
+          { key: "purpose", label: "Purpose" },
+          { key: "keyActions", label: "Key actions" }
+        ].filter(field => !data[field.key]);
+
+        if (missing.length) {
+          setStatus(`Add more detail to: ${missing.map(m => m.label).join(", ")}.`, "error");
+          document.getElementById(missing[0].key).focus();
+          return;
+        }
+
+        const renderedText = data.docType === "bill" ? buildBillTemplate(data) : buildResolutionTemplate(data);
+        const markdown = buildMarkdown(data, renderedText);
+
+        outputEl.value = renderedText.trim();
+        markdownEl.value = markdown.trim();
+        setStatus("Draft updated. Review and tweak anything that looks off.", "success");
+      });
+    })();
+  </script>
+</body>
+</html>
