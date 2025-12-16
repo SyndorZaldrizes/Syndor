@@ -4,35 +4,35 @@
   <meta charset="UTF-8" />
   <title>Resources & Toolkit – SMCM MSL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/png" href="logo-1.png" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="icon" type="image/png" href="../assets/img/logo-1.png" />
 </head>
-<body>
+<body data-page="resources">
   <header class="site-header">
     <div class="inner">
-      <a href="index.html#hero" class="brand">
+      <a class="brand" data-nav-target="index.html#hero">
         <span class="brand-mark brand-mark-logo">
-          <img src="logo-1.png" alt="SMCM MSL logo" />
+          <img src="../assets/img/logo-1.png" alt="SMCM MSL logo" />
         </span>
         <span class="brand-text">
-          <span class="brand-title">MSL</span>
-          <span class="brand-sub">SMCM Chapter</span>
+          <span class="brand-title">MSL SMCM</span>
+          <span class="brand-sub">Chapter</span>
         </span>
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
       <nav class="nav" id="mainNav">
-        <a class="nav-link" href="index.html#hero">Home</a>
-        <a class="nav-link" href="index.html#maryland">About MSL</a>
-        <a class="nav-link" href="index.html#chapter">Our Chapter</a>
-        <a class="nav-link" href="index.html#journey">Your Journey</a>
-        <a class="nav-link" href="index.html#documents">Documents</a>
-        <a class="nav-link" href="executive-board.html">Exec Board</a>
-        <a class="nav-link nav-link--active" aria-current="page" href="resources.html">Resources</a>
-        <a class="nav-link" href="bulletin.html">Bulletin</a>
-        <a class="nav-link" href="msl-game.html">Games</a>
-        <a class="nav-link" href="index.html#gallery">Gallery</a>
-        <a class="nav-link" href="index.html#contact">Join Us</a>
-        <a class="nav-link" href="neophytus.html">Neophytus</a>
+        <a class="nav-link" data-page="home" data-nav-target="index.html#hero">Home</a>
+        <a class="nav-link" data-page="about" data-nav-target="index.html#maryland">About MSL</a>
+        <a class="nav-link" data-page="chapter" data-nav-target="index.html#chapter">Our Chapter</a>
+        <a class="nav-link" data-page="journey" data-nav-target="index.html#journey">Your Journey</a>
+        <a class="nav-link" data-page="documents" data-nav-target="index.html#documents">Documents</a>
+        <a class="nav-link" data-page="gallery" data-nav-target="index.html#gallery">Gallery</a>
+        <a class="nav-link" data-page="join" data-nav-target="index.html#contact">Join Us</a>
+        <a class="nav-link" data-page="bulletin" data-nav-target="pages/bulletin.html">Bulletin</a>
+        <a class="nav-link" data-page="exec" data-nav-target="pages/executive-board.html">Exec Board</a>
+        <a class="nav-link" data-page="resources" data-nav-target="pages/resources.html">Resources</a>
+        <a class="nav-link" data-page="games" data-nav-target="pages/msl-game.html">Games</a>
+        <a class="nav-link" data-page="neophytus" data-nav-target="pages/neophytus.html">Neophytus</a>
       </nav>
     </div>
   </header>
@@ -84,7 +84,7 @@
               <li>Useful reference to keep open during debate.</li>
             </ul>
             <p style="margin-top: 0.75rem;">
-              <a href="legislative-lingo.pdf" target="_blank" class="btn btn-primary small">
+              <a href="../docs/legislative-lingo.pdf" target="_blank" class="btn btn-primary small">
                 Open Legislative Lingo (PDF)
               </a>
             </p>
@@ -104,7 +104,7 @@
               <li>Tips for writing with precision instead of vibes.</li>
             </ul>
             <p style="margin-top: 0.75rem;">
-              <a href="Legislative-Drafting-Manual.pdf" target="_blank" class="btn btn-primary small">
+              <a href="../docs/Legislative-Drafting-Manual.pdf" target="_blank" class="btn btn-primary small">
                 Open Drafting Manual (PDF)
               </a>
             </p>
@@ -189,9 +189,9 @@
 
           <article class="card plain-card">
             <div style="display:flex; justify-content:center; margin-bottom:0.75rem;">
-              <a href="parli-pro.jpeg" target="_blank" rel="noopener" title="Open full-size parliamentary procedure cheat sheet">
+              <a href="../assets/img/parli-pro.jpeg" target="_blank" rel="noopener" title="Open full-size parliamentary procedure cheat sheet">
                 <img
-                  src="parli-pro.jpeg"
+                  src="../assets/img/parli-pro.jpeg"
                   alt="Parliamentary procedure quick reference"
                   style="width:100%; max-width:260px; border-radius:12px; object-fit:cover;"
                 />
@@ -221,6 +221,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="../assets/js/script.js"></script>
 </body>
 </html>
