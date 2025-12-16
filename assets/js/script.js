@@ -1,6 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
   const navToggle = document.getElementById("navToggle");
   const mainNav = document.getElementById("mainNav");
+  const navTargets = document.querySelectorAll("[data-nav-target]");
+
+  const pathName = window.location.pathname;
+  const pagesIndex = pathName.lastIndexOf("/pages/");
+  let basePrefix = "";
+
+  if (pagesIndex !== -1) {
+    const remainder = pathName.slice(pagesIndex + "/pages/".length);
+    const depth = remainder.split("/").length - 1;
+    basePrefix = "../".repeat(depth + 1);
+  }
+
+  navTargets.forEach((link) => {
+    const target = link.dataset.navTarget;
+    if (target) {
+      link.setAttribute("href", `${basePrefix}${target}`);
+    }
+  });
+
+  const activePage = document.body.dataset.page;
+  if (activePage) {
+    const activeLink = document.querySelector(`.nav-link[data-page="${activePage}"]`);
+    if (activeLink) {
+      activeLink.classList.add("nav-link--active");
+      activeLink.setAttribute("aria-current", "page");
+    }
+  }
 
   if (!navToggle || !mainNav) return;
 

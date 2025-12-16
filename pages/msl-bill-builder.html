@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MSL Bill & Resolution Builder – Prototype</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="icon" type="image/png" href="../assets/img/logo-1.png" />
+  <style>
+    body.builder-page {
+      background: linear-gradient(180deg, #0b1020 0%, #0a0f1c 35%, #0b1329 100%);
+      color: #e5e7eb;
+    }
+
+    .builder-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .builder-card {
+      background: rgba(11, 17, 34, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 1rem;
+      padding: 1.25rem 1.4rem;
+      box-shadow: 0 18px 45px rgba(5, 9, 22, 0.65);
+    }
+
+    .builder-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .builder-form h2 {
+      margin-top: 1.25rem;
+      margin-bottom: 0.35rem;
+      color: #f8fafc;
+      font-size: 1.05rem;
+    }
+
+    .builder-form label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.25rem;
+      color: #cbd5e1;
+      font-size: 0.9rem;
+    }
+
+    .builder-form input,
+    .builder-form select,
+    .builder-form textarea {
+      width: 100%;
+      border-radius: 0.55rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 0.6rem 0.7rem;
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      font-size: 0.95rem;
+    }
+
+    .builder-form textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .field-helper {
+      font-size: 0.82rem;
+      color: #9ca3af;
+      margin-top: 0.2rem;
+    }
+
+    .inline-options {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .inline-options label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      cursor: pointer;
+    }
+
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .status-note {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+
+    .status-note strong { color: #a5b4fc; }
+
+    .output-card textarea {
+      width: 100%;
+      min-height: 320px;
+      background: #0b1020;
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 0.75rem;
+      padding: 0.85rem;
+      font-family: "SFMono-Regular", ui-monospace, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      resize: vertical;
+    }
+
+    .quick-steps {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin: 0.75rem 0 0.25rem;
+    }
+
+    .chip-note {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.2);
+      color: #bfdbfe;
+      font-size: 0.85rem;
+      margin-top: 0.35rem;
+    }
+
+    @media (max-width: 720px) {
+      .builder-shell { gap: 1rem; }
+      .actions-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body class="builder-page" data-page="tools">
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" data-nav-target="index.html#hero">
+        <span class="brand-mark brand-mark-logo">
+          <img src="../assets/img/logo-1.png" alt="SMCM MSL logo" />
+        </span>
+        <span class="brand-text">
+          <span class="brand-title">MSL SMCM</span>
+          <span class="brand-sub">Chapter</span>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      <nav class="nav" id="mainNav">
+        <a class="nav-link" data-page="home" data-nav-target="index.html#hero">Home</a>
+        <a class="nav-link" data-page="about" data-nav-target="index.html#maryland">About MSL</a>
+        <a class="nav-link" data-page="chapter" data-nav-target="index.html#chapter">Our Chapter</a>
+        <a class="nav-link" data-page="journey" data-nav-target="index.html#journey">Your Journey</a>
+        <a class="nav-link" data-page="documents" data-nav-target="index.html#documents">Documents</a>
+        <a class="nav-link" data-page="gallery" data-nav-target="index.html#gallery">Gallery</a>
+        <a class="nav-link" data-page="join" data-nav-target="index.html#contact">Join Us</a>
+        <a class="nav-link" data-page="bulletin" data-nav-target="pages/bulletin.html">Bulletin</a>
+        <a class="nav-link" data-page="exec" data-nav-target="pages/executive-board.html">Exec Board</a>
+        <a class="nav-link" data-page="resources" data-nav-target="pages/resources.html">Resources</a>
+        <a class="nav-link" data-page="games" data-nav-target="pages/msl-game.html">Games</a>
+        <a class="nav-link" data-page="neophytus" data-nav-target="pages/neophytus.html">Neophytus</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="inner builder-shell">
+      <div class="builder-card">
+        <p class="eyebrow">Prototype • Not linked in live nav</p>
+        <h1>MSL Bill & Resolution Builder</h1>
+        <p class="section-body">
+          Guided helper for drafting a Maryland Student Legislature bill or resolution. Add a few details, choose bill or resolution,
+          and copy the formatted output into Google Docs or Markdown notes.
+        </p>
+        <div class="quick-steps">
+          <div class="card plain-card" style="background: rgba(15,23,42,0.6);">
+            <h3 style="margin:0 0 0.35rem 0;">1) Start with a working title</h3>
+            <p class="small">Use a clear short title and pick House or Senate. Session defaults to this academic year.</p>
+          </div>
+          <div class="card plain-card" style="background: rgba(15,23,42,0.6);">
+            <h3 style="margin:0 0 0.35rem 0;">2) Add problem & actions</h3>
+            <p class="small">Briefly describe the issue, who is affected, and the actions or statements you want.</p>
+          </div>
+          <div class="card plain-card" style="background: rgba(15,23,42,0.6);">
+            <h3 style="margin:0 0 0.35rem 0;">3) Generate & copy</h3>
+            <p class="small">Use the buttons to format the draft and copy it to your clipboard for your doc.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="builder-card builder-form">
+        <form id="builderForm" novalidate>
+          <div class="builder-grid">
+            <div>
+              <h2>Document basics</h2>
+              <div class="field">
+                <label>Type</label>
+                <div class="inline-options">
+                  <label><input type="radio" name="docType" value="bill" checked /> Bill</label>
+                  <label><input type="radio" name="docType" value="resolution" /> Resolution</label>
+                </div>
+              </div>
+              <div class="field">
+                <label for="chamber">Chamber</label>
+                <select id="chamber">
+                  <option value="HOUSE">House of Delegates</option>
+                  <option value="SENATE">Senate</option>
+                </select>
+                <div class="field-helper">Default is House; swap if you’re writing for the Senate.</div>
+              </div>
+              <div class="field">
+                <label for="billNumber">Bill / Resolution Number</label>
+                <input type="text" id="billNumber" placeholder="Leave blank for ___ placeholder" />
+              </div>
+              <div class="field">
+                <label for="shortTitle">Short title / topic <span class="chip-note">required</span></label>
+                <input type="text" id="shortTitle" placeholder="Campus Wellness & Study Break Act" />
+              </div>
+              <div class="field">
+                <label for="sessionInfo">Session / year</label>
+                <input type="text" id="sessionInfo" placeholder="2024–2025 Session" />
+              </div>
+              <div class="field">
+                <label for="effectiveDate">Effective date</label>
+                <input type="text" id="effectiveDate" placeholder="October 1, 2026" />
+              </div>
+            </div>
+
+            <div>
+              <h2>Content of your idea</h2>
+              <div class="field">
+                <label for="purpose">Purpose / objective <span class="chip-note">required</span></label>
+                <textarea id="purpose" placeholder="What this bill or resolution is trying to accomplish."></textarea>
+              </div>
+              <div class="field">
+                <label for="problem">Problem or context</label>
+                <textarea id="problem" placeholder="What issue are you trying to address?"></textarea>
+              </div>
+              <div class="field">
+                <label for="whoAffected">Who is affected?</label>
+                <textarea id="whoAffected" placeholder="Students, faculty, community partners, etc."></textarea>
+              </div>
+              <div class="field">
+                <label for="keyActions">Key actions or changes <span class="chip-note">required</span></label>
+                <textarea id="keyActions" placeholder="List the main things this bill/resolution requires or states."></textarea>
+              </div>
+            </div>
+
+            <div>
+              <h2>Sponsor information</h2>
+              <div class="field">
+                <label for="sponsorName">Sponsor name <span class="chip-note">required</span></label>
+                <input type="text" id="sponsorName" placeholder="Your name" />
+              </div>
+              <div class="field">
+                <label for="sponsorSchool">School / chapter</label>
+                <input type="text" id="sponsorSchool" placeholder="St. Mary’s College of Maryland" value="St. Mary’s College of Maryland" />
+              </div>
+              <div class="field">
+                <label for="sponsorEmail">Sponsor email</label>
+                <input type="email" id="sponsorEmail" placeholder="you@school.edu" />
+                <div class="field-helper">Optional, but helpful for follow-up or co-sponsors.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button type="button" class="btn btn-primary" id="generateBtn">Generate draft</button>
+            <button type="button" class="btn btn-ghost" id="copyBtn">Copy output</button>
+            <span class="status-note" id="statusMessage" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+
+      <div class="builder-card output-card">
+        <div class="section-header" style="margin-bottom:0.5rem;">
+          <p class="eyebrow">Formatted text</p>
+          <h2>Copy-ready draft</h2>
+          <p class="small">Paste into Google Docs or Markdown. Sections are labeled so you can expand them later.</p>
+        </div>
+        <textarea id="output" readonly placeholder="Your draft bill or resolution will appear here."></textarea>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/script.js"></script>
+  <script>
+    const statusMessage = document.getElementById("statusMessage");
+    const output = document.getElementById("output");
+
+    function setStatus(text, tone = "info") {
+      if (!statusMessage) return;
+      const colors = { success: "#22c55e", warn: "#fbbf24", info: "#cbd5e1" };
+      statusMessage.textContent = text;
+      statusMessage.style.color = colors[tone] || colors.info;
+    }
+
+    function getRadioValue(name) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : null;
+    }
+
+    function defaultSession() {
+      const year = new Date().getFullYear();
+      return `${year}-${year + 1} Session`;
+    }
+
+    function defaultEffectiveDate() {
+      const year = new Date().getFullYear() + 1;
+      return `October 1, ${year}`;
+    }
+
+    function collectFormData() {
+      return {
+        docType: getRadioValue("docType") || "bill",
+        chamber: document.getElementById("chamber").value,
+        number: document.getElementById("billNumber").value.trim(),
+        shortTitle: document.getElementById("shortTitle").value.trim(),
+        session: document.getElementById("sessionInfo").value.trim() || defaultSession(),
+        problem: document.getElementById("problem").value.trim(),
+        purpose: document.getElementById("purpose").value.trim(),
+        whoAffected: document.getElementById("whoAffected").value.trim(),
+        keyActions: document.getElementById("keyActions").value.trim(),
+        effectiveDate: document.getElementById("effectiveDate").value.trim() || defaultEffectiveDate(),
+        sponsorName: document.getElementById("sponsorName").value.trim(),
+        sponsorSchool: document.getElementById("sponsorSchool").value.trim() || "St. Mary’s College of Maryland",
+        sponsorEmail: document.getElementById("sponsorEmail").value.trim()
+      };
+    }
+
+    function validate(data) {
+      const missing = [];
+      if (!data.shortTitle) missing.push("Short title");
+      if (!data.purpose) missing.push("Purpose / objective");
+      if (!data.keyActions) missing.push("Key actions");
+      if (!data.sponsorName) missing.push("Sponsor name");
+      return missing;
+    }
+
+    function buildBillTemplate(data) {
+      const chamberName = data.chamber === "HOUSE" ? "HOUSE BILL" : "SENATE BILL";
+      const number = data.number || "___";
+      const emailLine = data.sponsorEmail ? ` • ${data.sponsorEmail}` : "";
+
+      return (
+`${chamberName} ${number}
+Sponsor: ${data.sponsorName || "[Your Name]"} (${data.sponsorSchool || "[Your School]"})${emailLine}
+Session: ${data.session}
+
+A BILL ENTITLED
+AN ACT concerning
+${data.shortTitle || "[Insert short title]"}
+
+FOR the purpose of
+- ${data.purpose || "[State the purpose in 1–3 sentences]"}
+
+The Maryland Student Legislature enacts that:
+1. Findings. ${data.problem || "[Describe the background or need]"}
+2. Core actions. ${data.keyActions || "[List the main actions or requirements]"}
+3. Impacted parties. ${data.whoAffected || "[Who is affected or responsible]"}
+4. Implementation & timeline. This Act takes effect on ${data.effectiveDate}.
+
+Additional Sections:
+- Add enforcement details, definitions, or funding language as separate numbered items.
+- Include repeal/reenactment clauses if changing existing rules.
+`
+      );
+    }
+
+    function buildResolutionTemplate(data) {
+      const chamberName = data.chamber === "HOUSE" ? "HOUSE RESOLUTION" : "SENATE RESOLUTION";
+      const number = data.number || "___";
+      const emailLine = data.sponsorEmail ? ` • ${data.sponsorEmail}` : "";
+
+      return (
+`${chamberName} ${number}
+Sponsor: ${data.sponsorName || "[Your Name]"} (${data.sponsorSchool || "[Your School]"})${emailLine}
+Session: ${data.session}
+
+A RESOLUTION concerning
+${data.shortTitle || "[Insert subject of the resolution]"}
+
+WHEREAS, ${data.problem || "[Describe the situation or background]"}
+
+WHEREAS, ${data.purpose || "[State the intent of the resolution]"}
+
+WHEREAS, ${data.whoAffected || "[Who is addressed or involved]"}
+
+NOW, THEREFORE, BE IT RESOLVED BY THE ${data.chamber === "HOUSE" ? "HOUSE OF DELEGATES" : "SENATE"} OF THE MARYLAND STUDENT LEGISLATURE, THAT:
+1. ${data.keyActions || "[List the core statements or actions]"}
+
+BE IT FURTHER RESOLVED, THAT:
+- Add follow-up actions or distribution list here (e.g., campus offices, statewide leadership).
+`
+      );
+    }
+
+    function generateDraft() {
+      const data = collectFormData();
+      const missing = validate(data);
+
+      if (missing.length) {
+        setStatus(`Add: ${missing.join(", ")}. Defaults will fill the rest.`, "warn");
+      } else {
+        setStatus("Draft updated. Copy when ready.", "success");
+      }
+
+      const outputText = data.docType === "bill" ? buildBillTemplate(data) : buildResolutionTemplate(data);
+      output.value = outputText.trim();
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", generateDraft);
+
+    document.getElementById("copyBtn").addEventListener("click", () => {
+      const text = output.value;
+      if (!text) {
+        setStatus("Nothing to copy yet—generate a draft first.", "warn");
+        return;
+      }
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => setStatus("Copied to clipboard.", "success"));
+      } else {
+        output.select();
+        document.execCommand("copy");
+        setStatus("Copied using fallback clipboard.", "success");
+      }
+    });
+
+    // Prefill helpful defaults on load
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("sessionInfo").value = defaultSession();
+      document.getElementById("effectiveDate").value = defaultEffectiveDate();
+      document.getElementById("shortTitle").value = "Student Wellness & Study Break Act";
+      document.getElementById("purpose").value = "Provide structured wellness breaks and support resources during peak exam periods.";
+      document.getElementById("keyActions").value = "Creates 15-minute wellness recesses during long meetings; requires at least one staffed quiet space; encourages collaboration with Counseling & Wellness.";
+      generateDraft();
+    });
+  </script>
+</body>
+</html>
