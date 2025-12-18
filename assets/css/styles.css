@@ -6,6 +6,17 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg: #050a1d;
+  --surface: #0b1329;
+  --surface-2: #111b35;
+  --text: #f5f7ff;
+  --muted: #c4cbe4;
+  --accent: #79d8ff;
+  --accent-2: #f6c34a;
+  --accent-3: #9a7bff;
+}
+
 html,
 body {
   margin: 0;
@@ -17,8 +28,10 @@ html {
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-  background: #050816;
-  color: #f5f6ff;
+  background: radial-gradient(circle at 18% 15%, rgba(121, 216, 255, 0.08), transparent 32%),
+    radial-gradient(circle at 82% 8%, rgba(154, 123, 255, 0.08), transparent 36%),
+    linear-gradient(180deg, #050816, #060b22 60%, #040615);
+  color: var(--text);
   line-height: 1.5;
 }
 
@@ -29,11 +42,13 @@ body.giving-page {
 }
 
 a {
-  color: #9fc5ff;
+  color: var(--accent);
   text-decoration: none;
+  font-weight: 600;
 }
 
 a:hover {
+  color: var(--accent-2);
   text-decoration: underline;
 }
 
@@ -52,11 +67,7 @@ a:hover {
   top: 0;
   z-index: 50;
   backdrop-filter: blur(14px);
-  background: linear-gradient(
-    to bottom,
-    rgba(5, 8, 22, 0.96),
-    rgba(5, 8, 22, 0.88)
-  );
+  background: linear-gradient(to bottom, rgba(17, 27, 53, 0.96), rgba(11, 19, 41, 0.9));
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -73,7 +84,7 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  color: #ffffff;
+  color: var(--text);
 }
 
 .brand-mark {
@@ -131,7 +142,7 @@ a:hover {
   right: 0;
   bottom: -0.25rem;
   height: 2px;
-  background: #facc15;
+  background: var(--accent-2);
   opacity: 0.9;
   border-radius: 999px;
 }
@@ -158,7 +169,7 @@ a:hover {
   position: absolute;
   right: 1rem;
   top: 64px;
-  background: #050816;
+  background: var(--surface);
   padding: 0.75rem 1rem;
   border-radius: 0.75rem;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
@@ -194,7 +205,7 @@ a:hover {
 }
 
 .bg-alt {
-  background: radial-gradient(circle at top left, #11152c, #050816);
+  background: radial-gradient(circle at top left, rgba(17, 27, 53, 0.95), rgba(11, 19, 41, 0.95));
 }
 
 /* Headings, eyebrow labels */
@@ -376,30 +387,48 @@ h3 {
   border: 1px solid transparent;
   cursor: pointer;
   text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #4f8cff, #61d3ff);
+  background: linear-gradient(135deg, var(--accent-3), var(--accent));
   color: #050816;
-  border: none;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
 }
 
 .btn-ghost {
-  background: transparent;
-  color: #f5f6ff;
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .btn-inline {
   padding: 0;
   border: none;
   background: none;
-  color: #9fc5ff;
+  color: var(--accent);
 }
 
 .btn.full {
   width: 100%;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-inline:hover {
+  color: var(--accent-2);
 }
 
 /* Giving page: gold primary */
@@ -450,16 +479,16 @@ h3 {
 .card {
   border-radius: 1.1rem;
   padding: 1.25rem 1.25rem 1.3rem;
-  background: rgba(10, 14, 36, 0.96);
+  background: linear-gradient(145deg, rgba(17, 27, 53, 0.95), rgba(11, 19, 41, 0.92));
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .bg-alt .card {
-  background: rgba(9, 12, 29, 0.96);
+  background: linear-gradient(145deg, rgba(15, 24, 48, 0.96), rgba(11, 19, 41, 0.94));
 }
 
 .plain-card {
-  background: rgba(8, 11, 25, 0.96);
+  background: linear-gradient(160deg, rgba(15, 24, 48, 0.94), rgba(11, 19, 41, 0.92));
 }
 
 .feature-card .card-icon {
@@ -478,7 +507,7 @@ h3 {
 .checklist li::before {
   content: "•";
   margin-right: 0.4rem;
-  color: #61d3ff;
+  color: var(--accent);
 }
 
 .simple-list {
@@ -513,7 +542,7 @@ h3 {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, #61d3ff, transparent);
+  background: linear-gradient(to bottom, var(--accent), transparent);
 }
 
 .timeline-item {
@@ -526,13 +555,13 @@ h3 {
   width: 1.3rem;
   height: 1.3rem;
   border-radius: 999px;
-  border: 2px solid #61d3ff;
+  border: 2px solid var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.8rem;
   margin-top: 0.15rem;
-  background: #050816;
+  background: var(--surface);
 }
 
 /* Documents section */
@@ -627,15 +656,15 @@ textarea {
   padding: 0.5rem 0.6rem;
   border-radius: 0.6rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(5, 8, 22, 0.9);
-  color: #f5f6ff;
+  background: rgba(17, 27, 53, 0.9);
+  color: var(--text);
   font-family: inherit;
   font-size: 0.9rem;
 }
 
 input:focus,
 textarea:focus {
-  outline: 1px solid #61d3ff;
+  outline: 1px solid var(--accent);
   outline-offset: 1px;
 }
 
@@ -761,7 +790,7 @@ textarea:focus {
 
 .site-footer {
   padding: 2rem 0 2.5rem;
-  background: #050816;
+  background: linear-gradient(180deg, rgba(11, 19, 41, 0.9), #050816);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   margin-top: 2rem;
 }
@@ -783,7 +812,7 @@ textarea:focus {
   margin-top: 2rem;
   padding: 1.5rem 1.5rem 1.6rem;
   border-radius: 1.25rem;
-  background: rgba(8, 11, 25, 0.96);
+  background: linear-gradient(140deg, rgba(17, 27, 53, 0.95), rgba(11, 19, 41, 0.92));
   border: 1px solid rgba(255, 255, 255, 0.08);
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
@@ -821,8 +850,8 @@ textarea:focus {
   font-size: 0.78rem;
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
-  background: rgba(5, 8, 22, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 /* === Giving Tuesday: legibility fix on light background === */
@@ -851,8 +880,8 @@ textarea:focus {
 .plain-card:hover,
 .feature-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-  border-color: rgba(255, 215, 0, 0.6); /* subtle gold nod */
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+  border-color: rgba(246, 195, 74, 0.7);
 }
 .brand-mark-logo {
   padding: 0;
