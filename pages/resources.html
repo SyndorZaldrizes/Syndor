@@ -6,7 +6,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <link rel="icon" type="image/png" href="../assets/img/logo-1.png" />
+
+  <!-- Local modal styling (kept here so you don’t have to touch styles.css) -->
+  <style>
+    .doc-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      z-index: 9999;
+    }
+    .doc-modal[aria-hidden="false"] { display: block; }
+    .doc-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+    }
+    .doc-modal__panel {
+      position: relative;
+      width: min(1100px, calc(100% - 2rem));
+      height: min(78vh, 820px);
+      margin: 5vh auto;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0b0f1a;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+    .doc-modal__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1rem;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .doc-modal__title {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.2;
+      color: rgba(255,255,255,0.92);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .doc-modal__actions {
+      display: flex;
+      gap: .5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .doc-modal__btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.92);
+      padding: .45rem .7rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .doc-modal__btn:hover { background: rgba(255,255,255,0.12); }
+    .doc-modal__frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #111;
+    }
+  </style>
 </head>
+
 <body data-page="resources">
   <header class="site-header">
     <div class="inner">
@@ -19,7 +89,9 @@
           <span class="brand-sub">Chapter</span>
         </span>
       </a>
+
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+
       <nav class="nav" id="mainNav">
         <a class="nav-link" data-page="home" data-nav-target="index.html#hero">Home</a>
         <a class="nav-link" data-page="about" data-nav-target="index.html#maryland">About MSL</a>
@@ -45,28 +117,78 @@
           <p class="eyebrow">Tools for Delegates & Senators</p>
           <h1>Resources & Toolkit</h1>
           <p class="section-body">
-            Everything on this page is designed to help SMCM delegates and senators feel more prepared:
-            legislative language, drafting guidance, and practical tools you can use before and during
-            Maryland Student Legislature sessions.
+            Everything here is meant to make you feel prepared before the session: drafting guidance,
+            templates, and practical tools you can use during committee and floor debate.
           </p>
           <p class="small">
-            For statewide information, visit the
+            For statewide info, visit the
             <a href="https://www.msl.org/" target="_blank" rel="noopener">Maryland Student Legislature website</a>.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- BILL DRAFTING & LANGUAGE -->
+    <!-- QUICK START / CREDIT INFO -->
     <section class="section bg-alt">
       <div class="inner section-layout">
         <div class="section-header">
-          <p class="eyebrow">Writing Strong Bills</p>
-          <h2>Bill Drafting & Legislative Language</h2>
+          <p class="eyebrow">Quick Start</p>
+          <h2>How to Join + Credit Info</h2>
           <p class="section-body">
-            These documents walk you through how to write, structure, and language your bills so they read
-            like real legislation—not just class assignments. Bring them to workshops, committee meetings,
-            and floor debate prep.
+            New here? Start with the flyer, then use the drafting resources below to get your first bill
+            or resolution ready without panic-googling “what is an enacting clause” at 2 AM.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card plain-card">
+            <h3>POSC 395 – MSL Credit Flyer</h3>
+            <p class="small">
+              Overview of the SMCM MSL chapter + earning upper-division credit (POSC 395).
+            </p>
+            <ul class="checklist small">
+              <li>Credit hours: 2</li>
+              <li>Offered annually (Spring semester)</li>
+              <li>Hands-on legislative experience</li>
+            </ul>
+            <p style="margin-top: 0.75rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+              <a href="#"
+                 data-doc-url="../assets/img/posc395-msl-credit-flyer.png"
+                 data-doc-title="POSC 395 – MSL Credit Flyer"
+                 class="btn btn-primary small doc-link">
+                Preview
+              </a>
+              <a href="../assets/img/posc395-msl-credit-flyer.png" target="_blank" rel="noopener" class="btn small">
+                Open image
+              </a>
+            </p>
+          </article>
+
+          <article class="card plain-card">
+            <h3>Suggested First Steps</h3>
+            <p class="small">
+              If you want the smooth onboarding path instead of raw chaos:
+            </p>
+            <ul class="checklist small">
+              <li>Pick an issue you actually care about (you’ll defend it out loud).</li>
+              <li>Decide: Act (bill) vs Resolution (statement/call-to-action).</li>
+              <li>Use the templates below and bring a draft to a workshop.</li>
+              <li>Practice a 60–90 second sponsor speech.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- BILL DRAFTING & LANGUAGE -->
+    <section class="section">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">Writing Strong Bills</p>
+          <h2>Drafting Guides & Templates</h2>
+          <p class="section-body">
+            These documents help you write legislation that reads like legislation, not like a discussion post.
+            Preview them here, then keep them open while drafting.
           </p>
         </div>
 
@@ -75,17 +197,22 @@
           <article class="card plain-card">
             <h3>Legislative Lingo (PDF)</h3>
             <p class="small">
-              A quick guide to the phrases, motions, and terminology you’ll hear in session and see on paper.
-              Perfect for first-time delegates or anyone who wants to feel less lost in parliamentary jargon.
+              A quick guide to the phrases, motions, and terminology you’ll hear in session and see in writing.
             </p>
             <ul class="checklist small">
-              <li>Core terms you’ll hear in committee and on the floor.</li>
-              <li>Plain-language explanations of common motions.</li>
-              <li>Useful reference to keep open during debate.</li>
+              <li>Core terms used in committee and on the floor</li>
+              <li>Plain language definitions for common motions</li>
+              <li>Great to keep open during debate</li>
             </ul>
-            <p style="margin-top: 0.75rem;">
-              <a href="../docs/legislative-lingo.pdf" target="_blank" class="btn btn-primary small">
-                Open Legislative Lingo (PDF)
+            <p style="margin-top: 0.75rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+              <a href="#"
+                 data-doc-url="../docs/legislative-lingo.pdf"
+                 data-doc-title="Legislative Lingo (PDF)"
+                 class="btn btn-primary small doc-link">
+                Preview
+              </a>
+              <a href="../docs/legislative-lingo.pdf" target="_blank" rel="noopener" class="btn small">
+                Open PDF
               </a>
             </p>
           </article>
@@ -94,18 +221,70 @@
           <article class="card plain-card">
             <h3>Legislative Drafting Manual (PDF)</h3>
             <p class="small">
-              A deeper guide to structuring bills and resolutions—from titles and enacting clauses to
-              sections, subsections, and amending language. Use this when you’re turning an idea into a
-              bill that can actually move through a chamber.
+              A deeper guide to structuring bills and resolutions: titles, clauses, sections, amendments, and clarity.
             </p>
             <ul class="checklist small">
-              <li>How to format sections and subsections correctly.</li>
-              <li>Examples of clear, enforceable legislative language.</li>
-              <li>Tips for writing with precision instead of vibes.</li>
+              <li>Formatting sections/subsections</li>
+              <li>Examples of enforceable language</li>
+              <li>Precision over vibes</li>
             </ul>
-            <p style="margin-top: 0.75rem;">
-              <a href="../docs/Legislative-Drafting-Manual.pdf" target="_blank" class="btn btn-primary small">
-                Open Drafting Manual (PDF)
+            <p style="margin-top: 0.75rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+              <a href="#"
+                 data-doc-url="../docs/Legislative-Drafting-Manual.pdf"
+                 data-doc-title="Legislative Drafting Manual (PDF)"
+                 class="btn btn-primary small doc-link">
+                Preview
+              </a>
+              <a href="../docs/Legislative-Drafting-Manual.pdf" target="_blank" rel="noopener" class="btn small">
+                Open PDF
+              </a>
+            </p>
+          </article>
+
+          <!-- Act Template PDF -->
+          <article class="card plain-card">
+            <h3>MSL Act Template (2025) (PDF)</h3>
+            <p class="small">
+              Use this for bills (Acts): the standard structure, drafting cues, and clean formatting for session.
+            </p>
+            <ul class="checklist small">
+              <li>Best for: creating/amending policy</li>
+              <li>Includes standard bill layout</li>
+              <li>Use as your drafting skeleton</li>
+            </ul>
+            <p style="margin-top: 0.75rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+              <a href="#"
+                 data-doc-url="../docs/msl-act-template-2025.pdf"
+                 data-doc-title="MSL Act Template (2025) (PDF)"
+                 class="btn btn-primary small doc-link">
+                Preview
+              </a>
+              <a href="../docs/msl-act-template-2025.pdf" target="_blank" rel="noopener" class="btn small">
+                Open PDF
+              </a>
+            </p>
+          </article>
+
+          <!-- Resolution Template PDF -->
+          <article class="card plain-card">
+            <h3>MSL Resolution Template (2025) (PDF)</h3>
+            <p class="small">
+              Use this for resolutions: WHEREAS logic + RESOLVED action. Great for recognition, positions, or calls to act.
+            </p>
+            <ul class="checklist small">
+              <li>Best for: statements + calls-to-action</li>
+              <li>WHEREAS builds reasoning</li>
+              <li>RESOLVED defines what you want done</li>
+            </ul>
+            <p style="margin-top: 0.75rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+              <a href="#"
+                 data-doc-url="../docs/msl-resolution-template-2025.pdf"
+                 data-doc-title="MSL Resolution Template (2025) (PDF)"
+                 class="btn btn-primary small doc-link">
+                Preview
+              </a>
+              <a href="../docs/msl-resolution-template-2025.pdf" target="_blank" rel="noopener" class="btn small">
+                Open PDF
               </a>
             </p>
           </article>
@@ -114,58 +293,50 @@
     </section>
 
     <!-- SESSION PREP & CHECKLISTS -->
-    <section class="section">
+    <section class="section bg-alt">
       <div class="inner section-layout">
         <div class="section-header">
           <p class="eyebrow">Before You Go to Session</p>
           <h2>Session Prep & Personal Toolkit</h2>
           <p class="section-body">
-            Beyond bill text, good preparation makes session way less stressful. Use this space as your
-            checklist hub before traveling to statewide events or stepping into mock chambers on campus.
+            Beyond the text itself, preparation makes session way less stressful. Use these reminders as your baseline.
           </p>
         </div>
 
         <div class="grid-2">
           <article class="card plain-card">
             <h3>Personal Session Checklist</h3>
-            <p class="small">
-              Use these as a starting point and add your own details based on your committee, campus, and
-              role in the chapter.
-            </p>
             <ul class="checklist small">
-              <li>Have your bill, notes, and speaking outline saved and backed up.</li>
-              <li>Review Legislative Lingo + Drafting Manual for last-minute clarity.</li>
-              <li>Confirm travel, housing, and dress code with the Exec Board.</li>
-              <li>Know your committee assignment and chair before you arrive.</li>
+              <li>Bill/resolution draft saved + backed up</li>
+              <li>1–2 minute sponsor speech outline ready</li>
+              <li>Committee assignment + chair confirmed</li>
+              <li>Travel/housing/dress code confirmed</li>
+              <li>Device charger + notebook + pen (yes, really)</li>
             </ul>
           </article>
 
           <article class="card plain-card">
             <h3>For Committee & Floor Debate</h3>
-            <p class="small">
-              A few habits that make your time on the mic—and off it—more effective.
-            </p>
             <ul class="checklist small">
-              <li>Prepare a short 1–2 minute sponsor speech for your bill.</li>
-              <li>Write down 2–3 likely questions and your answers.</li>
-              <li>Have at least one friendly amendment idea if compromise is needed.</li>
-              <li>Bring a pen, notebook, and device charger. You’ll use them.</li>
+              <li>Prep 2–3 likely questions + answers</li>
+              <li>Have a “friendly amendment” option if needed</li>
+              <li>Know your bill’s one-sentence purpose</li>
+              <li>Stay concise: clarity beats speeches</li>
             </ul>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- FUTURE MATERIALS / SLIDES -->
-    <section class="section bg-alt">
+    <!-- WORKSHOP MATERIALS -->
+    <section class="section">
       <div class="inner">
         <div class="section-header center">
           <p class="eyebrow">Workshop Materials</p>
-          <h2>Slides & Handouts (Building Out)</h2>
+          <h2>Slides & Handouts</h2>
           <p class="section-body">
-            As we run more workshops at SMCM—bill drafting, public speaking, parliamentary procedure—we’ll
-            start posting slide decks and handouts here so you can revisit them later or share them with
-            friends who couldn’t attend.
+            As we run workshops at SMCM (bill drafting, public speaking, parliamentary procedure),
+            we’ll post materials here so members can revisit them later.
           </p>
         </div>
 
@@ -173,18 +344,17 @@
           <article class="card plain-card">
             <h3>Bill-Writing Workshop</h3>
             <p class="small">
-              Slide deck and handouts from our on-campus workshop on turning issues into bills. Once the
-              materials are ready, we’ll link them here as a reference.
+              Slides and handouts from on-campus drafting workshops.
             </p>
-            <p class="small"><em>Slides: placeholder</em></p>
+            <p class="small"><em>Slides:stay tuned </em></p>
           </article>
 
           <article class="card plain-card">
             <h3>Public Speaking & Floor Presence</h3>
             <p class="small">
-              Tips and practice prompts for sponsor speeches, points of information, and general debate.
+              Practice prompts for sponsor speeches, questions, and debate strategy.
             </p>
-            <p class="small"><em>Slides: placeholder</em></p>
+            <p class="small"><em>Slides: stay tuned </em></p>
           </article>
 
           <article class="card plain-card">
@@ -199,11 +369,9 @@
             </div>
             <h3>Parliamentary Procedure Basics</h3>
             <p class="small">
-              A quick reference on motions, order of precedence, and how to move business along
-              without getting lost in the rules. Click the sheet above to open a full-size version
-              in a new tab.
+              A quick reference on motions, precedence, and how to move business along without getting lost in the rules.
             </p>
-            <p class="small"><em>Handout: placeholder</em></p>
+            <p class="small"><em>Handout: stay tuned</em></p>
           </article>
         </div>
       </div>
@@ -221,6 +389,64 @@
     </div>
   </footer>
 
+  <!-- Document Modal -->
+  <div class="doc-modal" id="docModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Document viewer">
+    <div class="doc-modal__backdrop" data-doc-close></div>
+    <div class="doc-modal__panel" role="document">
+      <div class="doc-modal__header">
+        <h3 class="doc-modal__title" id="docModalTitle">Document</h3>
+        <div class="doc-modal__actions">
+          <a class="doc-modal__btn" id="docModalOpenNew" href="#" target="_blank" rel="noopener">Open in new tab</a>
+          <button class="doc-modal__btn" type="button" data-doc-close>Close</button>
+        </div>
+      </div>
+      <iframe class="doc-modal__frame" id="docModalFrame" src="" title="Document"></iframe>
+    </div>
+  </div>
+
   <script src="../assets/js/script.js"></script>
+
+  <!-- Modal logic -->
+  <script>
+    (function () {
+      const modal = document.getElementById("docModal");
+      const frame = document.getElementById("docModalFrame");
+      const title = document.getElementById("docModalTitle");
+      const openNew = document.getElementById("docModalOpenNew");
+
+      let lastFocus = null;
+
+      function openDoc(url, docTitle) {
+        lastFocus = document.activeElement;
+        title.textContent = docTitle || "Document";
+        frame.src = url;
+        openNew.href = url;
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeDoc() {
+        modal.setAttribute("aria-hidden", "true");
+        frame.src = "";
+        document.body.style.overflow = "";
+        if (lastFocus) lastFocus.focus();
+      }
+
+      document.querySelectorAll(".doc-link[data-doc-url]").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          openDoc(link.dataset.docUrl, link.dataset.docTitle || link.textContent.trim());
+        });
+      });
+
+      modal.querySelectorAll("[data-doc-close]").forEach((el) => el.addEventListener("click", closeDoc));
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.getAttribute("aria-hidden") === "false") {
+          closeDoc();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
