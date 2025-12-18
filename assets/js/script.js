@@ -1,8 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const navToggle = document.getElementById("navToggle");
-  const mainNav = document.getElementById("mainNav");
-  const navTargets = document.querySelectorAll("[data-nav-target]");
-
+function getBasePrefix() {
   const pathName = window.location.pathname;
   const pagesIndex = pathName.lastIndexOf("/pages/");
   let basePrefix = "";
@@ -13,10 +9,75 @@ document.addEventListener("DOMContentLoaded", () => {
     basePrefix = "../".repeat(depth + 1);
   }
 
+  return basePrefix;
+}
+
+function buildHeaderMarkup() {
+  return `
+    <div class="inner">
+      <a class="brand" data-nav-target="index.html#hero">
+        <span class="brand-mark brand-mark-logo">
+          <img data-asset-src="assets/img/logo-1.png" alt="SMCM MSL logo" />
+        </span>
+        <span class="brand-text">
+          <span class="brand-title">MSL SMCM</span>
+          <span class="brand-sub">Chapter</span>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="nav" id="mainNav">
+        <a class="nav-link" data-page="home" data-nav-target="index.html#hero">Home</a>
+        <a class="nav-link" data-page="about" data-nav-target="index.html#maryland">About MSL</a>
+        <a class="nav-link" data-page="chapter" data-nav-target="index.html#chapter">Our Chapter</a>
+        <a class="nav-link" data-page="journey" data-nav-target="index.html#journey">Your Journey</a>
+        <a class="nav-link" data-page="documents" data-nav-target="index.html#documents">Documents</a>
+        <a class="nav-link" data-page="gallery" data-nav-target="index.html#gallery">Gallery</a>
+        <a class="nav-link" data-page="join" data-nav-target="index.html#contact">Join Us</a>
+        <a class="nav-link" data-page="bulletin" data-nav-target="pages/bulletin.html">Bulletin</a>
+        <a class="nav-link" data-page="exec" data-nav-target="pages/executive-board.html">Exec Board</a>
+        <a class="nav-link" data-page="resources" data-nav-target="pages/resources.html">Resources</a>
+        <a class="nav-link" data-page="games" data-nav-target="pages/msl-game.html">Games</a>
+        <a class="nav-link" data-page="neophytus" data-nav-target="pages/neophytus.html">Neophytus</a>
+      </nav>
+    </div>
+  `;
+}
+
+function renderSharedHeader() {
+  const existing = document.getElementById("siteHeader");
+  const header = existing || document.createElement("header");
+  header.id = "siteHeader";
+  if (!header.classList.contains("site-header")) {
+    header.classList.add("site-header");
+  }
+
+  header.innerHTML = buildHeaderMarkup();
+
+  if (!existing) {
+    document.body.prepend(header);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const basePrefix = getBasePrefix();
+  renderSharedHeader();
+
+  const navToggle = document.getElementById("navToggle");
+  const mainNav = document.getElementById("mainNav");
+  const navTargets = document.querySelectorAll("[data-nav-target]");
+  const assetTargets = document.querySelectorAll("[data-asset-src]");
+
   navTargets.forEach((link) => {
     const target = link.dataset.navTarget;
     if (target) {
       link.setAttribute("href", `${basePrefix}${target}`);
+    }
+  });
+
+  assetTargets.forEach((asset) => {
+    const source = asset.dataset.assetSrc;
+    if (source) {
+      asset.setAttribute("src", `${basePrefix}${source}`);
     }
   });
 
@@ -31,13 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!navToggle || !mainNav) return;
 
-  // Toggle nav on burger click
   navToggle.addEventListener("click", () => {
     const isOpen = mainNav.classList.toggle("nav-open");
     navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
   });
 
-  // Close nav when clicking a link (for mobile)
   mainNav.addEventListener("click", (event) => {
     const target = event.target;
     if (target.tagName.toLowerCase() === "a") {
