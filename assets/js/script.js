@@ -38,6 +38,7 @@ function buildHeaderMarkup() {
         <a class="nav-link" data-page="resources" data-nav-target="pages/resources.html">Resources</a>
         <a class="nav-link" data-page="games" data-nav-target="pages/msl-game.html">Games</a>
         <a class="nav-link" data-page="neophytus" data-nav-target="pages/neophytus.html">Neophytus</a>
+        <a class="nav-link nav-cta" data-page="giving" data-nav-target="pages/msl-giving.html">Giving Tuesday</a>
       </nav>
     </div>
   `;

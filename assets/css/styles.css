@@ -7,14 +7,14 @@
 }
 
 :root {
-  --bg: #050a1d;
-  --surface: #0b1329;
-  --surface-2: #111b35;
-  --text: #f5f7ff;
-  --muted: #c4cbe4;
-  --accent: #79d8ff;
-  --accent-2: #f6c34a;
-  --accent-3: #9a7bff;
+  --bg: #0c162b;
+  --surface: #13233f;
+  --surface-2: #1a2f52;
+  --text: #f3f6fb;
+  --muted: #d3ddf2;
+  --accent: #46cfe2;
+  --accent-2: #f2c15f;
+  --accent-3: #6f9dff;
 }
 
 html,
@@ -28,9 +28,9 @@ html {
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-  background: radial-gradient(circle at 18% 15%, rgba(121, 216, 255, 0.08), transparent 32%),
-    radial-gradient(circle at 82% 8%, rgba(154, 123, 255, 0.08), transparent 36%),
-    linear-gradient(180deg, #050816, #060b22 60%, #040615);
+  background: radial-gradient(circle at 18% 15%, rgba(70, 207, 226, 0.12), transparent 32%),
+    radial-gradient(circle at 82% 8%, rgba(111, 157, 255, 0.14), transparent 36%),
+    linear-gradient(180deg, #0d1a32, #0b152a 60%, #0b1324);
   color: var(--text);
   line-height: 1.5;
 }
@@ -67,15 +67,15 @@ a:hover {
   top: 0;
   z-index: 50;
   backdrop-filter: blur(14px);
-  background: linear-gradient(to bottom, rgba(17, 27, 53, 0.96), rgba(11, 19, 41, 0.9));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(to bottom, rgba(18, 34, 63, 0.95), rgba(15, 27, 50, 0.92));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .site-header .inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  height: 68px;
 }
 
 /* Brand */
@@ -91,13 +91,13 @@ a:hover {
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  background: radial-gradient(circle at 30% 30%, #fcd116, #c8102e 60%, #000000);
+  background: radial-gradient(circle at 30% 30%, #f2c15f, #c8102e 60%, #111);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
   font-size: 0.7rem;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.04em;
 }
 
 .brand-text {
@@ -113,6 +113,29 @@ a:hover {
 .brand-sub {
   font-size: 0.75rem;
   opacity: 0.7;
+}
+
+@media (min-width: 1024px) {
+  .brand-title {
+    font-size: 1.05rem;
+  }
+
+  .brand-sub {
+    font-size: 0.82rem;
+  }
+}
+
+.brand-mark-logo {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.brand-mark-logo img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 /* Nav + burger */
@@ -147,6 +170,21 @@ a:hover {
   border-radius: 999px;
 }
 
+.nav .nav-cta {
+  margin-left: 0.6rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(70, 207, 226, 0.12);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.nav .nav-cta:hover {
+  background: rgba(242, 193, 95, 0.18);
+  color: var(--text);
+}
+
 /* Burger button */
 .nav-toggle {
   display: inline-flex;
@@ -156,8 +194,8 @@ a:hover {
   height: 2.4rem;
   font-size: 1.4rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.04);
   color: #ffffff;
   cursor: pointer;
 }
@@ -168,11 +206,11 @@ a:hover {
   flex-direction: column;
   position: absolute;
   right: 1rem;
-  top: 64px;
+  top: 68px;
   background: var(--surface);
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+  padding: 0.9rem 1.1rem;
+  border-radius: 0.9rem;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.55);
   gap: 0.5rem;
 }
 
@@ -182,6 +220,7 @@ a:hover {
     display: flex;
     position: static;
     flex-direction: row;
+    align-items: center;
     gap: 1.2rem;
   }
 
@@ -205,7 +244,7 @@ a:hover {
 }
 
 .bg-alt {
-  background: radial-gradient(circle at top left, rgba(17, 27, 53, 0.95), rgba(11, 19, 41, 0.95));
+  background: radial-gradient(circle at top left, rgba(25, 42, 78, 0.95), rgba(19, 34, 62, 0.9));
 }
 
 /* Headings, eyebrow labels */
@@ -213,8 +252,8 @@ a:hover {
 .eyebrow {
   font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  opacity: 0.8;
+  letter-spacing: 0.11em;
+  opacity: 0.82;
 }
 
 .section-header {
@@ -255,12 +294,12 @@ h3 {
 .section-body {
   max-width: 44rem;
   font-size: 0.98rem;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 .small {
   font-size: 0.85rem;
-  opacity: 0.88;
+  opacity: 0.9;
 }
 
 /* === Hero (home page) === */
@@ -293,8 +332,8 @@ h3 {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 10% 0, rgba(252, 209, 22, 0.4), transparent 55%),
-    linear-gradient(120deg, rgba(5, 8, 22, 0.95), rgba(5, 8, 22, 0.88));
+  background: radial-gradient(circle at 12% 12%, rgba(242, 193, 95, 0.35), transparent 50%),
+    linear-gradient(120deg, rgba(12, 20, 41, 0.92), rgba(11, 19, 41, 0.9));
 }
 
 .hero-content {
@@ -302,11 +341,11 @@ h3 {
   grid-template-columns: minmax(0, 3.2fr) minmax(0, 2.2fr);
   gap: 2.5rem;
   align-items: center;
-  padding: 4rem 1.25rem 3rem;
+  padding: 4.25rem 1.25rem 3.25rem;
 }
 
 .hero-left .eyebrow {
-  color: #fcd116;
+  color: var(--accent-2);
 }
 
 .hero-left h1 {
@@ -318,7 +357,7 @@ h3 {
 .hero-body {
   font-size: 0.98rem;
   max-width: 34rem;
-  opacity: 0.92;
+  opacity: 0.9;
 }
 
 .hero-actions {
@@ -339,18 +378,18 @@ h3 {
   font-size: 0.8rem;
   border-radius: 999px;
   padding: 0.25rem 0.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(5, 8, 22, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(19, 34, 62, 0.82);
 }
 
 /* Hero right card */
 
 .pulse-card {
-  background: radial-gradient(circle at top left, #192452, #070b1e);
+  background: radial-gradient(circle at top left, rgba(26, 46, 82, 0.95), rgba(16, 28, 53, 0.94));
   border-radius: 1.25rem;
-  padding: 1.5rem 1.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+  padding: 1.6rem 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
 }
 
 .pulse-card h2 {
@@ -391,10 +430,10 @@ h3 {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent-3), var(--accent));
-  color: #050816;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0a182f;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
 }
 
 .btn-ghost {
@@ -419,7 +458,7 @@ h3 {
 }
 
 .btn-primary:hover {
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
 .btn-ghost:hover {
@@ -479,16 +518,16 @@ h3 {
 .card {
   border-radius: 1.1rem;
   padding: 1.25rem 1.25rem 1.3rem;
-  background: linear-gradient(145deg, rgba(17, 27, 53, 0.95), rgba(11, 19, 41, 0.92));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, rgba(22, 37, 68, 0.96), rgba(17, 29, 54, 0.94));
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .bg-alt .card {
-  background: linear-gradient(145deg, rgba(15, 24, 48, 0.96), rgba(11, 19, 41, 0.94));
+  background: linear-gradient(145deg, rgba(24, 41, 74, 0.95), rgba(19, 33, 60, 0.93));
 }
 
 .plain-card {
-  background: linear-gradient(160deg, rgba(15, 24, 48, 0.94), rgba(11, 19, 41, 0.92));
+  background: linear-gradient(160deg, rgba(24, 41, 74, 0.95), rgba(17, 31, 60, 0.92));
 }
 
 .feature-card .card-icon {
@@ -790,7 +829,7 @@ textarea:focus {
 
 .site-footer {
   padding: 2rem 0 2.5rem;
-  background: linear-gradient(180deg, rgba(11, 19, 41, 0.9), #050816);
+  background: linear-gradient(180deg, rgba(19, 34, 62, 0.9), #0b152a);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   margin-top: 2rem;
 }
@@ -812,8 +851,8 @@ textarea:focus {
   margin-top: 2rem;
   padding: 1.5rem 1.5rem 1.6rem;
   border-radius: 1.25rem;
-  background: linear-gradient(140deg, rgba(17, 27, 53, 0.95), rgba(11, 19, 41, 0.92));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(140deg, rgba(25, 43, 78, 0.95), rgba(18, 31, 59, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
   gap: 1.5rem;
@@ -850,8 +889,8 @@ textarea:focus {
   font-size: 0.78rem;
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 /* === Giving Tuesday: legibility fix on light background === */
@@ -882,56 +921,4 @@ textarea:focus {
   transform: translateY(-3px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
   border-color: rgba(246, 195, 74, 0.7);
-}
-.brand-mark-logo {
-  padding: 0;
-  background: transparent;
-  border-radius: 0;
-}
-
-.brand-mark-logo img {
-  display: block;
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
-/* --- Brand / header alignment tweaks --- */
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.brand-mark-logo img {
-  display: block;
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-.brand-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.brand-sub {
-  font-size: 0.85rem;
-  opacity: 0.9;
-}
-
-@media (min-width: 1024px) {
-  .brand-title {
-    font-size: 1.1rem;
-  }
-  .brand-sub {
-    font-size: 0.9rem;
-  }
 }
