@@ -6,7 +6,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <link rel="icon" type="image/png" href="../assets/img/logo-1.png" />
+
+  <!-- Minimal modal styling (kept local so you don’t have to touch styles.css) -->
+  <style>
+    .doc-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      z-index: 9999;
+    }
+    .doc-modal[aria-hidden="false"] { display: block; }
+    .doc-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+    }
+    .doc-modal__panel {
+      position: relative;
+      width: min(1100px, calc(100% - 2rem));
+      height: min(78vh, 820px);
+      margin: 5vh auto;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0b0f1a; /* matches “space nerd” aesthetic */
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+    .doc-modal__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      gap: 1rem;
+    }
+    .doc-modal__title {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.2;
+      color: rgba(255,255,255,0.92);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .doc-modal__actions {
+      display: flex;
+      gap: .5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .doc-modal__btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.92);
+      padding: .45rem .7rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      cursor: pointer;
+    }
+    .doc-modal__btn:hover { background: rgba(255,255,255,0.12); }
+    .doc-modal__frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #111;
+    }
+    .pill {
+      display: inline-block;
+      padding: .15rem .55rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+      margin-left: .35rem;
+      vertical-align: middle;
+    }
+    .pill.pass { border-color: rgba(80, 200, 120, 0.35); }
+    .pill.fail { border-color: rgba(220, 80, 80, 0.35); }
+  </style>
 </head>
+
 <body data-page="bulletin">
   <header class="site-header">
     <div class="inner">
@@ -63,50 +144,39 @@
             pursue. Members should review these items before the listed meeting date.
           </p>
         </div>
+
         <div class="grid-2">
-          <!-- Vote card #1 -->
-<article class="card plain-card">
-  <h3>Executive Board Name Change to The Magistratum</h3>
-  <p class="small">
-    <strong>Vote date:</strong> 12/2/25<br />
-    <strong>Location:</strong> Kent 212<br />
-    <strong>Type:</strong> Bylaws amendment
-  </p>
-  <p class="small">
-    Proposal to rename all executive board instances in the bylaws to The Magistratum.
-    First General Body Vote.
-  </p>
-  <ul class="checklist small">
-    <li>
-      <a href="https://docs.google.com/document/d/1atmKihfBDJw-VHUU9alCWaGYtgIqGci8WKo86tdq89U/edit?usp=sharing"
-         target="_blank">
-        Read full text (Magistratum Resolution)
-      </a>
-    </li>
-    <li>
-      <a href="https://docs.google.com/document/d/1y-eakmYYbFmSRlB-SUOGLIHeVrGu5nW3sJsOp7fltLc/edit?usp=sharing"
-         target="_blank">
-        Read related mock bill (Fun Debate Draft)
-      </a>
-    </li>
-  </ul>
-</article>
-
-
-          <!-- Vote card #2 -->
+          <!-- Upcoming vote placeholder #1 -->
           <article class="card plain-card">
-            <h3>Executive Board Election Timeline</h3>
+            <h3>Upcoming Vote: [Title TBD]</h3>
             <p class="small">
-              <strong>Vote date:</strong> 11/20/25<br />
-              <strong>Location:</strong> Kent 212<br />
-              <strong>Type:</strong> Procedural motion – Executive quorum present
+              <strong>Vote date:</strong> [TBD]<br />
+              <strong>Location:</strong> [TBD]<br />
+              <strong>Type:</strong> Bill / Resolution / Motion
             </p>
             <p class="small">
-              Adoption of the proposed timeline for nominations, campaigns, and voting for the next
-              Executive Board term. Passed with favor by the board.
+              Summary will be posted once the draft is finalized and distributed to members.
             </p>
             <ul class="checklist small">
-              <li>Election timeline shared via chapter email list and meeting minutes.</li>
+              <li>Full text will appear here when posted.</li>
+              <li>Meeting agenda link will be added when available.</li>
+            </ul>
+          </article>
+
+          <!-- Upcoming vote placeholder #2 -->
+          <article class="card plain-card">
+            <h3>Upcoming Vote: [Title TBD]</h3>
+            <p class="small">
+              <strong>Vote date:</strong> [TBD]<br />
+              <strong>Location:</strong> [TBD]<br />
+              <strong>Type:</strong> Bill / Resolution / Motion
+            </p>
+            <p class="small">
+              Summary will be posted once the draft is finalized and distributed to members.
+            </p>
+            <ul class="checklist small">
+              <li>Full text will appear here when posted.</li>
+              <li>Meeting agenda link will be added when available.</li>
             </ul>
           </article>
         </div>
@@ -118,7 +188,86 @@
       </div>
     </section>
 
-    <!-- THINGS TO LOOK FORWARD TO -->
+    <!-- ARCHIVE: PAST VOTES / BILLS DISCUSSED -->
+    <section class="section">
+      <div class="inner section-layout">
+        <div class="section-header">
+          <p class="eyebrow">Archive</p>
+          <h2>Bills, Resolutions & Motions Discussed</h2>
+          <p class="section-body">
+            This is the running archive for everything debated or voted on. Each item includes the text
+            and the recorded outcome so next semester doesn’t turn into “trust me bro” governance.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Archive card #1 -->
+          <article class="card plain-card">
+            <h3>
+              Executive Board Name Change to The Magistratum
+              <span class="pill pass">Passed</span>
+            </h3>
+            <p class="small">
+              <strong>Meeting date:</strong> 12/2/25<br />
+              <strong>Location:</strong> Kent 212<br />
+              <strong>Type:</strong> Bylaws amendment<br />
+              <strong>Vote tally:</strong> Motion failed (5 - 3)
+            </p>
+            <p class="small">
+              Proposal to rename all executive board instances in the bylaws to The Magistratum.
+            </p>
+            <ul class="checklist small">
+              <li>
+                <a href="#"
+                   data-doc-url="https://docs.google.com/document/d/1atmKihfBDJw-VHUU9alCWaGYtgIqGci8WKo86tdq89U/preview"
+                   data-doc-title="Magistratum Resolution (Full Text)"
+                   class="doc-link">
+                  Open full text (Magistratum Resolution)
+                </a>
+              </li>
+              <li>
+                <a href="#"
+                   data-doc-url="https://docs.google.com/document/d/1y-eakmYYbFmSRlB-SUOGLIHeVrGu5nW3sJsOp7fltLc/preview"
+                   data-doc-title="Related Mock Bill (HB 99)"
+                   class="doc-link">
+                  Open related mock bill (HB 99)
+                </a>
+              </li>
+            </ul>
+          </article>
+
+<!-- Archive card #2 -->
+<article class="card plain-card">
+  <h3>
+    Executive Board Election Timeline
+    <span class="pill pass">Adopted</span>
+  </h3>
+  <p class="small">
+    <strong>Meeting date:</strong> 11/20/25<br />
+    <strong>Location:</strong> Kent 212<br />
+    <strong>Type:</strong> Procedural motion (verbal/voice vote)<br />
+    <strong>Vote tally:</strong> Voice vote: Adopted unanimously
+  </p>
+  <p class="small">
+    Chapter decision on election timing:
+  </p>
+  <ul class="checklist small">
+    <li><strong>Elected at end of Spring term:</strong> DCP, VDCP, President, Treasurer</li>
+    <li><strong>Elected at start of Fall semester:</strong> remaining Executive Board positions</li>
+  </ul>
+  <p class="small">
+    Note: This decision was adopted by verbal vote; no standalone document was produced.
+  </p>
+</article>
+
+        </div>
+
+        <p class="small" style="margin-top: 1rem;">
+        </p>
+      </div>
+    </section>
+
+    <!-- THINGS TO LOOK FORWARD TO (UNCHANGED) -->
     <section class="section">
       <div class="inner section-layout">
         <div class="section-header">
@@ -161,7 +310,7 @@
               <p class="small">
                 <strong>Date:</strong> January 22<br />
                 A low-pressure overview of what MSL is, how SMCM fits into the statewide structure, and
-                how to get involved—even if you’re starting from zero.
+                how to get involved, even if you’re starting from zero.
               </p>
             </div>
           </div>
@@ -182,6 +331,66 @@
     </div>
   </footer>
 
+  <!-- Document Modal -->
+  <div class="doc-modal" id="docModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Document viewer">
+    <div class="doc-modal__backdrop" data-doc-close></div>
+    <div class="doc-modal__panel" role="document">
+      <div class="doc-modal__header">
+        <h3 class="doc-modal__title" id="docModalTitle">Document</h3>
+        <div class="doc-modal__actions">
+          <a class="doc-modal__btn" id="docModalOpenNew" href="#" target="_blank" rel="noopener">Open in new tab</a>
+          <button class="doc-modal__btn" type="button" data-doc-close>Close</button>
+        </div>
+      </div>
+      <iframe class="doc-modal__frame" id="docModalFrame" src="" title="Document"></iframe>
+    </div>
+  </div>
+
   <script src="../assets/js/script.js"></script>
+
+  <!-- Local modal logic (safe, tiny, doesn’t fight your main script) -->
+  <script>
+    (function () {
+      const modal = document.getElementById("docModal");
+      const frame = document.getElementById("docModalFrame");
+      const title = document.getElementById("docModalTitle");
+      const openNew = document.getElementById("docModalOpenNew");
+
+      let lastFocus = null;
+
+      function openDoc(url, docTitle) {
+        lastFocus = document.activeElement;
+        title.textContent = docTitle || "Document";
+        frame.src = url;
+        openNew.href = url;
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeDoc() {
+        modal.setAttribute("aria-hidden", "true");
+        frame.src = "";
+        document.body.style.overflow = "";
+        if (lastFocus) lastFocus.focus();
+      }
+
+      document.querySelectorAll(".doc-link[data-doc-url]").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          openDoc(link.dataset.docUrl, link.dataset.docTitle || link.textContent.trim());
+        });
+      });
+
+      modal.querySelectorAll("[data-doc-close]").forEach((el) => {
+        el.addEventListener("click", closeDoc);
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.getAttribute("aria-hidden") === "false") {
+          closeDoc();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
