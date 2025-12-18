@@ -7,14 +7,14 @@
 }
 
 :root {
-  --bg: #0c162b;
-  --surface: #13233f;
-  --surface-2: #1a2f52;
-  --text: #f3f6fb;
-  --muted: #d3ddf2;
-  --accent: #46cfe2;
-  --accent-2: #f2c15f;
-  --accent-3: #6f9dff;
+  --bg: #111d36;
+  --surface: #182746;
+  --surface-2: #20355a;
+  --text: #f6f8fd;
+  --muted: #dde5f9;
+  --accent: #d62828;
+  --accent-2: #f3c64d;
+  --accent-3: #7fb4ff;
 }
 
 html,
@@ -28,9 +28,9 @@ html {
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-  background: radial-gradient(circle at 18% 15%, rgba(70, 207, 226, 0.12), transparent 32%),
-    radial-gradient(circle at 82% 8%, rgba(111, 157, 255, 0.14), transparent 36%),
-    linear-gradient(180deg, #0d1a32, #0b152a 60%, #0b1324);
+  background: radial-gradient(circle at 18% 15%, rgba(243, 198, 77, 0.11), transparent 34%),
+    radial-gradient(circle at 82% 8%, rgba(127, 180, 255, 0.16), transparent 36%),
+    linear-gradient(180deg, #132346, #0f1d36 60%, #0f1a30);
   color: var(--text);
   line-height: 1.5;
 }
@@ -67,15 +67,15 @@ a:hover {
   top: 0;
   z-index: 50;
   backdrop-filter: blur(14px);
-  background: linear-gradient(to bottom, rgba(18, 34, 63, 0.95), rgba(15, 27, 50, 0.92));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(to bottom, rgba(23, 39, 70, 0.96), rgba(16, 29, 51, 0.92));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .site-header .inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 68px;
+  height: 72px;
 }
 
 /* Brand */
@@ -143,19 +143,26 @@ a:hover {
 /* Base hidden nav for mobile */
 .nav {
   display: none;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
 }
 
 .nav a,
 .nav .nav-link {
   font-size: 0.85rem;
-  opacity: 0.9;
-  padding: 0.25rem 0;
+  opacity: 0.92;
+  padding: 0.35rem 0.65rem;
   position: relative;
+  border-radius: 0.55rem;
+  letter-spacing: 0.01em;
+  transition: color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
 }
 
 .nav .nav-link--active {
   font-weight: 700;
   opacity: 1;
+  background: rgba(243, 198, 77, 0.14);
 }
 
 .nav .nav-link--active::after {
@@ -171,18 +178,24 @@ a:hover {
 }
 
 .nav .nav-cta {
-  margin-left: 0.6rem;
-  padding: 0.35rem 0.75rem;
+  margin-left: 0.15rem;
+  padding: 0.4rem 0.85rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
-  background: rgba(70, 207, 226, 0.12);
+  background: rgba(214, 40, 40, 0.15);
   color: var(--text);
   font-weight: 700;
 }
 
 .nav .nav-cta:hover {
-  background: rgba(242, 193, 95, 0.18);
+  background: rgba(243, 198, 77, 0.2);
   color: var(--text);
+}
+
+.nav a:hover,
+.nav .nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
 }
 
 /* Burger button */
@@ -206,12 +219,15 @@ a:hover {
   flex-direction: column;
   position: absolute;
   right: 1rem;
-  top: 68px;
-  background: var(--surface);
-  padding: 0.9rem 1.1rem;
-  border-radius: 0.9rem;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.55);
-  gap: 0.5rem;
+  top: 72px;
+  background: linear-gradient(180deg, var(--surface), rgba(24, 39, 72, 0.96));
+  padding: 0.95rem 1.1rem;
+  border-radius: 1rem;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  gap: 0.4rem;
+  min-width: 240px;
+  max-width: min(92vw, 360px);
+  align-items: flex-start;
 }
 
 /* Desktop layout: nav always visible, burger hidden */
@@ -221,7 +237,8 @@ a:hover {
     position: static;
     flex-direction: row;
     align-items: center;
-    gap: 1.2rem;
+    gap: 0.6rem 1.15rem;
+    justify-content: flex-end;
   }
 
   .nav.nav-open {
@@ -233,7 +250,7 @@ a:hover {
   }
 
   .nav a {
-    padding: 0;
+    padding: 0.45rem 0.65rem;
   }
 }
 
@@ -678,6 +695,22 @@ h3 {
 
 .contact-details p {
   margin: 0 0 0.6rem;
+}
+
+.support-cta {
+  margin-top: 1.5rem;
+}
+
+.support-cta .cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.support-cta .cta-actions .btn {
+  min-width: 220px;
+  justify-content: center;
 }
 
 /* Form */

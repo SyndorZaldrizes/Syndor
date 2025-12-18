@@ -32,13 +32,12 @@ function buildHeaderMarkup() {
         <a class="nav-link" data-page="journey" data-nav-target="index.html#journey">Your Journey</a>
         <a class="nav-link" data-page="documents" data-nav-target="index.html#documents">Documents</a>
         <a class="nav-link" data-page="gallery" data-nav-target="index.html#gallery">Gallery</a>
-        <a class="nav-link" data-page="join" data-nav-target="index.html#contact">Join Us</a>
-        <a class="nav-link" data-page="bulletin" data-nav-target="pages/bulletin.html">Bulletin</a>
+        <a class="nav-link nav-cta" data-page="join" data-nav-target="index.html#contact">Join Us</a>
         <a class="nav-link" data-page="exec" data-nav-target="pages/executive-board.html">Exec Board</a>
+        <a class="nav-link" data-page="bulletin" data-nav-target="pages/bulletin.html">Bulletin</a>
         <a class="nav-link" data-page="resources" data-nav-target="pages/resources.html">Resources</a>
         <a class="nav-link" data-page="games" data-nav-target="pages/msl-game.html">Games</a>
         <a class="nav-link" data-page="neophytus" data-nav-target="pages/neophytus.html">Neophytus</a>
-        <a class="nav-link nav-cta" data-page="giving" data-nav-target="pages/msl-giving.html">Giving Tuesday</a>
       </nav>
     </div>
   `;
