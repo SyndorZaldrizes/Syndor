@@ -15,8 +15,8 @@
   --accent: #46cfe2;
   --accent-2: #f2c15f;
   --accent-3: #6f9dff;
-  --nav-text: #0f1d36;
-  --nav-muted: #30405f;
+  --nav-text: #f8fafc;
+  --nav-muted: #dbeafe;
 }
 
 html,
@@ -68,9 +68,17 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 6px 18px rgba(17, 27, 53, 0.06);
+  background: rgba(7, 11, 20, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 28px rgba(3, 6, 13, 0.35);
+  backdrop-filter: blur(10px);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.site-header.is-scrolled {
+  background: rgba(5, 8, 16, 0.75);
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
 }
 
 .site-header .inner {
@@ -114,7 +122,7 @@ a:hover {
 
 .brand-sub {
   font-size: 0.75rem;
-  color: var(--nav-muted);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 @media (min-width: 1024px) {
@@ -161,13 +169,22 @@ a:hover {
   transition: color 0.15s ease, background 0.15s ease, opacity 0.15s ease, border-color 0.15s ease;
   color: var(--nav-text);
   white-space: nowrap;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+}
+
+.nav a:focus-visible,
+.nav .nav-link:focus-visible,
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(70, 207, 226, 0.2);
 }
 
 .nav .nav-link--active {
   font-weight: 700;
   opacity: 1;
-  background: rgba(70, 207, 226, 0.16);
-  border: 1px solid rgba(70, 207, 226, 0.35);
+  background: rgba(70, 207, 226, 0.2);
+  border: 1px solid rgba(70, 207, 226, 0.6);
 }
 
 .nav .nav-link--active::after {
@@ -187,20 +204,20 @@ a:hover {
   padding: 0.4rem 0.95rem;
   border: 1px solid rgba(15, 29, 54, 0.12);
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(70, 207, 226, 0.14), rgba(111, 157, 255, 0.18));
-  color: var(--nav-text);
+  background: linear-gradient(135deg, rgba(70, 207, 226, 0.32), rgba(111, 157, 255, 0.28));
+  color: #ffffff;
   font-weight: 700;
 }
 
 .nav .nav-cta:hover {
-  background: rgba(111, 157, 255, 0.2);
+  background: rgba(111, 157, 255, 0.32);
   color: #0b152a;
 }
 
 .nav a:hover,
 .nav .nav-link:hover {
-  background: #f1f5f9;
-  color: #0b172f;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
 }
 
 /* Burger button */
@@ -212,9 +229,9 @@ a:hover {
   height: 2.4rem;
   font-size: 1.4rem;
   border-radius: 999px;
-  border: 1px solid rgba(15, 29, 54, 0.18);
-  background: #f8fafc;
-  color: #0f1d36;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
   cursor: pointer;
 }
 
@@ -225,10 +242,10 @@ a:hover {
   position: absolute;
   right: 1rem;
   top: 72px;
-  background: #ffffff;
+  background: rgba(10, 15, 26, 0.9);
   padding: 0.95rem 1.1rem;
   border-radius: 1rem;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(15, 29, 54, 0.06);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06);
   gap: 0.4rem;
   min-width: 240px;
   max-width: min(92vw, 360px);

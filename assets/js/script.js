@@ -33,8 +33,8 @@ function buildHeaderMarkup() {
         <a class="nav-link" data-page="documents" data-nav-target="index.html#documents">Documents</a>
         <a class="nav-link" data-page="gallery" data-nav-target="index.html#gallery">Gallery</a>
         <a class="nav-link nav-cta" data-page="join" data-nav-target="index.html#contact">Join Us</a>
-        <a class="nav-link" data-page="exec" data-nav-target="pages/executive-board.html">Exec Board</a>
         <a class="nav-link" data-page="bulletin" data-nav-target="pages/bulletin.html">Bulletin</a>
+        <a class="nav-link" data-page="exec" data-nav-target="pages/executive-board.html">Exec Board</a>
         <a class="nav-link" data-page="resources" data-nav-target="pages/resources.html">Resources</a>
         <a class="nav-link" data-page="games" data-nav-target="pages/msl-game.html">Games</a>
         <a class="nav-link" data-page="neophytus" data-nav-target="pages/neophytus.html">Neophytus</a>
@@ -80,6 +80,18 @@ document.addEventListener("DOMContentLoaded", () => {
       asset.setAttribute("src", `${basePrefix}${source}`);
     }
   });
+
+  const header = document.getElementById("siteHeader");
+  const toggleScrolled = () => {
+    if (!header) return;
+    if (window.scrollY > 12) {
+      header.classList.add("is-scrolled");
+    } else {
+      header.classList.remove("is-scrolled");
+    }
+  };
+  toggleScrolled();
+  window.addEventListener("scroll", toggleScrolled);
 
   const activePage = document.body.dataset.page;
   if (activePage) {

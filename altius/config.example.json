@@ -1,0 +1,7 @@
+{
+  "agent_name": "smcm-msl-helper",
+  "local_api_url": "http://localhost:8000",
+  "embedding_index_path": "./vector_store/index",
+  "openai_api_key": "YOUR_KEY_HERE",
+  "notes": "Copy to config.json and update with local-only values. Do not commit secrets."
+}
