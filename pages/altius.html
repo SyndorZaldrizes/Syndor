@@ -5,141 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Altius Setup | MSL SMCM</title>
 
-    <!-- Reuse your site styles -->
     <link rel="stylesheet" href="../assets/css/styles.css" />
-
     <meta
       name="description"
       content="Download the Altius Starter Pack and set up the Altius agent locally. GitHub Pages hosts docs and downloads only."
     />
 
     <style>
-      /* Small page-local safety styles so it looks good even if global CSS shifts */
-      .altius-wrap {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 2.5rem 1.25rem;
-      }
+      .altius-wrap { max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.25rem; }
       .altius-hero {
-        border-radius: 18px;
-        padding: 2rem;
+        border-radius: 18px; padding: 2rem;
         background: rgba(10, 14, 28, 0.55);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.12);
       }
-      .altius-hero h1 {
-        margin: 0 0 0.5rem 0;
-        line-height: 1.1;
-      }
-      .altius-hero p {
-        margin: 0.5rem 0 0 0;
-        opacity: 0.92;
-      }
+      .altius-hero h1 { margin: 0 0 0.5rem 0; line-height: 1.1; }
+      .altius-hero p { margin: 0.5rem 0 0 0; opacity: 0.92; }
       .pill {
-        display: inline-block;
-        margin-top: 0.75rem;
-        padding: 0.35rem 0.7rem;
-        border-radius: 999px;
-        font-size: 0.9rem;
+        display: inline-block; margin-top: 0.75rem;
+        padding: 0.35rem 0.7rem; border-radius: 999px; font-size: 0.9rem;
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.14);
       }
-      .grid {
-        margin-top: 1.5rem;
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(12, 1fr);
-      }
+      .grid { margin-top: 1.5rem; display: grid; gap: 1rem; grid-template-columns: repeat(12, 1fr); }
       .card {
-        border-radius: 18px;
-        padding: 1.25rem;
+        border-radius: 18px; padding: 1.25rem;
         background: rgba(10, 14, 28, 0.45);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.12);
       }
-      .span-7 {
-        grid-column: span 7;
-      }
-      .span-5 {
-        grid-column: span 5;
-      }
-      @media (max-width: 900px) {
-        .span-7,
-        .span-5 {
-          grid-column: span 12;
-        }
-      }
+      .span-7 { grid-column: span 7; }
+      .span-5 { grid-column: span 5; }
+      @media (max-width: 900px) { .span-7, .span-5 { grid-column: span 12; } }
 
-      .btn-row {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-        margin-top: 1.25rem;
-      }
+      .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem; }
       .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.55rem;
-        padding: 0.85rem 1.1rem;
-        border-radius: 14px;
-        font-weight: 700;
-        text-decoration: none;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.08);
-        color: #fff;
+        display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+        padding: 0.85rem 1.1rem; border-radius: 14px; font-weight: 700;
+        text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.08); color: #fff;
       }
-      .btn:hover {
-        background: rgba(255, 255, 255, 0.13);
-      }
+      .btn:hover { background: rgba(255, 255, 255, 0.13); }
       .btn.primary {
         background: rgba(120, 140, 255, 0.22);
         border-color: rgba(120, 140, 255, 0.35);
       }
-      .btn.primary:hover {
-        background: rgba(120, 140, 255, 0.28);
-      }
+      .btn.primary:hover { background: rgba(120, 140, 255, 0.28); }
 
       .note {
-        margin-top: 1rem;
-        padding: 0.9rem 1rem;
-        border-radius: 14px;
+        margin-top: 1rem; padding: 0.9rem 1rem; border-radius: 14px;
         background: rgba(255, 190, 80, 0.12);
         border: 1px solid rgba(255, 190, 80, 0.22);
       }
-      code,
-      pre {
+      code, pre {
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 12px;
       }
-      pre {
-        padding: 0.85rem;
-        overflow-x: auto;
-      }
-      .steps ol {
-        margin: 0.5rem 0 0 1.25rem;
-      }
-      .steps li {
-        margin: 0.45rem 0;
-      }
-      .tiny {
-        opacity: 0.85;
-        font-size: 0.95rem;
-      }
-      .link-list a {
-        color: #fff;
-        text-decoration: underline;
-        text-underline-offset: 3px;
-      }
+      pre { padding: 0.85rem; overflow-x: auto; }
+      .steps ol { margin: 0.5rem 0 0 1.25rem; }
+      .steps li { margin: 0.45rem 0; }
+      .tiny { opacity: 0.85; font-size: 0.95rem; }
+      .link-list a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
     </style>
   </head>
 
   <body>
-    <!-- If you use injected nav, keep your existing nav hook here.
-         Otherwise paste your standard nav markup in this page. -->
+    <!-- Keep your shared nav approach as-is -->
 
     <main class="altius-wrap">
       <section class="altius-hero">
@@ -152,14 +84,26 @@
         <span class="pill">Static site + local backend</span>
 
         <div class="btn-row">
+          <!-- FIXED: point to the actual working file -->
           <a
             class="btn primary"
-            href="https://github.com/SyndorZaldrizes/Syndor/releases/download/v1.2.0/altius-starter.zip"
+            href="https://github.com/user-attachments/files/24249211/altius-starter.zip"
             target="_blank"
             rel="noopener"
           >
             Download Altius Starter Pack
           </a>
+
+          <!-- Fallback: the release page itself -->
+          <a
+            class="btn"
+            href="https://github.com/SyndorZaldrizes/Syndor/releases/tag/v.1.2.0"
+            target="_blank"
+            rel="noopener"
+          >
+            Open v1.2.0 Release
+          </a>
+
           <a
             class="btn"
             href="https://github.com/SyndorZaldrizes/Syndor/tree/main/altius"
@@ -169,10 +113,6 @@
             View /altius folder
           </a>
         </div>
-
-        <p class="tiny" style="margin-top:0.6rem;">
-          Direct link points to the <strong>v1.2.0</strong> release asset (<code>altius-starter.zip</code>) to avoid 404s.
-        </p>
 
         <div class="note">
           <strong>What you’re downloading:</strong> a starter bundle from the repo’s
@@ -185,52 +125,45 @@
         <div class="card span-7 steps">
           <h2>Install (local)</h2>
           <p class="tiny">
-            This is intentionally simple. If you’re trying to run Altius on GitHub Pages, you’re
-            going to have a bad time (Pages can’t run Python servers).
+            GitHub Pages can’t run Python servers. So the site stays static and the agent runs locally.
           </p>
 
           <ol>
             <li><strong>Download</strong> the Starter Pack zip and unzip it.</li>
-            <li>
-              Open the folder and read:
-              <code>altius/README.md</code>
-            </li>
+            <li>Open the folder and read: <code>altius/README.md</code></li>
             <li>
               Create your local config:
               <ul>
                 <li>Copy <code>altius/config.example.json</code> → <code>altius/config.json</code></li>
-                <li>Fill in any required values (keep <code>config.json</code> local only)</li>
+                <li>Fill in required values (keep <code>config.json</code> local only)</li>
               </ul>
             </li>
             <li>
-              If/when you add the backend runtime locally (FastAPI/Ollama/etc.), follow the
-              instructions in <code>altius/README.md</code>. (This page avoids hardcoding commands
-              because your local setup may differ.)
+              When you standardize the runtime (FastAPI/Ollama/etc.), follow the instructions in
+              <code>altius/README.md</code>.
             </li>
           </ol>
 
           <p class="tiny">
-            If you’re collaborating, only commit changes to the scaffold and docs. Do not commit
-            secrets, tokens, or local indices.
+            Collaboration rule: commit scaffold + docs only. Don’t commit secrets, tokens, or local indexes.
           </p>
         </div>
 
         <div class="card span-5">
           <h2>How this works</h2>
           <p>
-            GitHub Pages serves static files. Altius needs a runtime (backend) to do anything
-            “agent-like.” So we split responsibilities:
+            GitHub Pages serves static files. Altius needs a runtime (backend) to do anything agent-like.
           </p>
           <ul>
-            <li><strong>This site:</strong> public docs, links, and downloads</li>
-            <li><strong>Your computer:</strong> the agent runtime and any local indexing</li>
+            <li><strong>This site:</strong> public docs, links, downloads</li>
+            <li><strong>Your computer:</strong> the agent runtime + local indexing</li>
           </ul>
 
           <h3>Next planned additions</h3>
           <ul>
             <li>Curated document subsets for indexing (<code>/altius/docs</code>)</li>
             <li>Optional “Nate-Avatar” import under <code>/altius/nate-avatar</code></li>
-            <li>Stronger onboarding instructions once the runtime is standardized</li>
+            <li>Cleaner onboarding once runtime is standardized</li>
           </ul>
         </div>
 
@@ -238,34 +171,27 @@
           <h2>Troubleshooting</h2>
           <ul>
             <li>
-              <strong>Download link 404:</strong> confirm <code>altius-starter.zip</code> is attached
-              under the <strong>v1.2.0</strong> Release “Assets” section. If needed, re-upload the zip
-              to that release.
+              <strong>Download link fails:</strong> use the “Open v1.2.0 Release” button and download the zip from the release page.
             </li>
             <li>
-              <strong>Nothing “runs” when opened:</strong> correct. The zip is scaffolding.
-              You still need to run the backend locally to use an agent.
+              <strong>Nothing runs when opened:</strong> correct. The zip is scaffolding. You still need a local backend runtime.
             </li>
             <li>
-              <strong>Port already in use:</strong> if/when you run a local server, close other apps
-              using that port or change the port in your local config.
+              <strong>Port already in use:</strong> if/when you run a local server, close other apps using that port or change the port in local config.
             </li>
             <li>
-              <strong>Missing Python/Ollama:</strong> install locally per the instructions in
-              <code>altius/README.md</code> once you standardize the runtime setup.
+              <strong>Missing Python/Ollama:</strong> install locally per <code>altius/README.md</code>.
             </li>
           </ul>
 
           <p class="tiny">
             Repo:
-            <a href="https://github.com/SyndorZaldrizes/Syndor" target="_blank" rel="noopener"
-              >SyndorZaldrizes/Syndor</a
-            >
+            <a href="https://github.com/SyndorZaldrizes/Syndor" target="_blank" rel="noopener">
+              SyndorZaldrizes/Syndor
+            </a>
           </p>
         </div>
       </section>
     </main>
-
-    <!-- If you have a shared footer include, keep it consistent here. -->
   </body>
 </html>
