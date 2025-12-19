@@ -1,0 +1,47 @@
+name: Altius Starter Pack
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "altius/**"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build zip from /altius
+        run: |
+          mkdir -p downloads
+          rm -f downloads/altius-starter.zip
+          zip -r downloads/altius-starter.zip altius \
+            -x "**/config.json" \
+            -x "**/.env" \
+            -x "**/.env.*" \
+            -x "**/venv/**" \
+            -x "**/__pycache__/**" \
+            -x "**/*.log" \
+            -x "**/node_modules/**" \
+            -x "**/.DS_Store"
+
+      - name: Create release if missing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view altius-starter >/dev/null 2>&1 || \
+          gh release create altius-starter \
+            --title "Altius Starter Pack" \
+            --notes "Auto-generated starter bundle from /altius (static-friendly; backend runs locally)."
+
+      - name: Upload asset (overwrite)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload altius-starter downloads/altius-starter.zip --clobber
