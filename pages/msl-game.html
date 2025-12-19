@@ -19,6 +19,10 @@
       padding-bottom: 3rem;
     }
 
+    .game-page .section .inner {
+      max-width: 1160px;
+    }
+
     .game-page h1,
     .game-page h2,
     .game-page h3 {
@@ -28,7 +32,7 @@
     .game-layout {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 2.6rem;
     }
 
     @media (min-width: 900px) {
@@ -47,7 +51,7 @@
     .game-column {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1.8rem;
     }
 
     .game-card-title {
@@ -76,6 +80,7 @@
       border-radius: 1rem;
       border: 1px solid rgba(148, 163, 184, 0.4);
       box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8);
+      padding: 1.5rem 1.35rem 1.6rem;
     }
 
     .game-page .small,
@@ -135,6 +140,43 @@
     #quiz-feedback {
       font-size: 0.85rem;
       min-height: 1.2em;
+    }
+
+    .quiz-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .quiz-options button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.35rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .quiz-options button:hover {
+      background: rgba(37, 99, 235, 0.2);
+    }
+
+    .quiz-options button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .info-box {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 0.75rem;
+      padding: 0.75rem 0.85rem;
+      margin: 0.35rem 0;
     }
 
     /* Hangman */
@@ -249,6 +291,34 @@
               </div>
             </article>
 
+            <article class="card plain-card">
+              <div class="game-card-title">
+                <h2>Quick Civics Quiz</h2>
+                <span class="label study">Quiz</span>
+              </div>
+              <p class="small">
+                Ten rapid-fire civics checks covering rights, branches, and how laws move. Each run shuffles the questions.
+                See if you can beat your best score.
+              </p>
+              <div class="info-box small">
+                <strong>How it works:</strong> Pick the best answer, see immediate feedback, and hit restart to reshuffle.
+                Scores and your best run stay on this device.
+              </div>
+              <div class="quiz-block" id="civics-quiz">
+                <div id="civics-question" class="quiz-question"></div>
+                <div id="civics-options" class="quiz-options"></div>
+                <div id="civics-feedback" class="small"></div>
+                <div class="quiz-meta small" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+                  <span id="civics-progress"></span>
+                  <span id="civics-best"></span>
+                </div>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.25rem;">
+                  <button id="civics-next" class="btn btn-primary small">Next</button>
+                  <button id="civics-restart" class="btn btn-ghost small">Restart</button>
+                </div>
+              </div>
+            </article>
+
             <!-- CrashCourse video -->
             <article class="card plain-card">
               <div class="game-card-title">
@@ -307,7 +377,7 @@
                 <canvas id="runnerCanvas" width="260" height="160"></canvas>
               </div>
               <p class="controls-text">
-                Score = seconds survived. Make it to 5 minutes on a run to unlock the secret lab.
+                Score = seconds survived. Aim for longer runs to see your personal leaderboard climb.
               </p>
               <p id="runner-best" class="small" style="margin-top:0.35rem;"></p>
               <div id="runner-leaderboard" class="small" style="margin-top:0.25rem;"></div>
@@ -324,6 +394,10 @@
                 in meetings, bylaws, or statewide sessions.
               </p>
               <p class="small" style="opacity:0.8;">Vibe: Low-stress letters game for when you need a breather.</p>
+              <div class="info-box small">
+                <strong>How to play:</strong> Tap or click letters to reveal the word. You get seven misses—keep an ear out for
+                familiar MSL terms.
+              </div>
               <div id="hangman-word">_ _ _ _</div>
               <div id="hangman-letters"></div>
               <div id="hangman-status" class="small"></div>
@@ -359,22 +433,6 @@
       </div>
     </section>
 
-    <!-- SECRET UNLOCK SECTION -->
-    <section class="section" id="secretSection" style="display:none;">
-      <div class="inner">
-        <article class="card plain-card">
-          <h2>Secret Page Unlocked</h2>
-          <p class="small">
-            You (or someone on this device) survived a full 5 minutes in Floor Runner. That earns access
-            to a hidden experiments page for future mini-games.
-          </p>
-          <p class="small">
-            <a href="msl-secret.html" class="btn btn-primary small">Open Secret Lab (Coming Soon)</a>
-          </p>
-        </article>
-      </div>
-    </section>
-
   </main>
 
   <footer class="site-footer">
@@ -393,23 +451,6 @@
   <!-- Page-specific JS: all guarded so errors don't break the page -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      /* ---------- SECRET UNLOCK ---------- */
-      const secretSection = document.getElementById("secretSection");
-      function unlockSecret() {
-        if (!secretSection) return;
-        secretSection.style.display = "block";
-        try {
-          localStorage.setItem("mslSecretUnlocked", "true");
-        } catch (e) {}
-      }
-      (function restoreSecret() {
-        try {
-          if (localStorage.getItem("mslSecretUnlocked") === "true" && secretSection) {
-            secretSection.style.display = "block";
-          }
-        } catch (e) {}
-      })();
-
       /* ---------- QUIZ ---------- */
       (function () {
         const questionEl = document.getElementById("quiz-question");
@@ -512,7 +553,7 @@
           if (index >= quiz.length) {
             feedbackEl.textContent =
               score === quiz.length
-                ? "Perfect run. Secret reward: you’re now unofficially ‘floor ready’."
+                ? "Perfect run. You’re unofficially ‘floor ready’."
                 : "Nice work. Run it again later and see if you can get them all.";
             feedbackEl.style.color = "#facc15";
             index = 0;
@@ -522,6 +563,218 @@
         });
 
         renderQuestion();
+      })();
+
+      /* ---------- CIVICS QUIZ (SHUFFLED) ---------- */
+      (function () {
+        const questionEl = document.getElementById("civics-question");
+        const optionsEl = document.getElementById("civics-options");
+        const feedbackEl = document.getElementById("civics-feedback");
+        const nextBtn = document.getElementById("civics-next");
+        const restartBtn = document.getElementById("civics-restart");
+        const progressEl = document.getElementById("civics-progress");
+        const bestEl = document.getElementById("civics-best");
+
+        if (!questionEl || !optionsEl || !feedbackEl || !nextBtn || !restartBtn || !progressEl || !bestEl) return;
+
+        const STORAGE_KEY = "mslCivicsBest";
+        let best = 0;
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) best = parseInt(stored, 10) || 0;
+        } catch (e) {}
+
+        const quiz = [
+          {
+            q: "How many branches of government share power in the United States?",
+            options: ["Two", "Three", "Four", "Five"],
+            correct: 1,
+            detail: "Legislative, Executive, and Judicial branches split responsibilities."
+          },
+          {
+            q: "What do we call the opening statement of the U.S. Constitution?",
+            options: ["The Bill of Rights", "The Preamble", "Article I", "The Amendments"],
+            correct: 1,
+            detail: "The Preamble outlines the purpose of the Constitution."
+          },
+          {
+            q: "Who signs bills into law at the federal level?",
+            options: ["The Speaker of the House", "The Senate Majority Leader", "The President", "The Chief Justice"],
+            correct: 2,
+            detail: "The President can sign or veto bills passed by Congress."
+          },
+          {
+            q: "How many U.S. Senators does each state have?",
+            options: ["One", "Two", "Three", "Four"],
+            correct: 1,
+            detail: "Every state has two Senators regardless of population."
+          },
+          {
+            q: "What term describes the first ten amendments to the Constitution?",
+            options: ["Articles", "Federalist Papers", "Bill of Rights", "Declaration"],
+            correct: 2,
+            detail: "The Bill of Rights protects individual liberties."
+          },
+          {
+            q: "Who is in charge of the executive branch at the state level in Maryland?",
+            options: ["House Speaker", "Governor", "Chief Justice", "Lieutenant Governor"],
+            correct: 1,
+            detail: "The Governor heads Maryland's executive branch."
+          },
+          {
+            q: "What does the judicial branch do?",
+            options: ["Writes laws", "Approves Cabinet members", "Interprets laws", "Runs elections"],
+            correct: 2,
+            detail: "Courts interpret laws and decide if they follow the Constitution."
+          },
+          {
+            q: "Which chamber introduces revenue (tax) bills under the U.S. Constitution?",
+            options: ["House of Representatives", "Senate", "Supreme Court", "Cabinet"],
+            correct: 0,
+            detail: "Revenue bills start in the House of Representatives."
+          },
+          {
+            q: "What is needed for Congress to override a presidential veto?",
+            options: ["Simple majority in either chamber", "Two-thirds vote in both chambers", "Unanimous consent", "Decision by the Supreme Court"],
+            correct: 1,
+            detail: "A two-thirds vote in both chambers overrides a veto."
+          },
+          {
+            q: "Which amendment guarantees freedom of speech?",
+            options: ["First", "Second", "Fourth", "Tenth"],
+            correct: 0,
+            detail: "The First Amendment protects freedoms of speech, press, religion, assembly, and petition."
+          },
+          {
+            q: "What is judicial review?",
+            options: ["The President reviewing bills", "Courts deciding constitutionality", "States approving treaties", "Congress confirming judges"],
+            correct: 1,
+            detail: "Courts can strike down laws that conflict with the Constitution."
+          },
+          {
+            q: "What is a primary responsibility of state legislatures?",
+            options: ["Commanding the National Guard", "Negotiating treaties", "Passing state laws and budgets", "Issuing federal passports"],
+            correct: 2,
+            detail: "State legislatures craft state statutes and approve the budget."
+          },
+          {
+            q: "Which action is an example of checks and balances?",
+            options: ["Congressional elections every two years", "The Senate confirming judicial nominees", "State governments creating school districts", "Citizens serving on juries"],
+            correct: 1,
+            detail: "The Senate’s confirmation role limits executive appointments."
+          },
+          {
+            q: "How long is a term for a member of the U.S. House of Representatives?",
+            options: ["Two years", "Four years", "Six years", "Life appointment"],
+            correct: 0,
+            detail: "Representatives serve two-year terms."
+          }
+        ];
+
+        let order = [];
+        let index = 0;
+        let score = 0;
+        let answered = false;
+
+        function shuffle(arr) {
+          const copy = [...arr];
+          for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+          }
+          return copy;
+        }
+
+        function updateBest() {
+          if (score > best) {
+            best = score;
+            try {
+              localStorage.setItem(STORAGE_KEY, String(best));
+            } catch (e) {}
+          }
+          bestEl.textContent = `Best on this device: ${best}/${order.length}`;
+        }
+
+        function updateProgress() {
+          progressEl.textContent = `Question ${Math.min(index + 1, order.length)} of ${order.length} · Score: ${score}`;
+        }
+
+        function renderQuestion() {
+          answered = false;
+          const current = order[index];
+          questionEl.textContent = current.q;
+          feedbackEl.textContent = "";
+          optionsEl.innerHTML = "";
+          nextBtn.textContent = index === order.length - 1 ? "Finish" : "Next";
+
+          current.options.forEach((opt, i) => {
+            const btn = document.createElement("button");
+            btn.textContent = opt;
+            btn.addEventListener("click", () => handleAnswer(i, btn));
+            optionsEl.appendChild(btn);
+          });
+
+          updateProgress();
+          bestEl.textContent = `Best on this device: ${best}/${order.length}`;
+        }
+
+        function handleAnswer(choice, btn) {
+          if (answered) return;
+          answered = true;
+          const current = order[index];
+          const buttons = optionsEl.querySelectorAll("button");
+          buttons.forEach((b) => (b.disabled = true));
+
+          if (choice === current.correct) {
+            score++;
+            feedbackEl.textContent = `Correct! ${current.detail}`;
+            feedbackEl.style.color = "#4ade80";
+          } else {
+            feedbackEl.textContent = `Not quite. Correct answer: ${current.options[current.correct]}. ${current.detail}`;
+            feedbackEl.style.color = "#f97373";
+          }
+          updateProgress();
+        }
+
+        function nextQuestion() {
+          if (index >= order.length) {
+            startQuiz();
+            return;
+          }
+          if (!answered) {
+            feedbackEl.textContent = "Choose an answer before moving on.";
+            feedbackEl.style.color = "#facc15";
+            return;
+          }
+
+          index++;
+          if (index >= order.length) {
+            feedbackEl.textContent = `Finished! You scored ${score}/${order.length}.`;
+            feedbackEl.style.color = score === order.length ? "#4ade80" : "#facc15";
+            updateBest();
+            nextBtn.textContent = "Restart run";
+            progressEl.textContent = `Run complete · Score: ${score}`;
+            return;
+          }
+
+          renderQuestion();
+        }
+
+        function startQuiz() {
+          order = shuffle(quiz).slice(0, 10);
+          index = 0;
+          score = 0;
+          renderQuestion();
+          feedbackEl.style.color = "#e5e7eb";
+        }
+
+        nextBtn.addEventListener("click", nextQuestion);
+        restartBtn.addEventListener("click", () => {
+          startQuiz();
+          bestEl.textContent = `Best on this device: ${best}/${order.length}`;
+        });
+
+        startQuiz();
       })();
 
       /* ---------- SNAKE GAME (desktop-focused) ---------- */
@@ -761,7 +1014,6 @@
               leaderboard.push({ tag, score: runTime, date: new Date().toISOString() });
               leaderboard.sort((a, b) => b.score - a.score);
               leaderboard = leaderboard.slice(0, 10);
-              unlockSecret();
             }
           }
 
@@ -967,7 +1219,21 @@
           "CHAMBER",
           "DRAFTING",
           "FLOOR",
-          "GAVEL"
+          "GAVEL",
+          "FILIBUSTER",
+          "SPONSOR",
+          "WHIP",
+          "CONSENT",
+          "APPEAL",
+          "GERRYMANDER",
+          "ABSTAIN",
+          "YEA",
+          "NAY",
+          "CONFERENCE",
+          "STATUTE",
+          "COMMERCE",
+          "DOCKET",
+          "VETO"
         ];
 
         let secret, revealed, attempts;
