@@ -71,7 +71,9 @@
   </head>
 
   <body>
-    <!-- Keep your shared nav approach as-is -->
+    <header id="siteHeader" class="site-header">
+      <div id="site-nav"></div>
+    </header>
 
     <main class="altius-wrap">
       <section class="altius-hero">
@@ -106,17 +108,17 @@
 
           <a
             class="btn"
-            href="https://github.com/SyndorZaldrizes/Syndor/tree/main/altius"
+            href="https://github.com/SyndorZaldrizes/Syndor/tree/main/altius-local"
             target="_blank"
             rel="noopener"
           >
-            View /altius folder
+            View /altius-local folder
           </a>
         </div>
 
         <div class="note">
           <strong>What you’re downloading:</strong> a starter bundle from the repo’s
-          <code>/altius/</code> folder. It includes scaffolding, example config, and docs.
+          <code>/altius-local/</code> folder. It includes scaffolding, example config, and docs.
           It does <em>not</em> contain secrets.
         </div>
       </section>
@@ -130,17 +132,17 @@
 
           <ol>
             <li><strong>Download</strong> the Starter Pack zip and unzip it.</li>
-            <li>Open the folder and read: <code>altius/README.md</code></li>
+            <li>Open the folder and read: <code>altius-local/README.md</code></li>
             <li>
               Create your local config:
               <ul>
-                <li>Copy <code>altius/config.example.json</code> → <code>altius/config.json</code></li>
+                <li>Copy <code>altius-local/config.example.json</code> → <code>altius-local/config.json</code></li>
                 <li>Fill in required values (keep <code>config.json</code> local only)</li>
               </ul>
             </li>
             <li>
               When you standardize the runtime (FastAPI/Ollama/etc.), follow the instructions in
-              <code>altius/README.md</code>.
+              <code>altius-local/README.md</code>.
             </li>
           </ol>
 
@@ -161,8 +163,8 @@
 
           <h3>Next planned additions</h3>
           <ul>
-            <li>Curated document subsets for indexing (<code>/altius/docs</code>)</li>
-            <li>Optional “Nate-Avatar” import under <code>/altius/nate-avatar</code></li>
+            <li>Curated document subsets for indexing (<code>/altius-local/docs</code>)</li>
+            <li>Optional “Nate-Avatar” import under <code>/altius-local/nate-avatar</code></li>
             <li>Cleaner onboarding once runtime is standardized</li>
           </ul>
         </div>
@@ -180,7 +182,7 @@
               <strong>Port already in use:</strong> if/when you run a local server, close other apps using that port or change the port in local config.
             </li>
             <li>
-              <strong>Missing Python/Ollama:</strong> install locally per <code>altius/README.md</code>.
+              <strong>Missing Python/Ollama:</strong> install locally per <code>altius-local/README.md</code>.
             </li>
           </ul>
 
@@ -193,5 +195,6 @@
         </div>
       </section>
     </main>
+    <script src="../assets/js/nav.js"></script>
   </body>
 </html>

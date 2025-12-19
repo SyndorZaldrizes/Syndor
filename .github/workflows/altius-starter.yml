@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "altius/**"
+      - "altius-local/**"
 
 permissions:
   contents: write
@@ -17,11 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build zip from /altius
+      - name: Build zip from /altius-local
         run: |
           mkdir -p downloads
           rm -f downloads/altius-starter.zip
-          zip -r downloads/altius-starter.zip altius \
+          zip -r downloads/altius-starter.zip altius-local \
             -x "**/config.json" \
             -x "**/.env" \
             -x "**/.env.*" \
@@ -38,7 +38,7 @@ jobs:
           gh release view altius-starter >/dev/null 2>&1 || \
           gh release create altius-starter \
             --title "Altius Starter Pack" \
-            --notes "Auto-generated starter bundle from /altius (static-friendly; backend runs locally)."
+            --notes "Auto-generated starter bundle from /altius-local (static-friendly; backend runs locally)."
 
       - name: Upload asset (overwrite)
         env:
