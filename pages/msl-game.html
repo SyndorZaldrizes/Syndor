@@ -81,6 +81,14 @@
       border: 1px solid rgba(148, 163, 184, 0.4);
       box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8);
       padding: 1.5rem 1.35rem 1.6rem;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .game-page .card.plain-card:hover,
+    .game-page .card.plain-card:focus-within {
+      transform: translateY(-3px);
+      border-color: rgba(96, 165, 250, 0.5);
+      box-shadow: 0 22px 50px rgba(8, 47, 73, 0.5);
     }
 
     .game-page .small,
@@ -91,24 +99,74 @@
 
     /* Canvas containers */
     .canvas-shell {
-      background: #020617;
-      border-radius: 0.75rem;
-      padding: 0.75rem;
-      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: linear-gradient(145deg, rgba(2, 6, 23, 0.94), rgba(15, 23, 42, 0.9));
+      border-radius: 0.9rem;
+      padding: 0.9rem;
+      border: 1px solid rgba(148, 163, 184, 0.45);
       text-align: center;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+    .canvas-shell.expanded {
+      padding: 1rem;
     }
     .canvas-shell canvas {
       background: #020617;
       display: block;
       margin: 0 auto;
       max-width: 100%;
-      border-radius: 0.5rem;
+      height: auto;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
     }
 
     .controls-text {
       font-size: 0.8rem;
       opacity: 0.9;
       margin-top: 0.35rem;
+    }
+
+    .game-control-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 0.65rem 0 0.35rem;
+    }
+
+    .control-label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+      color: #e5e7eb;
+    }
+
+    .control-label select {
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 0.4rem 0.55rem;
+    }
+
+    .inline-toggle {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .game-page .btn.small {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .game-page .btn.btn-ghost {
+      background: rgba(255, 255, 255, 0.06);
+      color: #e5e7eb;
+    }
+
+    .game-page .btn.btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.12);
     }
 
     /* Quiz styles */
@@ -350,16 +408,29 @@
                 <span class="label game">Game</span>
               </div>
               <p class="small">
-                Classic snake-style game. Collect “bills” (squares) and avoid running into yourself.
+                Classic snake-style game. Collect “bills” (squares) and avoid running into yourself (or the AI opponent).
                 <strong>Controls:</strong> W, A, S, D keys on desktop. On mobile, this one is better viewed than played.
               </p>
-              <p class="small" style="opacity:0.8;">Difficulty: Steady pace—good for zoning out between study bursts.</p>
-              <div class="canvas-shell">
-                <canvas id="snakeCanvas" width="460" height="360"></canvas>
+              <div class="game-control-row">
+                <label class="control-label">
+                  Difficulty
+                  <select id="snakeDifficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                  </select>
+                </label>
+                <label class="control-label inline-toggle">
+                  <input type="checkbox" id="snakeAiToggle" checked />
+                  <span>AI Opponent: On</span>
+                </label>
+                <button id="snakeRestart" class="btn btn-ghost small" type="button">Restart</button>
               </div>
-              <p class="controls-text">
-                Tip: Try to survive long enough to pass 10 “bills” in one run.
-              </p>
+              <div class="canvas-shell expanded">
+                <canvas id="snakeCanvas" width="640" height="480"></canvas>
+              </div>
+              <p id="snakeStatus" class="controls-text">Bills passed: 0 · Opponent: ready</p>
+              <p class="controls-text">Tiny sparkle pops when bills are eaten. Tip: aim for 12+ “bills” in one run.</p>
             </article>
 
             <!-- Runner -->
@@ -373,11 +444,15 @@
                 <strong>Controls:</strong> Spacebar or tap/click inside the game box to jump.
               </p>
               <p class="small" style="opacity:0.8;">Energy: Fast reflexes—best when you want a quick adrenaline spike.</p>
-              <div class="canvas-shell">
-                <canvas id="runnerCanvas" width="460" height="660"></canvas>
+              <div class="game-control-row">
+                <button id="runner-start" class="btn btn-primary small" type="button">Start / Restart</button>
+                <span class="controls-text">Jump only when your feet are on the line. Hold for a little extra lift.</span>
+              </div>
+              <div class="canvas-shell expanded">
+                <canvas id="runnerCanvas" width="720" height="960"></canvas>
               </div>
               <p class="controls-text">
-                Score = seconds survived. Aim for longer runs to see your personal leaderboard climb.
+                Score = seconds survived. Clear rails and outlined gaps keep you honest.
               </p>
               <p id="runner-best" class="small" style="margin-top:0.35rem;"></p>
               <div id="runner-leaderboard" class="small" style="margin-top:0.25rem;"></div>
@@ -780,128 +855,320 @@
       /* ---------- SNAKE GAME (desktop-focused) ---------- */
       (function () {
         const canvas = document.getElementById("snakeCanvas");
-        if (!canvas) return;
+        const difficultySelect = document.getElementById("snakeDifficulty");
+        const aiToggle = document.getElementById("snakeAiToggle");
+        const statusEl = document.getElementById("snakeStatus");
+        const restartBtn = document.getElementById("snakeRestart");
+        if (!canvas || !difficultySelect || !aiToggle || !statusEl || !restartBtn) return;
+
         const ctx = canvas.getContext("2d");
+        const cols = 20;
+        const rows = 15;
+        const cellSize = Math.floor(Math.min(canvas.width / cols, canvas.height / rows));
 
-        const cols = 13;
-        const rows = 13;
-        const cellSize = Math.floor(canvas.width / cols);
+        // Normalize canvas to exact grid size for crisp edges
+        canvas.width = cols * cellSize;
+        canvas.height = rows * cellSize;
 
-        let snake, dir, food, alive;
+        const dirs = [
+          { x: 0, y: -1 }, // up
+          { x: 0, y: 1 }, // down
+          { x: -1, y: 0 }, // left
+          { x: 1, y: 0 } // right
+        ];
 
-        function resetSnake() {
-          snake = [{ x: 6, y: 6 }];
-          dir = { x: 0, y: -1 }; // up
-          spawnFood();
+        const settings = {
+          easy: { playerStep: 150, aiStep: 210, chaseWeight: 0.65, bufferWeight: 1.6, jitter: 0.3 },
+          medium: { playerStep: 125, aiStep: 160, chaseWeight: 0.9, bufferWeight: 1.3, jitter: 0.18 },
+          hard: { playerStep: 105, aiStep: 115, chaseWeight: 1.15, bufferWeight: 1.1, jitter: 0.1 }
+        };
+
+        let snake = [];
+        let opponent = [];
+        let dir = { x: 0, y: -1 };
+        let pendingDir = dir;
+        let aiDir = { x: 0, y: 1 };
+        let food = null;
+        let alive = true;
+        let aiAlive = true;
+        let aiEnabled = true;
+        let aiRespawnAt = 0;
+        let score = 0;
+        let lastPlayerStep = 0;
+        let lastAiStep = 0;
+        const particles = [];
+
+        function resetSnake(fullReset = true) {
+          snake = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2) }];
+          dir = { x: 0, y: -1 };
+          pendingDir = dir;
+          opponent = [
+            { x: 3, y: 3 },
+            { x: 3, y: 4 }
+          ];
+          aiDir = { x: 0, y: 1 };
+          food = null;
           alive = true;
+          aiAlive = aiEnabled;
+          aiRespawnAt = 0;
+          if (fullReset) score = 0;
+          spawnFood();
+          updateStatus();
+        }
+
+        function updateStatus() {
+          statusEl.textContent = `Bills passed: ${score} · Opponent: ${!aiEnabled ? "off" : aiAlive ? "active" : "down"}`;
         }
 
         function spawnFood() {
-          food = {
-            x: Math.floor(Math.random() * cols),
-            y: Math.floor(Math.random() * rows)
-          };
-          if (snake.some(seg => seg.x === food.x && seg.y === food.y)) {
-            spawnFood();
+          const openCells = [];
+          for (let x = 0; x < cols; x++) {
+            for (let y = 0; y < rows; y++) {
+              if (!isOccupied({ x, y })) {
+                openCells.push({ x, y });
+              }
+            }
+          }
+          food = openCells[Math.floor(Math.random() * openCells.length)];
+        }
+
+        function isOut(pos) {
+          return pos.x < 0 || pos.x >= cols || pos.y < 0 || pos.y >= rows;
+        }
+
+        function isOccupied(pos, skipSnakeTail = false, skipOpponentTail = false) {
+          const bodyCheck = (body, skipTail) =>
+            body.some((seg, idx) => (skipTail && idx === body.length - 1 ? false : seg.x === pos.x && seg.y === pos.y));
+          if (bodyCheck(snake, skipSnakeTail)) return true;
+          if (bodyCheck(opponent, skipOpponentTail)) return true;
+          return false;
+        }
+
+        function addParticles(cell) {
+          const baseX = cell.x * cellSize + cellSize / 2;
+          const baseY = cell.y * cellSize + cellSize / 2;
+          for (let i = 0; i < 14; i++) {
+            particles.push({
+              x: baseX,
+              y: baseY,
+              vx: (Math.random() - 0.5) * 1.6,
+              vy: (Math.random() - 0.5) * 1.6,
+              life: 1
+            });
           }
         }
 
-        function step() {
-          if (!alive) return;
-          const head = snake[0];
-          const next = { x: head.x + dir.x, y: head.y + dir.y };
+        function moveBody(body, direction, otherBody, isPlayer) {
+          const head = body[0];
+          const next = { x: head.x + direction.x, y: head.y + direction.y };
 
-          if (next.x < 0 || next.x >= cols || next.y < 0 || next.y >= rows) {
-            alive = false;
-            return;
+          if (isOut(next) || isOccupied(next)) {
+            return { dead: true };
           }
 
-          if (snake.some(seg => seg.x === next.x && seg.y === next.y)) {
-            alive = false;
-            return;
-          }
+          body.unshift(next);
 
-          snake.unshift(next);
-
-          if (next.x === food.x && next.y === food.y) {
+          if (food && next.x === food.x && next.y === food.y) {
+            if (isPlayer) {
+              score++;
+              updateStatus();
+            }
+            addParticles(food);
             spawnFood();
-          } else {
-            snake.pop();
+            return { dead: false, ate: true };
           }
+
+          body.pop();
+          return { dead: false, ate: false };
+        }
+
+        function heuristicScore(next, config) {
+          const dist = Math.abs(next.x - food.x) + Math.abs(next.y - food.y);
+          const buffer = Math.min(next.x, cols - 1 - next.x, next.y, rows - 1 - next.y);
+          return config.chaseWeight * (cols + rows - dist) + config.bufferWeight * buffer;
+        }
+
+        function chooseAiDirection(config) {
+          if (!food) return aiDir;
+          const head = opponent[0];
+          const options = dirs
+            .map(d => ({
+              dir: d,
+              next: { x: head.x + d.x, y: head.y + d.y }
+            }))
+            .filter(opt => !isOut(opt.next) && !isOccupied(opt.next));
+
+          if (!options.length) return aiDir;
+
+          options.forEach(opt => {
+            opt.score = heuristicScore(opt.next, config);
+            if (opt.dir.x === aiDir.x && opt.dir.y === aiDir.y) {
+              opt.score += 1.5; // prefer smooth paths
+            }
+            opt.score += (Math.random() - 0.5) * config.jitter;
+          });
+
+          options.sort((a, b) => b.score - a.score);
+          return options[0].dir;
+        }
+
+        function drawCell(x, y, color, outline = "rgba(255,255,255,0.12)") {
+          ctx.fillStyle = color;
+          ctx.strokeStyle = outline;
+          ctx.lineWidth = 1.5;
+          ctx.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 4, cellSize - 4);
+          ctx.strokeRect(x * cellSize + 2, y * cellSize + 2, cellSize - 4, cellSize - 4);
         }
 
         function draw() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = "#020617";
+          ctx.fillStyle = "#0b1224";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-          // food
-          ctx.fillStyle = "#f97316";
-          ctx.fillRect(
-            food.x * cellSize + 2,
-            food.y * cellSize + 2,
-            cellSize - 4,
-            cellSize - 4
-          );
+          ctx.strokeStyle = "rgba(255,255,255,0.05)";
+          ctx.lineWidth = 1;
+          for (let x = 0; x <= cols; x++) {
+            ctx.beginPath();
+            ctx.moveTo(x * cellSize + 0.5, 0);
+            ctx.lineTo(x * cellSize + 0.5, canvas.height);
+            ctx.stroke();
+          }
+          for (let y = 0; y <= rows; y++) {
+            ctx.beginPath();
+            ctx.moveTo(0, y * cellSize + 0.5);
+            ctx.lineTo(canvas.width, y * cellSize + 0.5);
+            ctx.stroke();
+          }
 
-          // snake
-          ctx.fillStyle = "#22c55e";
-          snake.forEach(seg => {
-            ctx.fillRect(
-              seg.x * cellSize + 2,
-              seg.y * cellSize + 2,
-              cellSize - 4,
-              cellSize - 4
-            );
+          if (food) {
+            drawCell(food.x, food.y, "#f97316", "rgba(255,255,255,0.18)");
+          }
+
+          snake.forEach((seg, idx) => {
+            drawCell(seg.x, seg.y, idx === 0 ? "#4ade80" : "#22c55e");
           });
 
+          if (aiEnabled) {
+            opponent.forEach((seg, idx) => {
+              drawCell(seg.x, seg.y, idx === 0 ? "#a855f7" : "#7c3aed", "rgba(255,255,255,0.25)");
+            });
+          }
+
+          // particles
+          for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= 0.02;
+            if (p.life <= 0) {
+              particles.splice(i, 1);
+              continue;
+            }
+            ctx.fillStyle = `rgba(250,204,21,${p.life})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
           if (!alive) {
-            ctx.fillStyle = "rgba(15,23,42,0.8)";
+            ctx.fillStyle = "rgba(15,23,42,0.82)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#facc15";
-            ctx.font = "14px sans-serif";
+            ctx.font = "16px sans-serif";
             ctx.textAlign = "center";
-            ctx.fillText("Out of order – press R to restart", canvas.width / 2, canvas.height / 2);
+            ctx.fillText("You collided with a chamber wall.", canvas.width / 2, canvas.height / 2 - 8);
+            ctx.fillText("Press R or Restart to run again.", canvas.width / 2, canvas.height / 2 + 14);
           }
         }
 
-        function gameLoop() {
-          step();
+        function step(timestamp) {
+          const mode = settings[difficultySelect.value] || settings.medium;
+          if (!lastPlayerStep) {
+            lastPlayerStep = timestamp;
+            lastAiStep = timestamp;
+          }
+
+          if (alive && timestamp - lastPlayerStep >= mode.playerStep) {
+            lastPlayerStep = timestamp;
+            const result = moveBody(snake, pendingDir, opponent, true);
+            if (result.dead) alive = false;
+            else dir = pendingDir;
+          }
+
+          if (aiEnabled && aiAlive && timestamp - lastAiStep >= mode.aiStep) {
+            lastAiStep = timestamp;
+            aiDir = chooseAiDirection(mode);
+            const aiResult = moveBody(opponent, aiDir, snake, false);
+            if (aiResult.dead) {
+              aiAlive = false;
+              aiRespawnAt = timestamp + 1500;
+              updateStatus();
+            }
+          }
+
+          if (aiEnabled && !aiAlive && aiRespawnAt && timestamp >= aiRespawnAt) {
+            opponent = [
+              { x: 2, y: rows - 3 },
+              { x: 2, y: rows - 2 }
+            ];
+            aiDir = { x: 1, y: 0 };
+            aiAlive = true;
+            aiRespawnAt = 0;
+            updateStatus();
+          }
+
           draw();
+          requestAnimationFrame(step);
         }
 
-        resetSnake();
-        draw();
-        setInterval(gameLoop, 150);
+        function handleDirectionChange(nextDir) {
+          if (!nextDir) return;
+          if (
+            snake.length > 1 &&
+            snake[0].x + nextDir.x === snake[1].x &&
+            snake[0].y + nextDir.y === snake[1].y
+          ) {
+            return;
+          }
+          pendingDir = nextDir;
+        }
 
-        window.addEventListener("keydown", (e) => {
-          if (!canvas) return;
-
+        window.addEventListener("keydown", e => {
           const key = e.key.toLowerCase();
-
           if (key === "r") {
             resetSnake();
             return;
           }
-
-          let nextDir = null;
-          if (key === "w") nextDir = { x: 0, y: -1 };
-          if (key === "s") nextDir = { x: 0, y: 1 };
-          if (key === "a") nextDir = { x: -1, y: 0 };
-          if (key === "d") nextDir = { x: 1, y: 0 };
-
-          if (nextDir) {
+          if (["w", "a", "s", "d"].includes(key)) {
             e.preventDefault();
-            if (
-              snake.length > 1 &&
-              snake[0].x + nextDir.x === snake[1].x &&
-              snake[0].y + nextDir.y === snake[1].y
-            ) {
-              return;
-            }
-            dir = nextDir;
           }
+          if (key === "w") handleDirectionChange({ x: 0, y: -1 });
+          if (key === "s") handleDirectionChange({ x: 0, y: 1 });
+          if (key === "a") handleDirectionChange({ x: -1, y: 0 });
+          if (key === "d") handleDirectionChange({ x: 1, y: 0 });
         });
+
+        restartBtn.addEventListener("click", () => resetSnake());
+
+        aiToggle.addEventListener("change", () => {
+          aiEnabled = aiToggle.checked;
+          aiToggle.nextElementSibling.textContent = `AI Opponent: ${aiEnabled ? "On" : "Off"}`;
+          if (!aiEnabled) {
+            opponent = [];
+            aiAlive = false;
+          } else {
+            resetSnake(false);
+          }
+          updateStatus();
+        });
+
+        difficultySelect.addEventListener("change", () => {
+          // Soft reset keeps score but re-centers the board for fairness
+          resetSnake(false);
+        });
+
+        resetSnake();
+        requestAnimationFrame(step);
       })();
 
       /* ---------- RUNNER GAME (with best score & leaderboard) ---------- */
@@ -909,14 +1176,21 @@
         const canvas = document.getElementById("runnerCanvas");
         const bestScoreEl = document.getElementById("runner-best");
         const leaderboardEl = document.getElementById("runner-leaderboard");
-        if (!canvas || !bestScoreEl || !leaderboardEl) return;
+        const startBtn = document.getElementById("runner-start");
+        if (!canvas || !bestScoreEl || !leaderboardEl || !startBtn) return;
         const ctx = canvas.getContext("2d");
 
-        const groundY = canvas.height - 30;
-        let player, obstacles, boosts, gaps, speed, gravity, jumpVelocity, score, alive, startTime;
+        const baseWidth = 720;
+        const baseHeight = 960;
+        canvas.width = baseWidth;
+        canvas.height = baseHeight;
+        const groundY = Math.floor(baseHeight * 0.78);
 
+        let player, obstacles, boosts, gaps, speed, gravity, jumpVelocity, score, alive, running, startTime, lastGrounded;
         let bestScore = 0;
         let leaderboard = [];
+        let frameCount = 0;
+        const coyoteMs = 140;
         const STORAGE_KEY = "mslRunnerLeaderboard";
 
         function loadLeaderboard() {
@@ -946,56 +1220,49 @@
               "Local leaderboard appears here after a 5-minute run. (Stored only on this device.)";
             return;
           }
-          const lines = leaderboard.map((entry, idx) => {
-            return `${idx + 1}. ${entry.tag} – ${Math.floor(entry.score)}s`;
-          });
+          const lines = leaderboard.map((entry, idx) => `${idx + 1}. ${entry.tag} – ${Math.floor(entry.score)}s`);
           leaderboardEl.textContent = "Local leaderboard: " + lines.join(" · ");
         }
 
-        loadLeaderboard();
-        renderLeaderboard();
-
-        function resetRunner() {
-          player = { x: 30, y: groundY, vy: 0, onGround: true };
+        function resetRunner(startImmediately = false) {
+          player = { x: 64, y: groundY, vy: 0, onGround: true, w: 22, h: 30 };
           obstacles = [];
           boosts = [];
           gaps = [];
-          speed = 3;
-          gravity = 0.4;
-          jumpVelocity = -7.5;
+          speed = 3.2;
+          gravity = 0.45;
+          jumpVelocity = -8.5;
           score = 0;
           alive = true;
-          startTime = Date.now();
+          running = startImmediately;
+          startTime = performance.now();
+          frameCount = 0;
+          lastGrounded = performance.now();
         }
 
         function addObstacle() {
-          const width = 12 + Math.random() * 10;
+          const width = 16 + Math.random() * 14;
           obstacles.push({
             x: canvas.width + 20,
-            y: groundY - 15,
+            y: groundY - 18,
             w: width,
-            h: 15
+            h: 18
           });
         }
 
         function addBoost() {
           boosts.push({
-            x: canvas.width + 60,
-            y: groundY - 35,
-            size: 10,
-            vy: -0.4
+            x: canvas.width + 80,
+            y: groundY - 50,
+            size: 14,
+            vy: -0.35
           });
         }
 
         function addGap() {
-          const width = 40 + Math.random() * 40;
-          gaps.push({
-            x: canvas.width + 40,
-            w: width
-          });
+          const width = 60 + Math.random() * 50;
+          gaps.push({ x: canvas.width + 50, w: width });
         }
-
-        let frameCount = 0;
 
         function handleGameOver() {
           const runTime = score; // seconds
@@ -1004,7 +1271,6 @@
           }
 
           if (runTime >= 300) {
-            // 5 minutes
             let initials = prompt(
               "You survived 5 minutes! Enter a 3-letter tag for the local leaderboard:",
               "MSL"
@@ -1024,21 +1290,21 @@
         function endRun() {
           if (!alive) return;
           alive = false;
+          running = false;
           handleGameOver();
         }
 
         function updateRunner() {
-          if (!alive) return;
+          if (!alive || !running) return;
 
           frameCount++;
-          const elapsedSec = (Date.now() - startTime) / 1000;
+          const elapsedSec = (performance.now() - startTime) / 1000;
           score = elapsedSec;
 
-          if (frameCount % 120 === 0) addObstacle();
-          if (frameCount % 260 === 0) addBoost();
-          if (frameCount % 200 === 0) addGap();
+          if (frameCount % 100 === 0) addObstacle();
+          if (frameCount % 240 === 0) addBoost();
+          if (frameCount % 180 === 0) addGap();
 
-          // physics
           player.vy += gravity;
           player.y += player.vy;
 
@@ -1046,38 +1312,32 @@
             player.y = groundY;
             player.vy = 0;
             player.onGround = true;
+            lastGrounded = performance.now();
+          } else {
+            player.onGround = false;
           }
 
-          // move obstacles
-          obstacles.forEach(o => {
-            o.x -= speed;
-          });
-          obstacles = obstacles.filter(o => o.x + o.w > -10);
+          obstacles.forEach(o => (o.x -= speed));
+          obstacles = obstacles.filter(o => o.x + o.w > -20);
 
-          // move boosts
           boosts.forEach(b => {
-            b.x -= speed * 0.9;
+            b.x -= speed * 0.95;
             b.y += b.vy;
           });
-          boosts = boosts.filter(b => b.x + b.size > -10);
+          boosts = boosts.filter(b => b.x + b.size > -20);
 
-          // move gaps
-          gaps.forEach(g => {
-            g.x -= speed;
-          });
-          gaps = gaps.filter(g => g.x + g.w > -10);
+          gaps.forEach(g => (g.x -= speed));
+          gaps = gaps.filter(g => g.x + g.w > -20);
 
-          // obstacle collisions
           for (const o of obstacles) {
-            const withinX = player.x + 12 > o.x && player.x - 8 < o.x + o.w;
-            const withinY = player.y >= o.y && player.y <= o.y + o.h + 8;
+            const withinX = player.x + player.w / 2 > o.x && player.x - player.w / 2 < o.x + o.w;
+            const withinY = player.y >= o.y && player.y <= o.y + o.h + 6;
             if (withinX && withinY) {
               endRun();
               return;
             }
           }
 
-          // gap collisions (falling)
           for (const g of gaps) {
             if (player.x > g.x && player.x < g.x + g.w && player.y >= groundY) {
               endRun();
@@ -1085,18 +1345,17 @@
             }
           }
 
-          // boosts
           boosts.forEach(b => {
             const dx = player.x - (b.x + b.size / 2);
             const dy = player.y - (b.y + b.size / 2);
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < 20) {
-              speed = 4.5;
-              jumpVelocity = -9;
+              speed = 4.6;
+              jumpVelocity = -9.5;
               setTimeout(() => {
-                speed = 3;
-                jumpVelocity = -7.5;
-              }, 5000);
+                speed = 3.2;
+                jumpVelocity = -8.5;
+              }, 4200);
               b.x = -999;
             }
           });
@@ -1105,60 +1364,79 @@
         function drawRunner() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          // background
-          ctx.fillStyle = "#020617";
+          const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+          gradient.addColorStop(0, "#0b1224");
+          gradient.addColorStop(1, "#020617");
+          ctx.fillStyle = gradient;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-          // ground line
-          ctx.strokeStyle = "#4b5563";
+          // ground rails
+          ctx.strokeStyle = "rgba(148,163,184,0.75)";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.moveTo(0, groundY + 10);
+          ctx.lineTo(canvas.width, groundY + 10);
+          ctx.stroke();
+          ctx.strokeStyle = "rgba(59,130,246,0.35)";
           ctx.lineWidth = 2;
           ctx.beginPath();
-          ctx.moveTo(0, groundY + 8);
-          ctx.lineTo(canvas.width, groundY + 8);
+          ctx.moveTo(0, groundY + 14);
+          ctx.lineTo(canvas.width, groundY + 14);
           ctx.stroke();
 
-          // gaps (erase ground under them visually)
-          ctx.fillStyle = "#020617";
+          // gaps (with outlines)
+          ctx.fillStyle = "#0b1224";
+          ctx.strokeStyle = "rgba(248,113,113,0.5)";
           gaps.forEach(g => {
-            ctx.fillRect(g.x, groundY + 1, g.w, canvas.height - groundY - 1);
+            ctx.fillRect(g.x, groundY + 2, g.w, canvas.height - groundY);
+            ctx.strokeRect(g.x, groundY + 2, g.w, 18);
           });
 
           // player
           ctx.fillStyle = "#38bdf8";
-          ctx.fillRect(player.x - 8, player.y - 16, 16, 16);
+          ctx.strokeStyle = "rgba(255,255,255,0.4)";
+          ctx.lineWidth = 2;
+          ctx.fillRect(player.x - player.w / 2, player.y - player.h, player.w, player.h);
+          ctx.strokeRect(player.x - player.w / 2, player.y - player.h, player.w, player.h);
 
-          // obstacles (triangles)
-          ctx.fillStyle = "#f97316";
+          // obstacles (triangles with outlines)
           obstacles.forEach(o => {
+            ctx.fillStyle = "#f97316";
+            ctx.strokeStyle = "rgba(255,255,255,0.4)";
+            ctx.lineWidth = 1.5;
             ctx.beginPath();
             ctx.moveTo(o.x, o.y + o.h);
-            ctx.lineTo(o.x + o.w / 2, o.y);
+            ctx.lineTo(o.x + o.w / 2, o.y - 2);
             ctx.lineTo(o.x + o.w, o.y + o.h);
             ctx.closePath();
             ctx.fill();
+            ctx.stroke();
           });
 
           // boosts (floating blocks)
           ctx.fillStyle = "#facc15";
+          ctx.strokeStyle = "rgba(255,255,255,0.5)";
           boosts.forEach(b => {
             ctx.fillRect(b.x, b.y, b.size, b.size);
+            ctx.strokeRect(b.x, b.y, b.size, b.size);
           });
 
-          // score
           ctx.fillStyle = "#e5e7eb";
-          ctx.font = "12px sans-serif";
+          ctx.font = "13px sans-serif";
           ctx.textAlign = "left";
-          ctx.fillText("Score: " + Math.floor(score) + "s", 8, 14);
+          ctx.fillText(`Score: ${Math.floor(score)}s`, 10, 18);
+          ctx.fillStyle = "rgba(229,231,235,0.8)";
+          ctx.fillText(running ? "Stay on the rail; jump only when grounded." : "Press Start or tap the canvas to run.", 10, 36);
 
           if (!alive) {
-            ctx.fillStyle = "rgba(15,23,42,0.85)";
+            ctx.fillStyle = "rgba(15,23,42,0.82)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#f97373";
-            ctx.font = "13px sans-serif";
+            ctx.font = "15px sans-serif";
             ctx.textAlign = "center";
-            ctx.fillText("You tripped on procedure.", canvas.width / 2, canvas.height / 2 - 8);
+            ctx.fillText("You missed the floor line.", canvas.width / 2, canvas.height / 2 - 12);
             ctx.fillStyle = "#facc15";
-            ctx.fillText("Press R or tap to try again.", canvas.width / 2, canvas.height / 2 + 10);
+            ctx.fillText("Hit Start / Restart or tap to try again.", canvas.width / 2, canvas.height / 2 + 10);
           }
         }
 
@@ -1169,11 +1447,16 @@
         }
 
         function jump() {
+          const groundedRecently = player.onGround || performance.now() - lastGrounded < coyoteMs;
           if (!alive) {
-            resetRunner();
+            resetRunner(true);
             return;
           }
-          if (player.onGround) {
+          if (!running) {
+            resetRunner(true);
+            return;
+          }
+          if (groundedRecently) {
             player.vy = jumpVelocity;
             player.onGround = false;
           }
@@ -1185,18 +1468,22 @@
           jump();
         });
 
-        window.addEventListener("keydown", (e) => {
+        window.addEventListener("keydown", e => {
           const key = e.key.toLowerCase();
           if (key === " " || key === "spacebar") {
             e.preventDefault();
             jump();
           }
           if (key === "r") {
-            resetRunner();
+            resetRunner(true);
           }
         });
 
-        resetRunner();
+        startBtn.addEventListener("click", () => resetRunner(true));
+
+        loadLeaderboard();
+        renderLeaderboard();
+        resetRunner(false);
         runnerLoop();
       })();
 
