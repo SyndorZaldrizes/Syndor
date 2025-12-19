@@ -36,6 +36,9 @@ This repository powers the **Maryland Student Legislature – St. Mary’s Colle
 - `scripts/` and `cypress/` — tooling for CI/linting and any UI tests.
 - `/altius/` — local-only agent workspace (not deployed to GitHub Pages). See [altius/README.md](altius/README.md).
 
+## Altius (local-only)
+For experimenting with an AI agent alongside the site, use the `/altius/` folder. It contains a README with local-only setup notes and a template config file; see [altius/README.md](altius/README.md) for details.
+
 ## Disclaimers
 - This site is student-run and not an official publication of St. Mary’s College of Maryland or the State of Maryland.
 - No backend is deployed on GitHub Pages; interactive features rely on client-side code only.
