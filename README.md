@@ -19,10 +19,28 @@ This repository powers the **Maryland Student Legislature – St. Mary’s Colle
    ```
 3. Optional checks:
    ```bash
-   npm run lint:js
-   npm run lint:css
+   npm run lint
    npm run format
    ```
+
+## Optional Dev Tooling
+- Husky + lint-staged can run linters/formatters on commit; run `npx husky install` after cloning if you want local hooks.
+- ESLint/Stylelint/Prettier:
+  ```bash
+  npm run lint
+  npm run check:format
+  npm run format
+  ```
+- Cypress UI tests (optional):
+  ```bash
+  npm test
+  ```
+
+## What ships to GitHub Pages
+- `/` (root landing page and supporting static assets)
+- `/pages/`
+- `/assets/`
+- `/docs/`
 
 ## Deploy
 - Production is published from the `main` branch via GitHub Pages.
@@ -34,10 +52,17 @@ This repository powers the **Maryland Student Legislature – St. Mary’s Colle
 - `assets/` — shared CSS, JS, and images.
 - `docs/` — downloadable PDFs linked from the site.
 - `scripts/` and `cypress/` — tooling for CI/linting and any UI tests.
-- `/altius/` — local-only agent workspace (not deployed to GitHub Pages). See [altius/README.md](altius/README.md).
+- `/altius-local/` — local-only agent workspace (never deployed). See [altius-local/README.md](altius-local/README.md).
 
-## Altius (local-only)
-For experimenting with an AI agent alongside the site, use the `/altius/` folder. It contains a README with local-only setup notes and a template config file; see [altius/README.md](altius/README.md) for details.
+## Local-only Altius (never deployed)
+> [!WARNING]
+> `/altius-local/` is for local agent/backend files only. It should never be referenced by the GitHub Pages build and must not contain committed secrets, configs, or runtime artifacts.
+
+- Copy `altius-local/config.example.json` to `altius-local/config.json` for local settings (keep it gitignored).
+- See [altius-local/README.md](altius-local/README.md) for run notes and folder expectations.
+
+## Canonical content paths
+- Executive Board: `/pages/executive-board.html` is the canonical URL. The root-level `executive-board.html` only redirects to this page to avoid duplicates.
 
 ## Disclaimers
 - This site is student-run and not an official publication of St. Mary’s College of Maryland or the State of Maryland.

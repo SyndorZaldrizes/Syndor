@@ -89,7 +89,9 @@
 </head>
 
 <body data-page="bulletin">
-  <header id="siteHeader" class="site-header"></header>
+  <header id="siteHeader" class="site-header">
+    <div id="site-nav"></div>
+  </header>
 
   <main>
     <!-- BULLETIN HEADER -->
@@ -290,6 +292,7 @@
   <script src="../assets/js/script.js"></script>
 
   <!-- Local modal logic (safe, tiny, doesn’t fight your main script) -->
+  <script src="../assets/js/nav.js"></script>
   <script>
     (function () {
       const modal = document.getElementById("docModal");

@@ -309,7 +309,9 @@
 </head>
 
 <body class="game-page" data-page="games">
-  <header id="siteHeader" class="site-header"></header>
+  <header id="siteHeader" class="site-header">
+    <div id="site-nav"></div>
+  </header>
 
   <main>
     <!-- HEADER -->
@@ -524,6 +526,7 @@
   <script src="../assets/js/script.js"></script>
 
   <!-- Page-specific JS: all guarded so errors don't break the page -->
+  <script src="../assets/js/nav.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       /* ---------- QUIZ ---------- */

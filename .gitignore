@@ -137,3 +137,10 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Local-only Altius workspace
+altius-local/config.json
+altius-local/.env
+altius-local/venv/
+altius-local/__pycache__/
+altius-local/*.log

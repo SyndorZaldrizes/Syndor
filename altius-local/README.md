@@ -23,4 +23,4 @@ This folder is a staging area for an Altius-based agent the team plans to run lo
 - Do not reference these endpoints from the GitHub Pages build; they are for local development only.
 
 ## Deployment note
-GitHub Pages only serves the static site in `/` and `/pages/`. This `/altius/` directory is not published and should not contain production secrets or credentials.
+GitHub Pages only serves the static site in `/` and `/pages/`. This `/altius-local/` directory is not published and should not contain production secrets or credentials.
