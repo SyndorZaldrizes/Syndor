@@ -7,7 +7,7 @@
 
     <!-- Reuse your site styles -->
     <link rel="stylesheet" href="../assets/css/styles.css" />
-    <!-- If you use other global css files, keep them too -->
+
     <meta
       name="description"
       content="Download the Altius Starter Pack and set up the Altius agent locally. GitHub Pages hosts docs and downloads only."
@@ -59,10 +59,17 @@
         -webkit-backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.12);
       }
-      .span-7 { grid-column: span 7; }
-      .span-5 { grid-column: span 5; }
+      .span-7 {
+        grid-column: span 7;
+      }
+      .span-5 {
+        grid-column: span 5;
+      }
       @media (max-width: 900px) {
-        .span-7, .span-5 { grid-column: span 12; }
+        .span-7,
+        .span-5 {
+          grid-column: span 12;
+        }
       }
 
       .btn-row {
@@ -102,7 +109,8 @@
         background: rgba(255, 190, 80, 0.12);
         border: 1px solid rgba(255, 190, 80, 0.22);
       }
-      code, pre {
+      code,
+      pre {
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 12px;
@@ -111,10 +119,21 @@
         padding: 0.85rem;
         overflow-x: auto;
       }
-      .steps ol { margin: 0.5rem 0 0 1.25rem; }
-      .steps li { margin: 0.45rem 0; }
-      .tiny { opacity: 0.85; font-size: 0.95rem; }
-      .link-list a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+      .steps ol {
+        margin: 0.5rem 0 0 1.25rem;
+      }
+      .steps li {
+        margin: 0.45rem 0;
+      }
+      .tiny {
+        opacity: 0.85;
+        font-size: 0.95rem;
+      }
+      .link-list a {
+        color: #fff;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
     </style>
   </head>
 
@@ -135,19 +154,24 @@
         <div class="btn-row">
           <a
             class="btn primary"
-            href="https://github.com/SyndorZaldrizes/Syndor/releases/download/v1.2.0/altius-starter/altius-starter.zip"
+            href="https://github.com/SyndorZaldrizes/Syndor/releases/download/v1.2.0/altius-starter.zip"
             target="_blank"
             rel="noopener"
           >
             Download Altius Starter Pack
           </a>
-          <a class="btn" href="https://github.com/SyndorZaldrizes/Syndor/tree/main/altius" target="_blank" rel="noopener">
+          <a
+            class="btn"
+            href="https://github.com/SyndorZaldrizes/Syndor/tree/main/altius"
+            target="_blank"
+            rel="noopener"
+          >
             View /altius folder
           </a>
         </div>
 
         <div class="note">
-          <strong>What you’re downloading:</strong> a starter bundle generated from the repo’s
+          <strong>What you’re downloading:</strong> a starter bundle from the repo’s
           <code>/altius/</code> folder. It includes scaffolding, example config, and docs.
           It does <em>not</em> contain secrets.
         </div>
@@ -210,8 +234,9 @@
           <h2>Troubleshooting</h2>
           <ul>
             <li>
-              <strong>Download link 404:</strong> the Release asset may not be generated yet.
-              Go to the repo’s Actions tab and run the “Altius Starter Pack” workflow once.
+              <strong>Download link 404:</strong> confirm <code>altius-starter.zip</code> is attached
+              under the <strong>v1.2.0</strong> Release “Assets” section. If needed, re-upload the zip
+              to that release.
             </li>
             <li>
               <strong>Nothing “runs” when opened:</strong> correct. The zip is scaffolding.
@@ -228,7 +253,10 @@
           </ul>
 
           <p class="tiny">
-            Repo: <a href="https://github.com/SyndorZaldrizes/Syndor" target="_blank" rel="noopener">SyndorZaldrizes/Syndor</a>
+            Repo:
+            <a href="https://github.com/SyndorZaldrizes/Syndor" target="_blank" rel="noopener"
+              >SyndorZaldrizes/Syndor</a
+            >
           </p>
         </div>
       </section>
