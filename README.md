@@ -15,7 +15,7 @@ This repository powers the **Maryland Student Legislature – St. Mary’s Colle
 2. Start the dev server with live reload:
    ```bash
    npm start
-   # opens http://localhost:5173
+   # opens the local dev server in your browser
    ```
 3. Optional checks:
    ```bash
@@ -52,14 +52,6 @@ This repository powers the **Maryland Student Legislature – St. Mary’s Colle
 - `assets/` — shared CSS, JS, and images.
 - `docs/` — downloadable PDFs linked from the site.
 - `scripts/` and `cypress/` — tooling for CI/linting and any UI tests.
-- `/altius-local/` — local-only agent workspace (never deployed). See [altius-local/README.md](altius-local/README.md).
-
-## Local-only Altius (never deployed)
-> [!WARNING]
-> `/altius-local/` is for local agent/backend files only. It should never be referenced by the GitHub Pages build and must not contain committed secrets, configs, or runtime artifacts.
-
-- Copy `altius-local/config.example.json` to `altius-local/config.json` for local settings (keep it gitignored).
-- See [altius-local/README.md](altius-local/README.md) for run notes and folder expectations.
 
 ## Canonical content paths
 - Executive Board: `/pages/executive-board.html` is the canonical URL. The root-level `executive-board.html` only redirects to this page to avoid duplicates.

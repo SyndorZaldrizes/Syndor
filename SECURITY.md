@@ -2,7 +2,7 @@
 
 ## Supported scope
 - The `main` branch and GitHub Pages deployment for the SMCM MSL static site.
-- Static assets under `/assets`, `/pages`, `/docs`, and `/altius-local/` (agent workspace). The agent folder is intended for local use only and is not served by GitHub Pages.
+- Static assets under `/assets`, `/pages`, and `/docs`.
 - There is no production backend or database in this repo; vulnerabilities will generally involve misconfigurations, exposed secrets, or insecure client-side code.
 
 ## Reporting a vulnerability
