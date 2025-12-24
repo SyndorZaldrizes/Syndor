@@ -53,9 +53,6 @@ This repository powers the **Maryland Student Legislature – St. Mary’s Colle
 - `docs/` — downloadable PDFs linked from the site.
 - `scripts/` and `cypress/` — tooling for CI/linting and any UI tests.
 
-## Canonical content paths
-- Executive Board: `/pages/executive-board.html` is the canonical URL. The root-level `executive-board.html` only redirects to this page to avoid duplicates.
-
 ## Disclaimers
 - This site is student-run and not an official publication of St. Mary’s College of Maryland or the State of Maryland.
 - No backend is deployed on GitHub Pages; interactive features rely on client-side code only.
